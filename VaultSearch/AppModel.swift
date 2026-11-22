@@ -1,5 +1,6 @@
 import AppKit
 import Combine
+import CoreSpotlight
 import SwiftUI
 
 /// Shared state for all windows: settings plus the search index built from them.
@@ -11,7 +12,12 @@ final class AppModel: ObservableObject {
     let settings = AppSettings()
     let search = SearchService()
     let exporter: ExportService
+    /// A search handed over by Siri or Shortcuts; the window puts it into its search field.
+    @Published var requestedSearch: String?
     private var cancellables: Set<AnyCancellable> = []
+    private var spotlightTask: Task<Void, Never>?
+    /// Modification dates of the notes last handed to Spotlight; nil until the first pass after launch.
+    private var spotlightDates: [String: Date]?
 
     /// True while unit tests run inside the app; the vault is then left alone.
     static let isRunningTests = ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
@@ -29,6 +35,42 @@ final class AppModel: ObservableObject {
                 }
             }
             .store(in: &cancellables)
+        // `generation` changes after every index run, when `files` is already up to date.
+        search.$generation
+            .dropFirst()
+            .sink { [weak self] _ in
+                MainActor.assumeIsolated { self?.updateSpotlight() }
+            }
+            .store(in: &cancellables)
+    }
+
+    /// Hands new and changed notes to Spotlight and removes deleted ones, so Siri can find them.
+    /// The first pass after launch replaces everything, because notes may have changed while the app was closed.
+    private func updateSpotlight() {
+        let files = search.files
+        let previous = spotlightDates
+        spotlightTask?.cancel()
+        spotlightTask = Task {
+            let current = Dictionary(files.map { ($0.path.path, $0.modifiedDate) }, uniquingKeysWith: { first, _ in first })
+            let changed = await Task.detached(priority: .utility) {
+                files.filter { previous?[$0.path.path] != $0.modifiedDate }.map(NoteEntity.init)
+            }.value
+            guard !Task.isCancelled else { return }
+            let index = CSSearchableIndex.default()
+            do {
+                if let previous {
+                    let removed = previous.keys.filter { current[$0] == nil }
+                    if !removed.isEmpty { try await index.deleteAppEntities(identifiedBy: removed, ofType: NoteEntity.self) }
+                } else {
+                    try await index.deleteAppEntities(ofType: NoteEntity.self)
+                }
+                if !changed.isEmpty { try await index.indexAppEntities(changed) }
+                spotlightDates = current
+            } catch {
+                // Start over with the next index run.
+                spotlightDates = nil
+            }
+        }
     }
 
     func chooseExportFolder() {

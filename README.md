@@ -29,6 +29,7 @@ VaultSearch reads the Markdown notes of an [Obsidian](https://obsidian.md) vault
   - Save a result list as a Markdown note in your vault, with links or embedded notes.
   - Export single notes or result lists as PDF, Word, OpenDocument, RTF, HTML, EPUB or Markdown.
   - Pandoc is used when it is installed, otherwise the conversion built into macOS. Templates are supported.
+- **Siri, Shortcuts and Spotlight.** Ask Siri about your notes in your own words, find them in Spotlight, and use search, open and export as actions in Shortcuts.
 - **A Mac app.** It has a native sidebar and search field, menus with keyboard shortcuts, a Settings window and VoiceOver labels. The interface is in English and German.
 
 ## Requirements

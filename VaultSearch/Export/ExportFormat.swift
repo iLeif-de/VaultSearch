@@ -1,7 +1,7 @@
 import Foundation
 import UniformTypeIdentifiers
 
-enum ExportFormat: String, CaseIterable, Identifiable {
+enum ExportFormat: String, CaseIterable, Identifiable, Sendable {
     case pdf, docx, odt, rtf, html, epub, markdown
 
     var id: Self { self }

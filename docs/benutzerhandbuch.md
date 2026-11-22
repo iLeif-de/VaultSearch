@@ -10,6 +10,7 @@ VaultSearch durchsucht die Markdown-Notizen eines Obsidian-Vaults schon beim Tip
 - [Die Fundstelle in der Notiz finden](#die-fundstelle-in-der-notiz-finden)
 - [Mit Notizen arbeiten](#mit-notizen-arbeiten)
 - [Export](#export)
+- [Siri, Kurzbefehle und Spotlight](#siri-kurzbefehle-und-spotlight)
 - [Einstellungen](#einstellungen)
 - [Tastaturkurzbefehle](#tastaturkurzbefehle)
 - [Fehlerbehebung](#fehlerbehebung)
@@ -258,6 +259,29 @@ Das Menü **Bearbeiten** jeder Vorlage bietet:
 - **×** kehrt zur eingebauten Standardvorlage zurück.
 
 Ohne Pandoc entstehen Word-Dateien aus HTML; Schrift, Größen und Farben für Word kommen dann aus dem Stylesheet. macOS übernimmt dabei nur einen Teil des CSS, Hintergrundfarben zum Beispiel nicht.
+
+## Siri, Kurzbefehle und Spotlight
+
+VaultSearch stellt seine Notizen und Aktionen macOS zur Verfügung. So kannst du sie nutzen, ohne das Fenster zu öffnen.
+
+**Siri.** Frag in deinen eigenen Worten, zum Beispiel „Zeig mir meine Notizen zum Budget-Meeting in VaultSearch“ oder „Exportier diese Notiz als PDF“. Solange eine Notiz in der Vorschau zu sehen ist, weiß Siri, welche Notiz mit „diese“ gemeint ist.
+
+**Spotlight.** Nach dem ersten Einlesen erscheinen die Notizen deines Vaults auch in Spotlight. Wählst du eine aus, öffnet sie sich in Obsidian.
+
+**Kurzbefehle.** Die Kurzbefehle-App zeigt unter VaultSearch diese Aktionen:
+
+| Aktion | Was sie macht |
+|---|---|
+| **Notizen finden** | Gibt die Notizen zurück, die zu einer Suche passen. Es gilt dieselbe Suchsyntax wie im Suchfeld. |
+| **In VaultSearch suchen** | Zeigt die Ergebnisse einer Suche im Fenster. |
+| **Notiz in Obsidian öffnen** | Öffnet eine Notiz. |
+| **Suchergebnisse im Vault sichern** | Sichert die Ergebnisse als Notiz im Exportordner, wie **Treffer im Vault sichern**. |
+| **Suchergebnisse exportieren** | Erstellt aus den Ergebnissen ein Dokument (PDF, Word, …). |
+| **Notiz exportieren** | Erstellt aus einer Notiz ein Dokument. |
+
+Die Export-Aktionen geben die Datei an die nächste Aktion weiter, zum Beispiel **Datei sichern** oder **Teilen**. Sie verwenden deine Einstellungen unter Einstellungen ▸ Export, einschließlich Pandoc und Vorlagen.
+
+Läuft VaultSearch nicht, startet macOS die App. Die erste Anfrage wartet dann, bis der Vault eingelesen ist.
 
 ## Einstellungen
 

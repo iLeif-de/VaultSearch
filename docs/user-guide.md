@@ -10,6 +10,7 @@ VaultSearch searches the Markdown notes of an Obsidian vault as you type and exp
 - [Finding the match inside a note](#finding-the-match-inside-a-note)
 - [Working with notes](#working-with-notes)
 - [Export](#export)
+- [Siri, Shortcuts and Spotlight](#siri-shortcuts-and-spotlight)
 - [Settings](#settings)
 - [Keyboard shortcuts](#keyboard-shortcuts)
 - [Troubleshooting](#troubleshooting)
@@ -260,6 +261,29 @@ The **Edit** menu of each template offers:
 
 Without Pandoc, Word files are made from HTML, so fonts, sizes and colours for Word come from the stylesheet. macOS applies only part of the CSS there; background colours, for example, are not supported.
 
+## Siri, Shortcuts and Spotlight
+
+VaultSearch hands its notes and actions to macOS, so you can use them without opening the window.
+
+**Siri.** Ask in your own words, for example “Show my notes about the budget meeting in VaultSearch” or “Export this note as PDF”. While a note is shown in the preview, Siri knows which note “this” means.
+
+**Spotlight.** After the first index run, the notes of your vault also appear in Spotlight. Choosing one opens it in Obsidian.
+
+**Shortcuts.** The Shortcuts app lists these actions under VaultSearch:
+
+| Action | What it does |
+|---|---|
+| **Find Notes** | Returns the notes matching a search. The search syntax is the same as in the search field. |
+| **Search in VaultSearch** | Shows the results of a search in the window. |
+| **Open Note in Obsidian** | Opens a note. |
+| **Save Search Results to Vault** | Saves the results as a note in the export folder, like **Save Results to Vault**. |
+| **Export Search Results** | Creates a document (PDF, Word, …) from the results. |
+| **Export Note** | Creates a document from one note. |
+
+The export actions hand the file on to the next action, for example **Save File** or **Share**. They use your settings in Settings ▸ Export, including Pandoc and templates.
+
+If VaultSearch is not running, macOS starts it. The first request then waits until the vault has been read.
+
 ## Settings
 
 Open with **VaultSearch ▸ Settings…** (⌘,).
@@ -335,5 +359,6 @@ VaultSearch works entirely on your Mac:
 
 - It reads your vault and keeps the index in memory.
 - It sends nothing over the network.
+- Titles, text, tags and dates of your notes are added to the Spotlight index of your Mac, so Siri and Spotlight can find them. When you ask Siri about your notes, Apple's privacy terms for Siri and Apple Intelligence apply.
 - Pandoc and PDF engines run locally.
 - Settings are stored in the app's preferences (`com.leifjp.VaultSearch`).

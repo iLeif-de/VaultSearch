@@ -150,7 +150,7 @@ final class ExportService: ObservableObject {
     }
 
     /// A fresh, empty location in the temporary folder, for exports handed on to Shortcuts.
-    static func temporaryOutput(name: String, format: ExportFormat) throws -> URL {
+    nonisolated static func temporaryOutput(name: String, format: ExportFormat) throws -> URL {
         let folder = FileManager.default.temporaryDirectory
             .appendingPathComponent("VaultSearch Export", isDirectory: true)
             .appendingPathComponent(UUID().uuidString, isDirectory: true)

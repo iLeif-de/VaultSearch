@@ -17,32 +17,32 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		B1C0DE000000000000000001 /* VaultSearchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VaultSearchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7BFE3872DBE713C0050237E /* VaultSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VaultSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1C0DE000000000000000001 /* VaultSearchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VaultSearchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		B1C0DE000000000000000002 /* VaultSearchTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = VaultSearchTests;
-			sourceTree = "<group>";
-		};
 		A7BFE3892DBE713C0050237E /* VaultSearch */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = VaultSearch;
 			sourceTree = "<group>";
 		};
+		B1C0DE000000000000000002 /* VaultSearchTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = VaultSearchTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		B1C0DE000000000000000004 /* Frameworks */ = {
+		A7BFE3842DBE713C0050237E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A7BFE3842DBE713C0050237E /* Frameworks */ = {
+		B1C0DE000000000000000004 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -159,14 +159,14 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		B1C0DE000000000000000005 /* Resources */ = {
+		A7BFE3852DBE713C0050237E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A7BFE3852DBE713C0050237E /* Resources */ = {
+		B1C0DE000000000000000005 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -176,14 +176,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		B1C0DE000000000000000003 /* Sources */ = {
+		A7BFE3832DBE713C0050237E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A7BFE3832DBE713C0050237E /* Sources */ = {
+		B1C0DE000000000000000003 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (

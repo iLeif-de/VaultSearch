@@ -50,6 +50,10 @@ VaultSearch/
 ├── DateFilterView.swift      Sheet for custom date filters
 ├── SearchSyntaxView.swift    Help window
 ├── SettingsView.swift        Settings window (General and Export tabs)
+├── Intents/
+│   ├── NoteEntity.swift          Notes, folders and the vault for Siri/Shortcuts/Spotlight (notes app schema)
+│   ├── NoteIntents.swift         Actions (search, open, save, export), ExportFormat as AppEnum, errors
+│   └── VaultSearchShortcuts.swift  App Shortcuts with their phrases
 ├── Export/
 │   ├── ExportFormat.swift        Formats and errors
 │   ├── ExportService.swift       Save panels, running exports, templates, alerts
@@ -63,6 +67,7 @@ VaultSearch/
 │   ├── VaultSearchAboutView.swift  VaultSearch configuration
 │   └── LICENSE                   Shown in the About window (bundle resource)
 ├── Localizable.xcstrings     English source strings and German translations
+├── AppShortcuts.xcstrings    German phrases of the App Shortcuts
 └── Assets.xcassets           App icon and accent colour
 Design/
 ├── AppIcon.svg               Master icon
@@ -97,6 +102,26 @@ VaultSearchApp
   | `noteFind` | `NoteDetailView` | ⌥⌘F, ⌘G, ⇧⌘G |
 
 - **Note actions.** `NoteActions` collects these actions: open in Obsidian, open with the default app, Finder, and copy link or path. Menus, context menus and toolbars all call it.
+- **App Intents.** `AppModel.shared` is the only instance. `VaultSearchApp.init` registers it with `AppDependencyManager`, and intents and entity queries receive it with `@Dependency`. See [Siri, Shortcuts and Spotlight](#siri-shortcuts-and-spotlight).
+
+## Siri, Shortcuts and Spotlight
+
+- **Entities** (`Intents/NoteEntity.swift`) follow the App Schemas of macOS 27 for the notes domain: `NoteEntity` (`.notes.note`), `NoteFolderEntity` (`.notes.folder`) and `VaultEntity` (`.notes.account`). The schema requires `name`, `isPinned` and `attachments`; Obsidian has no pinned notes and attachments are not read, so they are always `false` and empty. The schema's create and update intents are deliberately not implemented, because VaultSearch does not change notes.
+- **Ids.** A note's id is its absolute path, like `MarkdownFile.id`. A folder's id is `vault/relative/path`.
+- **Queries wait for the index.** Siri can launch the app and ask at once, so queries and intents call `SearchService.waitUntilIndexed()` / `indexedResults(for:)` first.
+- **Spotlight.** After every index run (`SearchService.generation`) `AppModel.updateSpotlight()` indexes new and changed notes and deletes removed ones. The first run after launch replaces all entries. `NoteEntityQuery` also implements `IndexedEntityQuery`, so the system can ask for a re-index.
+- **On-screen context.** `ContentView` marks the preview with `.appEntityIdentifier`, so Siri knows the note on screen.
+- **Intents** (`Intents/NoteIntents.swift`):
+
+  | Intent | Schema | Result |
+  |---|---|---|
+  | `SearchInVaultSearchIntent` | `.system.searchInApp` | sets `AppModel.requestedSearch`; `ContentView` takes it into the search field |
+  | `FindNotesIntent` | – | `[NoteEntity]` |
+  | `OpenNoteIntent` | `.system.open` | opens in Obsidian, `openAppWhenRun = false` |
+  | `SaveResultsToVaultIntent` | – | the new note as `IntentFile` |
+  | `ExportResultsIntent`, `ExportNoteIntent` | – | the document as `IntentFile`, written to a fresh folder in the temporary directory |
+
+- **Exports without a window.** `ExportService.writeResultsToVault`, `writeResults` and `writeNote` do the work without panels or alerts. The menu actions wrap them with a save panel, `perform` (progress, opening the result, template hint) and error alerts.
 
 ## Indexing
 

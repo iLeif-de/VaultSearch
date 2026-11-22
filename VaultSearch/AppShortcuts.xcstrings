@@ -1,0 +1,66 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Export ${note} with ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${note} mit ${applicationName} exportieren"
+          }
+        }
+      }
+    },
+    "Export a note with ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eine Notiz mit ${applicationName} exportieren"
+          }
+        }
+      }
+    },
+    "Find notes in ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notizen in ${applicationName} finden"
+          }
+        }
+      }
+    },
+    "Open ${target} with ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${target} mit ${applicationName} öffnen"
+          }
+        }
+      }
+    },
+    "Open a note with ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eine Notiz mit ${applicationName} öffnen"
+          }
+        }
+      }
+    },
+    "Search my vault with ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meinen Vault mit ${applicationName} durchsuchen"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

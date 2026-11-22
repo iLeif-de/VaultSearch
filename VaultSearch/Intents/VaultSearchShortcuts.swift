@@ -32,3 +32,23 @@ struct VaultSearchShortcuts: AppShortcutsProvider {
         )
     }
 }
+
+/// Every intent of the app. Shortcuts finds intents by type name at run time, but the
+/// Release optimizer removes types that no code refers to; the action then fails with
+/// “internal error” (“type … does not exist in the process’s memory space”).
+/// `VaultSearchApp.init` refers to this list, which keeps all of them.
+enum AppIntentTypes {
+    static let all: [any AppIntent.Type] = [
+        FindNotesIntent.self,
+        ShowInVaultSearchIntent.self,
+        SearchInVaultSearchIntent.self,
+        OpenNoteIntent.self,
+        SaveResultsToVaultIntent.self,
+        ExportResultsIntent.self,
+        ExportNoteIntent.self,
+    ]
+
+    static func keep() {
+        precondition(all.count == 7, "Add new intents to AppIntentTypes.all")
+    }
+}

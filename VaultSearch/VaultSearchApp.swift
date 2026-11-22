@@ -15,6 +15,7 @@ struct VaultSearchApp: App {
     init() {
         // App Intents (Siri, Shortcuts, Spotlight) get the shared model through `@Dependency`.
         AppDependencyManager.shared.add { await AppModel.shared }
+        AppIntentTypes.keep()
     }
 
     var body: some Scene {

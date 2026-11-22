@@ -3,8 +3,10 @@ import Foundation
 /// Builds the Markdown document for an exported result list.
 enum ResultListExport {
     /// `forVault`: Obsidian wikilinks, embeds and frontmatter; otherwise portable Markdown.
+    /// `heading` replaces “Search: query” for lists that do not come from a search.
     static func markdown(query: String, files: [MarkdownFile], highlightTerms: [String],
-                         style: ResultPreviewStyle, forVault: Bool, highlight: Bool, date: Date = .now) -> String {
+                         style: ResultPreviewStyle, forVault: Bool, highlight: Bool,
+                         heading: String? = nil, date: Date = .now) -> String {
         let trimmedQuery = query.trimmingCharacters(in: .whitespaces)
         var lines: [String] = []
 
@@ -22,7 +24,7 @@ enum ResultListExport {
             ]
         }
 
-        lines.append("# \(title(for: trimmedQuery))")
+        lines.append("# \(heading ?? title(for: trimmedQuery))")
         lines.append("")
         let count = files.count == 1 ? String(localized: "1 note") : String(localized: "\(files.count) notes")
         lines.append("*\(count) · \(date.formatted(date: .long, time: .shortened))*")

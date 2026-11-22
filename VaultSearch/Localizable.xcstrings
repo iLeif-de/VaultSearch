@@ -31,16 +31,6 @@
         }
       }
     },
-    "#tags or [[links]] written in the note text." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "#Tags oder [[Links]] im Notiztext."
-          }
-        }
-      }
-    },
     "%@ · %@" : {
       "localizations" : {
         "de" : {
@@ -131,16 +121,6 @@
         }
       }
     },
-    "A property name may only contain letters, digits, “_” and “-”." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Der Name einer Eigenschaft darf nur Buchstaben, Ziffern, „_“ und „-“ enthalten."
-          }
-        }
-      }
-    },
     "About VaultSearch" : {
       "localizations" : {
         "de" : {
@@ -181,26 +161,6 @@
         }
       }
     },
-    "All Criteria (AND)" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alle Kriterien (UND)"
-          }
-        }
-      }
-    },
-    "Any Criterion (OR)" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mindestens ein Kriterium (ODER)"
-          }
-        }
-      }
-    },
     "Any frontmatter property containing the value" : {
       "localizations" : {
         "de" : {
@@ -217,6 +177,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Automatisch"
+          }
+        }
+      }
+    },
+    "Before" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vor dem"
           }
         }
       }
@@ -257,6 +227,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Auswählen"
+          }
+        }
+      }
+    },
+    "Choose a value for the criterion." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wähle einen Wert für das Kriterium aus."
           }
         }
       }
@@ -371,16 +351,6 @@
         }
       }
     },
-    "Combine" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verknüpfung"
-          }
-        }
-      }
-    },
     "Conversion" : {
       "localizations" : {
         "de" : {
@@ -471,6 +441,26 @@
         }
       }
     },
+    "Creation Date" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erstellungsdatum"
+          }
+        }
+      }
+    },
+    "Criterion" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kriterium"
+          }
+        }
+      }
+    },
     "Custom Date Range…" : {
       "localizations" : {
         "de" : {
@@ -541,12 +531,12 @@
         }
       }
     },
-    "Enter both a property and a value, or leave both empty." : {
+    "End Date" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gib Eigenschaft und Wert an oder lass beide leer."
+            "value" : "Enddatum"
           }
         }
       }
@@ -661,6 +651,16 @@
         }
       }
     },
+    "Export ${notes} as ${format} list ${listTitle}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${notes} als ${format}-Liste ${listTitle} exportieren"
+          }
+        }
+      }
+    },
     "Export ${note} as ${format}" : {
       "localizations" : {
         "de" : {
@@ -701,12 +701,12 @@
         }
       }
     },
-    "Export notes with ${text} as ${format}" : {
+    "Export Note List" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Notizen mit ${text} als ${format} exportieren"
+            "value" : "Notizliste exportieren"
           }
         }
       }
@@ -717,16 +717,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Treffer exportieren als"
-          }
-        }
-      }
-    },
-    "Export Search Results" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Suchergebnisse exportieren"
           }
         }
       }
@@ -781,12 +771,12 @@
         }
       }
     },
-    "Exports the results of a search as a document. Pass the file on to “Save File” or “Share”." : {
+    "Exports the notes, e.g. from “Find Notes” or “Filter Notes”, as one list document. Pass the file on to “Save File” or “Share”." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Exportiert die Ergebnisse einer Suche als Dokument. Gib die Datei an „Datei sichern“ oder „Teilen“ weiter."
+            "value" : "Exportiert die Notizen, z. B. aus „Notizen finden“ oder „Notizen filtern“, als ein Listendokument. Gib die Datei an „Datei sichern“ oder „Teilen“ weiter."
           }
         }
       }
@@ -801,32 +791,102 @@
         }
       }
     },
+    "Filter ${notes} by ${criterion} ${folder}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${notes} nach ${criterion} ${folder} filtern"
+          }
+        }
+      }
+    },
+    "Filter ${notes} by ${criterion} ${inlineTag}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${notes} nach ${criterion} ${inlineTag} filtern"
+          }
+        }
+      }
+    },
+    "Filter ${notes} by ${criterion} ${period}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${notes} nach ${criterion} ${period} filtern"
+          }
+        }
+      }
+    },
+    "Filter ${notes} by ${criterion} ${period} ${date}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${notes} nach ${criterion} ${period} ${date} filtern"
+          }
+        }
+      }
+    },
+    "Filter ${notes} by ${criterion} ${period} ${date} and ${endDate}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${notes} nach ${criterion} ${period} ${date} und ${endDate} filtern"
+          }
+        }
+      }
+    },
+    "Filter ${notes} by ${criterion} ${propertyName} with ${propertyValue}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${notes} nach ${criterion} ${propertyName} mit ${propertyValue} filtern"
+          }
+        }
+      }
+    },
+    "Filter ${notes} by ${criterion} ${tag}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${notes} nach ${criterion} ${tag} filtern"
+          }
+        }
+      }
+    },
+    "Filter ${notes} by ${criterion} ${text} in ${scope}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${notes} nach ${criterion} ${text} in ${scope} filtern"
+          }
+        }
+      }
+    },
+    "Filter Notes" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notizen filtern"
+          }
+        }
+      }
+    },
     "Find Next" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Weitersuchen"
-          }
-        }
-      }
-    },
-    "Find Notes" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Notizen finden"
-          }
-        }
-      }
-    },
-    "Find notes with ${text}" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Notizen mit ${text} finden"
           }
         }
       }
@@ -861,6 +921,16 @@
         }
       }
     },
+    "Finds notes of the vault with filters for name, text, tags, properties, folder and dates." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Findet Notizen des Vaults mit Filtern für Name, Text, Tags, Eigenschaften, Ordner und Datum."
+          }
+        }
+      }
+    },
     "Folder" : {
       "localizations" : {
         "de" : {
@@ -881,52 +951,22 @@
         }
       }
     },
+    "Folder Path" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordnerpfad"
+          }
+        }
+      }
+    },
     "Format" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Format"
-          }
-        }
-      }
-    },
-    "Found %lld notes." : {
-      "localizations" : {
-        "de" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld Notiz gefunden."
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld Notizen gefunden."
-                }
-              }
-            }
-          }
-        },
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Found %lld note."
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Found %lld notes."
-                }
-              }
-            }
           }
         }
       }
@@ -981,6 +1021,16 @@
         }
       }
     },
+    "Heading of the list. Optional." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Überschrift der Liste. Optional."
+          }
+        }
+      }
+    },
     "Highlight search matches" : {
       "localizations" : {
         "de" : {
@@ -997,6 +1047,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "HTML"
+          }
+        }
+      }
+    },
+    "In the Last 30 Days" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In den letzten 30 Tagen"
+          }
+        }
+      }
+    },
+    "In the Last 7 Days" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In den letzten 7 Tagen"
+          }
+        }
+      }
+    },
+    "Includes its subfolders." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mit Unterordnern."
           }
         }
       }
@@ -1031,6 +1111,16 @@
         }
       }
     },
+    "Keeps the notes that match one criterion: text, tag, property, folder or date. Choose the values from menus filled from your vault. Without notes from a previous action, the whole vault is searched. Add another “Filter Notes” after it to combine criteria." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Behält die Notizen, die ein Kriterium erfüllen: Text, Tag, Eigenschaft, Ordner oder Datum. Die Werte wählst du aus Menüs, die aus deinem Vault gefüllt werden. Ohne Notizen aus einer vorherigen Aktion wird der ganze Vault durchsucht. Mit einem weiteren „Notizen filtern“ danach kombinierst du Kriterien."
+          }
+        }
+      }
+    },
     "Last 30 Days" : {
       "localizations" : {
         "de" : {
@@ -1057,6 +1147,46 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zuletzt geändert"
+          }
+        }
+      }
+    },
+    "Last Month" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Letzter Monat"
+          }
+        }
+      }
+    },
+    "Last Week" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Letzte Woche"
+          }
+        }
+      }
+    },
+    "Last Year" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Letztes Jahr"
+          }
+        }
+      }
+    },
+    "Leave empty to find every note that has the property." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leer lassen, um alle Notizen mit dieser Eigenschaft zu finden."
           }
         }
       }
@@ -1121,12 +1251,12 @@
         }
       }
     },
-    "Maximum Results" : {
+    "Modification Date" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Höchstens"
+            "value" : "Änderungsdatum"
           }
         }
       }
@@ -1147,16 +1277,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Geändert %@"
-          }
-        }
-      }
-    },
-    "Name of a frontmatter property, e.g. “status”." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Name einer Eigenschaft im Frontmatter, z. B. „status“."
           }
         }
       }
@@ -1187,16 +1307,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Keine Notiz ausgewählt"
-          }
-        }
-      }
-    },
-    "No notes found." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Keine Notizen gefunden."
           }
         }
       }
@@ -1301,12 +1411,42 @@
         }
       }
     },
+    "Notes" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notizen"
+          }
+        }
+      }
+    },
     "Notes containing both words in title, text or tags" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Notizen, die beide Wörter in Titel, Text oder Tags enthalten"
+          }
+        }
+      }
+    },
+    "Notes from a previous action. Leave empty to search the whole vault." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notizen aus einer vorherigen Aktion. Leer lassen, um den ganzen Vault zu durchsuchen."
+          }
+        }
+      }
+    },
+    "Notes from Shortcuts" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notizen aus Kurzbefehle"
           }
         }
       }
@@ -1501,12 +1641,12 @@
         }
       }
     },
-    "Opens VaultSearch and shows the results of the search in the window." : {
+    "Opens VaultSearch and shows the results of a search in the window." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Öffnet VaultSearch und zeigt die Ergebnisse der Suche im Fenster."
+            "value" : "Öffnet VaultSearch und zeigt die Ergebnisse einer Suche im Fenster."
           }
         }
       }
@@ -1621,6 +1761,16 @@
         }
       }
     },
+    "Period" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeitraum"
+          }
+        }
+      }
+    },
     "Preview" : {
       "localizations" : {
         "de" : {
@@ -1661,22 +1811,22 @@
         }
       }
     },
+    "Properties" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eigenschaften"
+          }
+        }
+      }
+    },
     "Property" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Eigenschaft"
-          }
-        }
-      }
-    },
-    "Property Value" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wert der Eigenschaft"
           }
         }
       }
@@ -1781,16 +1931,6 @@
         }
       }
     },
-    "Returns the notes matching the search to the shortcut, e.g. to export them. Without any criteria, it returns the most recently changed notes." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gibt die passenden Notizen an den Kurzbefehl weiter, z. B. zum Exportieren. Ohne Kriterien liefert die Aktion die zuletzt geänderten Notizen."
-          }
-        }
-      }
-    },
     "Rich Text" : {
       "localizations" : {
         "de" : {
@@ -1821,12 +1961,22 @@
         }
       }
     },
-    "Save notes with ${text} to the vault" : {
+    "Save ${notes} as list ${listTitle} to the vault" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Notizen mit ${text} im Vault sichern"
+            "value" : "${notes} als Liste ${listTitle} im Vault sichern"
+          }
+        }
+      }
+    },
+    "Save Note List to Vault" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notizliste im Vault sichern"
           }
         }
       }
@@ -1847,16 +1997,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sichere eine Kopie der Standardvorlage, um sie anzupassen."
-          }
-        }
-      }
-    },
-    "Save Search Results to Vault" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Suchergebnisse im Vault sichern"
           }
         }
       }
@@ -1911,12 +2051,12 @@
         }
       }
     },
-    "Saves the results of a search as a note in the export folder of the vault." : {
+    "Saves the notes, e.g. from “Find Notes” or “Filter Notes”, as a list note in the export folder of the vault." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sichert die Ergebnisse einer Suche als Notiz im Exportordner des Vaults."
+            "value" : "Sichert die Notizen, z. B. aus „Notizen finden“ oder „Notizen filtern“, als Listen-Notiz im Exportordner des Vaults."
           }
         }
       }
@@ -1947,6 +2087,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "In VaultSearch suchen"
+          }
+        }
+      }
+    },
+    "Search Notes" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notizen suchen"
           }
         }
       }
@@ -2041,16 +2191,6 @@
         }
       }
     },
-    "Searches the vault and returns the matching notes. Uses the same search syntax as the search field." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Durchsucht den Vault und gibt die passenden Notizen zurück. Es gilt dieselbe Suchsyntax wie im Suchfeld."
-          }
-        }
-      }
-    },
     "Select a result to preview it. Double-click it or press ⌘↩ to open it in Obsidian." : {
       "localizations" : {
         "de" : {
@@ -2067,6 +2207,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Notiz teilen"
+          }
+        }
+      }
+    },
+    "Show ${text} in VaultSearch" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${text} in VaultSearch anzeigen"
           }
         }
       }
@@ -2111,22 +2261,22 @@
         }
       }
     },
-    "Show notes with ${text} in VaultSearch" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Notizen mit ${text} in VaultSearch anzeigen"
-          }
-        }
-      }
-    },
     "Shows the results of a search in the VaultSearch window." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zeigt die Ergebnisse einer Suche im Fenster von VaultSearch."
+          }
+        }
+      }
+    },
+    "Since" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seit"
           }
         }
       }
@@ -2161,6 +2311,16 @@
         }
       }
     },
+    "Tag in Text" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tag im Text"
+          }
+        }
+      }
+    },
     "Tags" : {
       "localizations" : {
         "de" : {
@@ -2177,26 +2337,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tags und Eigenschaften"
-          }
-        }
-      }
-    },
-    "Tags from the note properties (frontmatter). Also finds nested tags." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tags aus den Eigenschaften der Notiz (Frontmatter). Findet auch verschachtelte Tags."
-          }
-        }
-      }
-    },
-    "Tags in Text" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tags im Text"
           }
         }
       }
@@ -2301,22 +2441,32 @@
         }
       }
     },
-    "The property must contain this value, e.g. “active”." : {
+    "The syntax of the search field works too, e.g. “tag:idea modified:last 7 days”." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Die Eigenschaft muss diesen Wert enthalten, z. B. „aktiv“."
+            "value" : "Die Syntax des Suchfelds funktioniert auch, z. B. „tag:idee geändert:letzte 7 Tage“."
           }
         }
       }
     },
-    "The search found no notes." : {
+    "The syntax of the search field works too." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Die Suche hat keine Notizen gefunden."
+            "value" : "Die Syntax des Suchfelds funktioniert auch."
+          }
+        }
+      }
+    },
+    "There are no notes to save or export." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es gibt keine Notizen zum Sichern oder Exportieren."
           }
         }
       }
@@ -2347,6 +2497,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dieses Format erfordert Pandoc. Installiere es mit „brew install pandoc“."
+          }
+        }
+      }
+    },
+    "This Year" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dieses Jahr"
+          }
+        }
+      }
+    },
+    "Title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Titel"
           }
         }
       }
@@ -2437,6 +2607,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Standardvorlage verwenden"
+          }
+        }
+      }
+    },
+    "Value" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wert"
           }
         }
       }
@@ -2641,12 +2821,12 @@
         }
       }
     },
-    "Words to look for. The syntax of the search field works too, e.g. “modified:last 7 days”." : {
+    "Yesterday" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gesuchte Wörter. Die Syntax des Suchfelds funktioniert auch, z. B. „geändert:letzte 7 Tage“."
+            "value" : "Gestern"
           }
         }
       }

@@ -27,6 +27,14 @@ struct NoteEntity: IndexedEntity {
     @Property(title: "Tags")
     var tags: [String]
 
+    /// Frontmatter properties other than tags, as “key: value”.
+    @Property(title: "Properties")
+    var properties: [String]
+
+    /// Folder inside the vault, empty for notes at the root; for filtering in Shortcuts.
+    @Property(title: "Folder Path")
+    var folderPath: String
+
     var displayRepresentation: DisplayRepresentation {
         DisplayRepresentation(
             title: "\(name)",
@@ -57,11 +65,17 @@ struct NoteEntity: IndexedEntity {
         isPinned = false
         attachments = []
         tags = file.tags
+        properties = file.frontmatter
+            .filter { $0.key.lowercased() != "tags" }
+            .sorted { $0.key < $1.key }
+            .map { "\($0.key): \(NoteValues.text($0.value))" }
+        folderPath = file.folder
     }
 }
 
-/// Finds notes by id, by text and for suggestions. Waits for the index when the app was just started.
-struct NoteEntityQuery: EntityStringQuery, IndexedEntityQuery {
+/// Finds notes by id, by text, for suggestions and with the filter of the “Find Notes” action
+/// that Shortcuts builds from `properties`. Waits for the index when the app was just started.
+struct NoteEntityQuery: EntityStringQuery, EntityPropertyQuery, IndexedEntityQuery {
     @Dependency private var model: AppModel
 
     func entities(for identifiers: [NoteEntity.ID]) async throws -> [NoteEntity] {
@@ -79,6 +93,91 @@ struct NoteEntityQuery: EntityStringQuery, IndexedEntityQuery {
         await model.search.indexedResults(for: "").prefix(20).map(NoteEntity.init)
     }
 
+    // MARK: Find Notes (filter rows in Shortcuts)
+
+    static let findIntentDescription: IntentDescription? = IntentDescription(
+        "Finds notes of the vault with filters for name, text, tags, properties, folder and dates.",
+        categoryName: "Search"
+    )
+
+    static let properties = QueryProperties {
+        Property(\NoteEntity.$name) {
+            ContainsComparator { value in NotePredicate { $0.title.localizedStandardContains(value) } }
+            EqualToComparator { value in NotePredicate { $0.title.localizedCaseInsensitiveCompare(value) == .orderedSame } }
+            HasPrefixComparator { value in NotePredicate { $0.title.lowercased().hasPrefix(value.lowercased()) } }
+        }
+        Property(\NoteEntity.$content) {
+            ContainsComparator { (value: AttributedString) in let text = String(value.characters); return NotePredicate { $0.content.localizedStandardContains(text) } }
+        }
+        Property(\NoteEntity.$tags) {
+            ContainsComparator { value in NotePredicate.tag(value) }
+        }
+        Property(\NoteEntity.$properties) {
+            ContainsComparator { value in NotePredicate.property(value) }
+        }
+        Property(\NoteEntity.$folderPath) {
+            EqualToComparator { value in NotePredicate.folder(value, includingSubfolders: false) }
+            HasPrefixComparator { value in NotePredicate.folder(value, includingSubfolders: true) }
+            ContainsComparator { value in NotePredicate { $0.folder.localizedStandardContains(value) } }
+        }
+        Property(\NoteEntity.$creationDate) {
+            EqualToComparator { date in NotePredicate.day(\.createdDate) { day in date.map { day == Self.day($0) } ?? false } }
+            LessThanComparator { date in NotePredicate.day(\.createdDate) { $0 < Self.day(date) } }
+            GreaterThanComparator { date in NotePredicate.day(\.createdDate) { $0 > Self.day(date) } }
+            IsBetweenComparator { from, to in NotePredicate.day(\.createdDate) { (Self.day(from)...Self.day(to)).contains($0) } }
+        }
+        Property(\NoteEntity.$modificationDate) {
+            EqualToComparator { date in NotePredicate.day(\.modifiedDate) { day in date.map { day == Self.day($0) } ?? false } }
+            LessThanComparator { date in NotePredicate.day(\.modifiedDate) { $0 < Self.day(date) } }
+            GreaterThanComparator { date in NotePredicate.day(\.modifiedDate) { $0 > Self.day(date) } }
+            IsBetweenComparator { from, to in NotePredicate.day(\.modifiedDate) { (Self.day(from)...Self.day(to)).contains($0) } }
+        }
+    }
+
+    static let sortingOptions = SortingOptions {
+        SortableBy(\NoteEntity.$name)
+        SortableBy(\NoteEntity.$creationDate)
+        SortableBy(\NoteEntity.$modificationDate)
+    }
+
+    private static func day(_ date: Date) -> Date { Calendar.current.startOfDay(for: date) }
+
+    func entities(
+        matching comparators: [NotePredicate], mode: ComparatorMode,
+        sortedBy: [EntityQuerySort<NoteEntity>], limit: Int?
+    ) async throws -> [NoteEntity] {
+        await model.search.waitUntilIndexed()
+        let files = await MainActor.run { model.search.files }
+        var found = files.filter { file in
+            switch mode {
+            case .and: comparators.allSatisfy { $0.matches(file) }
+            case .or: comparators.isEmpty || comparators.contains { $0.matches(file) }
+            @unknown default: comparators.allSatisfy { $0.matches(file) }
+            }
+        }
+        found.sort { lhs, rhs in
+            for sort in sortedBy {
+                let order: ComparisonResult
+                switch sort.by {
+                case \NoteEntity.$name: order = lhs.title.localizedStandardCompare(rhs.title)
+                case \NoteEntity.$creationDate: order = Self.compare(lhs.createdDate, rhs.createdDate)
+                default: order = Self.compare(lhs.modifiedDate, rhs.modifiedDate)
+                }
+                if order != .orderedSame {
+                    return sort.order == .ascending ? order == .orderedAscending : order == .orderedDescending
+                }
+            }
+            return lhs.modifiedDate > rhs.modifiedDate
+        }
+        return found.prefix(limit ?? found.count).map(NoteEntity.init)
+    }
+
+    private static func compare(_ lhs: Date, _ rhs: Date) -> ComparisonResult {
+        lhs == rhs ? .orderedSame : (lhs < rhs ? .orderedAscending : .orderedDescending)
+    }
+
+    // MARK: Spotlight
+
     func reindexEntities(for identifiers: [NoteEntity.ID], indexDescription: CSSearchableIndexDescription) async throws {
         let notes = try await entities(for: identifiers)
         try await CSSearchableIndex.default().indexAppEntities(notes)
@@ -89,6 +188,67 @@ struct NoteEntityQuery: EntityStringQuery, IndexedEntityQuery {
         let notes = await MainActor.run { model.search.files.map(NoteEntity.init) }
         try await CSSearchableIndex.default().deleteAppEntities(ofType: NoteEntity.self)
         try await CSSearchableIndex.default().indexAppEntities(notes)
+    }
+}
+
+/// One filter row of “Find Notes” (or one criterion of “Filter Notes”), as a test on a note.
+struct NotePredicate {
+    let matches: (MarkdownFile) -> Bool
+
+    init(_ matches: @escaping (MarkdownFile) -> Bool) {
+        self.matches = matches
+    }
+
+    /// Frontmatter tag at any level, like `tag:`.
+    static func tag(_ tag: String) -> NotePredicate {
+        NotePredicate { file in file.tags.contains { SearchQuery.tagScore(tag: $0, query: tag) > 0 } }
+    }
+
+    /// `key: value` checks one property, like `key:value`; anything else looks in all property values.
+    static func property(_ text: String) -> NotePredicate {
+        let parts = text.split(separator: ":", maxSplits: 1).map { $0.trimmingCharacters(in: .whitespaces) }
+        if parts.count == 2, !parts[0].isEmpty {
+            return property(parts[0], value: parts[1])
+        }
+        let value = text.trimmingCharacters(in: .whitespaces)
+        return NotePredicate { file in
+            file.frontmatter.contains { $0.key.lowercased() != "tags" && NoteValues.text($0.value).localizedStandardContains(value) }
+        }
+    }
+
+    /// The property `key` exists and contains `value`; an empty value only requires the property.
+    static func property(_ key: String, value: String) -> NotePredicate {
+        NotePredicate { file in
+            guard let entry = file.frontmatter.first(where: { $0.key.caseInsensitiveCompare(key) == .orderedSame }) else {
+                return false
+            }
+            return value.isEmpty || NoteValues.text(entry.value).localizedStandardContains(value)
+        }
+    }
+
+    static func folder(_ folder: String, includingSubfolders: Bool) -> NotePredicate {
+        let folder = folder.trimmingCharacters(in: CharacterSet(charactersIn: "/").union(.whitespaces))
+        return NotePredicate { file in
+            file.folder.caseInsensitiveCompare(folder) == .orderedSame
+                || (includingSubfolders && (folder.isEmpty || file.folder.lowercased().hasPrefix(folder.lowercased() + "/")))
+        }
+    }
+
+    /// Compares the start of the day of a note date.
+    static func day(_ keyPath: KeyPath<MarkdownFile, Date>, _ test: @escaping (Date) -> Bool) -> NotePredicate {
+        NotePredicate { file in test(Calendar.current.startOfDay(for: file[keyPath: keyPath])) }
+    }
+}
+
+/// Frontmatter values as text, and the values a vault uses, for menus in Shortcuts.
+enum NoteValues {
+    static func text(_ value: Any) -> String {
+        (value as? [String])?.joined(separator: ", ") ?? String(describing: value)
+    }
+
+    /// Single values of a property; list properties contribute each item.
+    static func values(_ value: Any) -> [String] {
+        (value as? [String]) ?? [String(describing: value)]
     }
 }
 

@@ -275,25 +275,27 @@ VaultSearch hands its notes and actions to macOS, so you can use them without op
 
 | Action | What it does |
 |---|---|
-| **Find Notes** | Hands the matching notes to the shortcut, so the next action can work with them. |
-| **Show in VaultSearch** | Opens the window and shows the results there. |
+| **Find Notes** | Finds notes with filter rows, like Apple's Notes or Reminders: name, text, tags, properties, folder, creation and modification date. Choose *All* or *Any* of the filters, the sort order and a limit. |
+| **Filter Notes** | Keeps the notes that match one criterion, chosen from menus (see below). |
+| **Show in VaultSearch** | Opens the window and shows the results of a search there. |
 | **Open Note in Obsidian** | Opens a note. |
-| **Save Search Results to Vault** | Saves the results as a note in the export folder, like **Save Results to Vault**. |
-| **Export Search Results** | Creates a document (PDF, Word, …) from the results. |
+| **Save Note List to Vault** | Saves notes as a list note in the export folder, like **Save Results to Vault**. |
+| **Export Note List** | Creates one document (PDF, Word, …) listing the notes. |
 | **Export Note** | Creates a document from one note. |
 
-**Find**, **Show**, **Save** and **Export Search Results** share these search fields. Leave the ones you don't need empty:
+**Filter Notes** reads like a sentence. Choose the criterion in the first menu, and the rest of the sentence follows:
 
-| Field | Meaning |
+| Criterion | You choose |
 |---|---|
-| **Search Text** | Words to look for. The full search syntax works here too, e.g. `modified:last 7 days`. |
-| **Search In** | *Title and Text*, *Title Only* or *Text Only*. |
-| **Tags** | Tags from the properties (`tag:`). Add several with +. |
-| **Tags in Text** | `#tags` or `[[links]]` in the text (`contenttag:`). |
-| **Property** and **Property Value** | e.g. `status` and `active`. Fill in both or neither. |
-| **Combine** | *All Criteria (AND)* or *Any Criterion (OR)*. Each tag counts as a criterion of its own. |
+| **Text** | the words, and whether to search *Title and Text*, *Title Only* or *Text Only* |
+| **Tag** / **Tag in Text** | a tag from your vault (a tag in the properties, or `#tag` in the text) |
+| **Property** | a property of your vault and one of its values; without a value, every note with the property |
+| **Folder** | a folder, including its subfolders |
+| **Creation Date** / **Modification Date** | a period such as *In the Last 7 Days*, or *On*, *Since*, *Before* or *Between* with dates |
 
-The export actions hand the file on to the next action, for example **Save File** or **Share**. They use your settings in Settings ▸ Export, including Pandoc and templates.
+Without notes from a previous action, **Filter Notes** searches the whole vault. To combine criteria, put several **Filter Notes** one after another: each keeps the notes of the previous one that also match (AND). For *any of* (OR), use **Find Notes**.
+
+The save and export actions take the notes from **Find Notes** or **Filter Notes**. The export actions hand the file on to the next action, for example **Save File** or **Share**. They use your settings in Settings ▸ Export, including Pandoc and templates.
 
 If VaultSearch is not running, macOS starts it. The first request then waits until the vault has been read.
 

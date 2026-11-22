@@ -8,6 +8,11 @@ struct ResultsSnapshot {
     let query: String
     let files: [MarkdownFile]
     let highlightTerms: [String]
+    /// Heading for a list that does not come from a search (Shortcuts); replaces “Search: query”.
+    var title: String? = nil
+
+    var displayTitle: String { title ?? ResultListExport.title(for: query.trimmingCharacters(in: .whitespaces)) }
+    var fileName: String { ResultListExport.fileName(for: title ?? query) }
 }
 
 struct ExportAlert: Identifiable {
@@ -80,7 +85,7 @@ final class ExportService: ObservableObject {
     }
 
     func exportResults(_ snapshot: ResultsSnapshot, as format: ExportFormat) {
-        guard let output = savePanel(name: ResultListExport.fileName(for: snapshot.query), format: format,
+        guard let output = savePanel(name: snapshot.fileName, format: format,
                                      message: String(localized: "Export the result list.")) else { return }
         perform(format, output: output) { try await self.writeResults(snapshot, as: format, to: output) }
     }
@@ -103,7 +108,7 @@ final class ExportService: ObservableObject {
         guard let vault = settings.vaultPath else { throw ExportError.noVault }
         let folderPath = settings.exportFolderPath
         let folder = folderPath.isEmpty ? vault : vault.appendingPathComponent(folderPath, isDirectory: true)
-        let baseName = ResultListExport.fileName(for: snapshot.query)
+        let baseName = snapshot.fileName
         var url = folder.appendingPathComponent(baseName).appendingPathExtension("md")
         var counter = 2
         while FileManager.default.fileExists(atPath: url.path) {
@@ -113,7 +118,8 @@ final class ExportService: ObservableObject {
 
         let markdown = ResultListExport.markdown(
             query: snapshot.query, files: snapshot.files, highlightTerms: snapshot.highlightTerms,
-            style: settings.resultPreviewStyle, forVault: true, highlight: settings.highlightMatchesInExport
+            style: settings.resultPreviewStyle, forVault: true, highlight: settings.highlightMatchesInExport,
+            heading: snapshot.title
         )
         try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
         try markdown.write(to: url, atomically: true, encoding: .utf8)
@@ -122,10 +128,11 @@ final class ExportService: ObservableObject {
 
     /// Converts the result list to `format` and writes it to `output`.
     func writeResults(_ snapshot: ResultsSnapshot, as format: ExportFormat, to output: URL) async throws {
-        let title = ResultListExport.title(for: snapshot.query.trimmingCharacters(in: .whitespaces))
+        let title = snapshot.displayTitle
         let markdown = ResultListExport.markdown(
             query: snapshot.query, files: snapshot.files, highlightTerms: snapshot.highlightTerms,
-            style: settings.resultPreviewStyle, forVault: false, highlight: settings.highlightMatchesInExport
+            style: settings.resultPreviewStyle, forVault: false, highlight: settings.highlightMatchesInExport,
+            heading: snapshot.title
         )
         // The list already starts with a heading, so the title is only document metadata.
         try await convert(markdown: markdown, title: title, format: format,

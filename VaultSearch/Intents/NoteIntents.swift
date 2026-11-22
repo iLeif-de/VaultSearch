@@ -2,14 +2,30 @@ import AppIntents
 import AppKit
 
 // Actions for Siri, Shortcuts and Spotlight. They only read the vault;
-// the one exception is "Save Results to Vault", which adds a new note, as the menu command does.
+// the one exception is "Save Notes to Vault", which adds a new note, as the menu command does.
 //
-// Find, Show, Save and Export share the same search fields (see `NoteSearchIntent`):
-// - Find returns the notes to the shortcut,
-// - Show puts the search into the VaultSearch window,
-// - Save and Export write the results to a note or a document.
+// - “Find Notes” is built by Shortcuts from `NoteEntityQuery` (filter rows, All/Any, sorting).
+// - “Filter Notes” takes one criterion, chosen from menus filled from the vault.
+//   Chaining several Filter actions combines criteria with AND.
+// - Save, Export and Open take the notes those actions return.
 
-// MARK: - Search fields
+// MARK: - Filter Notes
+
+/// What “Filter Notes” looks at; the rest of the sentence follows from it.
+enum FilterCriterion: String, AppEnum {
+    case text, tag, inlineTag, property, folder, created, modified
+
+    static let typeDisplayRepresentation: TypeDisplayRepresentation = "Criterion"
+    static let caseDisplayRepresentations: [FilterCriterion: DisplayRepresentation] = [
+        .text: "Text",
+        .tag: "Tag",
+        .inlineTag: "Tag in Text",
+        .property: "Property",
+        .folder: "Folder",
+        .created: "Creation Date",
+        .modified: "Modification Date",
+    ]
+}
 
 /// Where the search text is looked for.
 enum SearchTextScope: String, AppEnum {
@@ -23,202 +39,324 @@ enum SearchTextScope: String, AppEnum {
     ]
 }
 
-/// How the search criteria are combined.
-enum CriteriaMatch: String, AppEnum {
-    case all, any
+/// Periods for the date criteria; the last four need a date.
+enum FilterPeriod: String, AppEnum {
+    case today, yesterday, thisWeek, lastWeek, last7Days, thisMonth, lastMonth, last30Days, thisYear, lastYear
+    case onDay, since, before, between
 
-    static let typeDisplayRepresentation: TypeDisplayRepresentation = "Combine"
-    static let caseDisplayRepresentations: [CriteriaMatch: DisplayRepresentation] = [
-        .all: "All Criteria (AND)",
-        .any: "Any Criterion (OR)",
+    static let typeDisplayRepresentation: TypeDisplayRepresentation = "Period"
+    static let caseDisplayRepresentations: [FilterPeriod: DisplayRepresentation] = [
+        .today: "Today",
+        .yesterday: "Yesterday",
+        .thisWeek: "This Week",
+        .lastWeek: "Last Week",
+        .last7Days: "In the Last 7 Days",
+        .thisMonth: "This Month",
+        .lastMonth: "Last Month",
+        .last30Days: "In the Last 30 Days",
+        .thisYear: "This Year",
+        .lastYear: "Last Year",
+        .onDay: "On",
+        .since: "Since",
+        .before: "Before",
+        .between: "Between",
     ]
+
+    var needsDate: Bool { [.onDay, .since, .before, .between].contains(self) }
 }
 
-/// An intent with the shared search fields. Each intent declares them as `@Parameter`s;
-/// this protocol turns them into the query syntax of the search field.
-protocol NoteSearchIntent: AppIntent {
-    var text: String? { get }
-    var scope: SearchTextScope { get }
-    var tags: [String]? { get }
-    var inlineTags: [String]? { get }
-    var propertyName: String? { get }
-    var propertyValue: String? { get }
-    var match: CriteriaMatch { get }
-}
-
-extension NoteSearchIntent {
-    /// The search as it would be typed into the search field.
-    func searchQuery() throws -> String {
-        try NoteSearchCriteria(
-            text: text, scope: scope, tags: tags ?? [], inlineTags: inlineTags ?? [],
-            propertyName: propertyName, propertyValue: propertyValue, match: match
-        ).query
-    }
-}
-
-/// Builds the query text from the separate search fields; kept apart from the intents so it can be tested.
-struct NoteSearchCriteria {
-    var text: String?
-    var scope: SearchTextScope = .titleAndText
-    var tags: [String] = []
-    var inlineTags: [String] = []
-    var propertyName: String?
-    var propertyValue: String?
-    var match: CriteriaMatch = .all
-
-    var query: String {
-        get throws {
-            var criteria: [String] = []
-
-            if let text = Self.trimmed(text) {
-                switch scope {
-                case .titleAndText:
-                    // Passed on as typed, so the full search syntax works here too.
-                    criteria.append(text)
-                case .title, .text:
-                    let prefix = scope == .title ? "intitle:" : "intext:"
-                    criteria.append(SearchQuery.tokenize(text).map { token in
-                        SearchQuery.orOperators.contains(token) || SearchQuery.andOperators.contains(token)
-                            ? token : prefix + SearchSuggestion.quoted(token)
-                    }.joined(separator: " "))
-                }
-            }
-            criteria += tags.compactMap(Self.trimmed).map { "tag:" + SearchSuggestion.quoted($0) }
-            criteria += inlineTags.compactMap(Self.trimmed).map { "contenttag:" + SearchSuggestion.quoted($0) }
-
-            switch (Self.trimmed(propertyName), Self.trimmed(propertyValue)) {
-            case (let name?, let value?):
-                guard name.first?.isLetter == true,
-                      name.allSatisfy({ $0.isLetter || $0.isNumber || $0 == "_" || $0 == "-" }) else {
-                    throw VaultSearchIntentError.invalidProperty
-                }
-                criteria.append("\(name):" + SearchSuggestion.quoted(value))
-            case (nil, nil):
-                break
-            default:
-                throw VaultSearchIntentError.incompleteProperty
-            }
-
-            return criteria.joined(separator: match == .all ? " " : " OR ")
-        }
-    }
-
-    private static func trimmed(_ value: String?) -> String? {
-        guard let value = value?.trimmingCharacters(in: .whitespacesAndNewlines), !value.isEmpty else { return nil }
-        return value
-    }
-}
-
-// MARK: - Find and show
-
-/// Returns the notes matching a search, for use in a shortcut or as an answer from Siri.
-struct FindNotesIntent: NoteSearchIntent {
-    static let title: LocalizedStringResource = "Find Notes"
+/// Filters notes by one criterion. Without input notes it searches the whole vault.
+struct FilterNotesIntent: AppIntent {
+    static let title: LocalizedStringResource = "Filter Notes"
     static let description = IntentDescription(
-        "Returns the notes matching the search to the shortcut, e.g. to export them. Without any criteria, it returns the most recently changed notes.",
+        "Keeps the notes that match one criterion: text, tag, property, folder or date. Choose the values from menus filled from your vault. Without notes from a previous action, the whole vault is searched. Add another “Filter Notes” after it to combine criteria.",
         categoryName: "Search"
     )
 
-    @Parameter(title: "Search Text", description: "Words to look for. The syntax of the search field works too, e.g. “modified:last 7 days”.")
+    @Parameter(title: "Notes", description: "Notes from a previous action. Leave empty to search the whole vault.")
+    var notes: [NoteEntity]?
+
+    @Parameter(title: "Criterion", default: .tag)
+    var criterion: FilterCriterion
+
+    @Parameter(title: "Search Text", description: "The syntax of the search field works too.")
     var text: String?
 
     @Parameter(title: "Search In", default: .titleAndText)
     var scope: SearchTextScope
 
-    @Parameter(title: "Tags", description: "Tags from the note properties (frontmatter). Also finds nested tags.")
-    var tags: [String]?
+    @Parameter(title: "Tag", optionsProvider: TagOptions())
+    var tag: String?
 
-    @Parameter(title: "Tags in Text", description: "#tags or [[links]] written in the note text.")
-    var inlineTags: [String]?
+    @Parameter(title: "Tag in Text", optionsProvider: TagOptions())
+    var inlineTag: String?
 
-    @Parameter(title: "Property", description: "Name of a frontmatter property, e.g. “status”.")
+    @Parameter(title: "Property", optionsProvider: PropertyNameOptions())
     var propertyName: String?
 
-    @Parameter(title: "Property Value", description: "The property must contain this value, e.g. “active”.")
+    @Parameter(title: "Value", description: "Leave empty to find every note that has the property.", optionsProvider: PropertyValueOptions())
     var propertyValue: String?
 
-    @Parameter(title: "Combine", default: .all)
-    var match: CriteriaMatch
+    @Parameter(title: "Folder", description: "Includes its subfolders.", optionsProvider: FolderOptions())
+    var folder: String?
 
-    @Parameter(title: "Maximum Results", default: 20, inclusiveRange: (1, 500))
-    var limit: Int
+    @Parameter(title: "Period", default: .last7Days)
+    var period: FilterPeriod
+
+    @Parameter(title: "Date")
+    var date: Date?
+
+    @Parameter(title: "End Date")
+    var endDate: Date?
 
     static var parameterSummary: some ParameterSummary {
-        Summary("Find notes with \(\.$text)") {
-            \.$scope
-            \.$tags
-            \.$inlineTags
-            \.$propertyName
-            \.$propertyValue
-            \.$match
-            \.$limit
+        Switch(\.$criterion) {
+            Case(.text) {
+                Summary("Filter \(\.$notes) by \(\.$criterion) \(\.$text) in \(\.$scope)")
+            }
+            Case(.tag) {
+                Summary("Filter \(\.$notes) by \(\.$criterion) \(\.$tag)")
+            }
+            Case(.inlineTag) {
+                Summary("Filter \(\.$notes) by \(\.$criterion) \(\.$inlineTag)")
+            }
+            Case(.property) {
+                Summary("Filter \(\.$notes) by \(\.$criterion) \(\.$propertyName) with \(\.$propertyValue)")
+            }
+            Case(.folder) {
+                Summary("Filter \(\.$notes) by \(\.$criterion) \(\.$folder)")
+            }
+            DefaultCase {
+                Switch(\.$period) {
+                    Case(.between) {
+                        Summary("Filter \(\.$notes) by \(\.$criterion) \(\.$period) \(\.$date) and \(\.$endDate)")
+                    }
+                    Case(.onDay) {
+                        Summary("Filter \(\.$notes) by \(\.$criterion) \(\.$period) \(\.$date)")
+                    }
+                    Case(.since) {
+                        Summary("Filter \(\.$notes) by \(\.$criterion) \(\.$period) \(\.$date)")
+                    }
+                    Case(.before) {
+                        Summary("Filter \(\.$notes) by \(\.$criterion) \(\.$period) \(\.$date)")
+                    }
+                    DefaultCase {
+                        Summary("Filter \(\.$notes) by \(\.$criterion) \(\.$period)")
+                    }
+                }
+            }
         }
     }
 
     @Dependency private var model: AppModel
 
-    func perform() async throws -> some ReturnsValue<[NoteEntity]> & ProvidesDialog {
+    func perform() async throws -> some ReturnsValue<[NoteEntity]> {
         try await model.requireVault()
-        let found = await model.search.indexedResults(for: try searchQuery())
-        let notes = found.prefix(limit).map(NoteEntity.init)
-        let dialog: IntentDialog = found.isEmpty
-            ? "No notes found."
-            : "Found \(found.count) notes."
-        return .result(value: Array(notes), dialog: dialog)
+        let predicate = try NoteFilter(
+            criterion: criterion, text: text, scope: scope, tag: tag, inlineTag: inlineTag,
+            propertyName: propertyName, propertyValue: propertyValue, folder: folder,
+            period: period, date: date, endDate: endDate
+        ).predicate()
+
+        await model.search.waitUntilIndexed()
+        let files = await MainActor.run { model.search.files }
+        let candidates: [MarkdownFile]
+        if let notes, !notes.isEmpty {
+            // Keep the order of the previous action, e.g. its sorting.
+            let byPath = Dictionary(files.map { ($0.path.path, $0) }, uniquingKeysWith: { first, _ in first })
+            candidates = notes.compactMap { byPath[$0.id] }
+        } else {
+            candidates = files.sorted { $0.modifiedDate > $1.modifiedDate }
+        }
+        return .result(value: candidates.filter(predicate.matches).map(NoteEntity.init))
     }
 }
 
+/// Turns the fields of “Filter Notes” into a test on a note; kept apart from the intent so it can be tested.
+struct NoteFilter {
+    var criterion: FilterCriterion
+    var text: String? = nil
+    var scope: SearchTextScope = .titleAndText
+    var tag: String? = nil
+    var inlineTag: String? = nil
+    var propertyName: String? = nil
+    var propertyValue: String? = nil
+    var folder: String? = nil
+    var period: FilterPeriod = .last7Days
+    var date: Date? = nil
+    var endDate: Date? = nil
+    var now: Date = .now
+    var calendar: Calendar = .current
+
+    func predicate() throws -> NotePredicate {
+        switch criterion {
+        case .text:
+            guard let text = Self.trimmed(text) else { throw VaultSearchIntentError.missingValue }
+            return query(Self.scoped(text, scope))
+        case .tag:
+            guard let tag = Self.trimmed(tag) else { throw VaultSearchIntentError.missingValue }
+            return NotePredicate.tag(tag)
+        case .inlineTag:
+            guard let tag = Self.trimmed(inlineTag) else { throw VaultSearchIntentError.missingValue }
+            return query("contenttag:" + SearchSuggestion.quoted(tag))
+        case .property:
+            guard let name = Self.trimmed(propertyName) else { throw VaultSearchIntentError.missingValue }
+            return NotePredicate.property(name, value: Self.trimmed(propertyValue) ?? "")
+        case .folder:
+            guard let folder = Self.trimmed(folder) else { throw VaultSearchIntentError.missingValue }
+            return NotePredicate.folder(folder, includingSubfolders: true)
+        case .created, .modified:
+            let key = criterion == .created ? "created:" : "modified:"
+            return query(try dateTerms().map { key + $0 }.joined(separator: " "))
+        }
+    }
+
+    /// Values in the date syntax of the search field (always English, so the UI language does not matter).
+    func dateTerms() throws -> [String] {
+        func day(_ date: Date?) throws -> String {
+            guard let date else { throw VaultSearchIntentError.missingValue }
+            var calendar = self.calendar
+            calendar.timeZone = .current
+            let parts = calendar.dateComponents([.year, .month, .day], from: date)
+            return String(format: "%04d-%02d-%02d", parts.year!, parts.month!, parts.day!)
+        }
+        switch period {
+        case .today: return ["today"]
+        case .yesterday: return ["yesterday"]
+        case .thisWeek: return ["this week"]
+        case .lastWeek: return ["last week"]
+        case .last7Days: return ["last 7 days"]
+        case .thisMonth: return ["this month"]
+        case .lastMonth: return ["last month"]
+        case .last30Days: return ["last 30 days"]
+        case .thisYear: return ["this year"]
+        case .lastYear: return ["last year"]
+        case .onDay: return [try day(date)]
+        case .since: return [">=" + (try day(date))]
+        case .before: return ["<" + (try day(date))]
+        case .between:
+            let (from, to) = (try day(date), try day(endDate))
+            return from <= to ? [">=" + from, "<=" + to] : [">=" + to, "<=" + from]
+        }
+    }
+
+    private func query(_ text: String) -> NotePredicate {
+        let query = SearchQuery(text, now: now, calendar: calendar)
+        return NotePredicate { query.matches($0) }
+    }
+
+    /// `intitle:` / `intext:` before every word; operators stay as they are.
+    static func scoped(_ text: String, _ scope: SearchTextScope) -> String {
+        guard scope != .titleAndText else { return text }
+        let prefix = scope == .title ? "intitle:" : "intext:"
+        return SearchQuery.tokenize(text).map { token in
+            SearchQuery.orOperators.contains(token) || SearchQuery.andOperators.contains(token)
+                ? token : prefix + SearchSuggestion.quoted(token)
+        }.joined(separator: " ")
+    }
+
+    static func trimmed(_ value: String?) -> String? {
+        guard let value = value?.trimmingCharacters(in: .whitespacesAndNewlines), !value.isEmpty else { return nil }
+        return value
+    }
+}
+
+// MARK: Menus filled from the vault
+
+struct TagOptions: DynamicOptionsProvider {
+    @Dependency private var model: AppModel
+
+    func results() async throws -> [String] {
+        await model.search.waitUntilIndexed()
+        return await MainActor.run { model.search.knownTags.sorted { $0.localizedStandardCompare($1) == .orderedAscending } }
+    }
+}
+
+struct PropertyNameOptions: DynamicOptionsProvider {
+    @Dependency private var model: AppModel
+
+    func results() async throws -> [String] {
+        await model.search.waitUntilIndexed()
+        return await MainActor.run {
+            var names: [String: String] = [:]  // lowercased → first spelling
+            for file in model.search.files {
+                for key in file.frontmatter.keys where key.lowercased() != "tags" {
+                    names[key.lowercased()] = names[key.lowercased()] ?? key
+                }
+            }
+            return names.values.sorted { $0.localizedStandardCompare($1) == .orderedAscending }
+        }
+    }
+}
+
+/// Values of the property chosen in the same action.
+struct PropertyValueOptions: DynamicOptionsProvider {
+    @Dependency private var model: AppModel
+    @IntentParameterDependency<FilterNotesIntent>(\.$propertyName)
+    private var filter
+
+    func results() async throws -> [String] {
+        guard let name = filter?.propertyName, !name.isEmpty else { return [] }
+        await model.search.waitUntilIndexed()
+        return await MainActor.run {
+            var values = Set<String>()
+            for file in model.search.files {
+                guard let entry = file.frontmatter.first(where: { $0.key.caseInsensitiveCompare(name) == .orderedSame }) else { continue }
+                for value in NoteValues.values(entry.value) where !value.isEmpty { values.insert(value) }
+            }
+            return values.sorted { $0.localizedStandardCompare($1) == .orderedAscending }.prefix(300).map { $0 }
+        }
+    }
+}
+
+struct FolderOptions: DynamicOptionsProvider {
+    @Dependency private var model: AppModel
+
+    func results() async throws -> [String] {
+        await model.search.waitUntilIndexed()
+        return await MainActor.run {
+            var folders = Set<String>()
+            for file in model.search.files where !file.folder.isEmpty {
+                // Parent folders too, so “Projects” also offers notes in “Projects/2026”.
+                var path = file.folder
+                while !path.isEmpty {
+                    folders.insert(path)
+                    path = (path as NSString).deletingLastPathComponent
+                }
+            }
+            return folders.sorted { $0.localizedStandardCompare($1) == .orderedAscending }
+        }
+    }
+}
+
+// MARK: - Show in VaultSearch
+
 /// Shows the results of a search in the VaultSearch window.
-struct ShowInVaultSearchIntent: NoteSearchIntent {
+struct ShowInVaultSearchIntent: AppIntent {
     static let title: LocalizedStringResource = "Show in VaultSearch"
     static let description = IntentDescription(
-        "Opens VaultSearch and shows the results of the search in the window.",
+        "Opens VaultSearch and shows the results of a search in the window.",
         categoryName: "Search"
     )
     static let openAppWhenRun = true
 
-    @Parameter(title: "Search Text", description: "Words to look for. The syntax of the search field works too, e.g. “modified:last 7 days”.")
-    var text: String?
-
-    @Parameter(title: "Search In", default: .titleAndText)
-    var scope: SearchTextScope
-
-    @Parameter(title: "Tags", description: "Tags from the note properties (frontmatter). Also finds nested tags.")
-    var tags: [String]?
-
-    @Parameter(title: "Tags in Text", description: "#tags or [[links]] written in the note text.")
-    var inlineTags: [String]?
-
-    @Parameter(title: "Property", description: "Name of a frontmatter property, e.g. “status”.")
-    var propertyName: String?
-
-    @Parameter(title: "Property Value", description: "The property must contain this value, e.g. “active”.")
-    var propertyValue: String?
-
-    @Parameter(title: "Combine", default: .all)
-    var match: CriteriaMatch
+    @Parameter(title: "Search Text", description: "The syntax of the search field works too, e.g. “tag:idea modified:last 7 days”.")
+    var text: String
 
     static var parameterSummary: some ParameterSummary {
-        Summary("Show notes with \(\.$text) in VaultSearch") {
-            \.$scope
-            \.$tags
-            \.$inlineTags
-            \.$propertyName
-            \.$propertyValue
-            \.$match
-        }
+        Summary("Show \(\.$text) in VaultSearch")
     }
 
     @Dependency private var model: AppModel
 
     @MainActor
     func perform() async throws -> some IntentResult {
-        model.requestSearch(try searchQuery())
+        model.requestSearch(text)
         return .result()
     }
 }
 
-/// Siri's “search in VaultSearch”. Not listed in Shortcuts, where “Show in VaultSearch” offers the same with separate fields.
+/// Siri's “search in VaultSearch”. Not listed in Shortcuts, where “Show in VaultSearch” does the same.
 @AppIntent(schema: .system.searchInApp)
 struct SearchInVaultSearchIntent {
     static let title: LocalizedStringResource = "Search in VaultSearch"
@@ -262,100 +400,55 @@ struct OpenNoteIntent {
     }
 }
 
-// MARK: - Export
+// MARK: - Save and export
 
-/// Saves the results of a search as a Markdown note in the export folder of the vault.
-struct SaveResultsToVaultIntent: NoteSearchIntent {
-    static let title: LocalizedStringResource = "Save Search Results to Vault"
+/// Saves a list of notes as a Markdown note in the export folder of the vault.
+struct SaveResultsToVaultIntent: AppIntent {
+    static let title: LocalizedStringResource = "Save Note List to Vault"
     static let description = IntentDescription(
-        "Saves the results of a search as a note in the export folder of the vault.",
+        "Saves the notes, e.g. from “Find Notes” or “Filter Notes”, as a list note in the export folder of the vault.",
         categoryName: "Export"
     )
 
-    @Parameter(title: "Search Text", description: "Words to look for. The syntax of the search field works too, e.g. “modified:last 7 days”.")
-    var text: String?
+    @Parameter(title: "Notes")
+    var notes: [NoteEntity]
 
-    @Parameter(title: "Search In", default: .titleAndText)
-    var scope: SearchTextScope
-
-    @Parameter(title: "Tags", description: "Tags from the note properties (frontmatter). Also finds nested tags.")
-    var tags: [String]?
-
-    @Parameter(title: "Tags in Text", description: "#tags or [[links]] written in the note text.")
-    var inlineTags: [String]?
-
-    @Parameter(title: "Property", description: "Name of a frontmatter property, e.g. “status”.")
-    var propertyName: String?
-
-    @Parameter(title: "Property Value", description: "The property must contain this value, e.g. “active”.")
-    var propertyValue: String?
-
-    @Parameter(title: "Combine", default: .all)
-    var match: CriteriaMatch
+    @Parameter(title: "Title", description: "Heading of the list. Optional.")
+    var listTitle: String?
 
     static var parameterSummary: some ParameterSummary {
-        Summary("Save notes with \(\.$text) to the vault") {
-            \.$scope
-            \.$tags
-            \.$inlineTags
-            \.$propertyName
-            \.$propertyValue
-            \.$match
-        }
+        Summary("Save \(\.$notes) as list \(\.$listTitle) to the vault")
     }
 
     @Dependency private var model: AppModel
 
     func perform() async throws -> some ReturnsValue<IntentFile> & ProvidesDialog {
         try await model.requireVault()
-        let snapshot = await model.snapshot(for: try searchQuery())
-        guard !snapshot.files.isEmpty else { throw VaultSearchIntentError.noResults }
+        let snapshot = try await model.snapshot(of: notes, title: listTitle)
         let url = try await model.exporter.writeResultsToVault(snapshot)
         return .result(value: IntentFile(fileURL: url), dialog: "Saved \(snapshot.files.count) notes to “\(url.deletingPathExtension().lastPathComponent)”.")
     }
 }
 
-/// Exports the results of a search, e.g. as PDF, and hands the file on to the next action.
-struct ExportResultsIntent: NoteSearchIntent {
-    static let title: LocalizedStringResource = "Export Search Results"
+/// Exports a list of notes, e.g. as PDF, and hands the file on to the next action.
+struct ExportResultsIntent: AppIntent {
+    static let title: LocalizedStringResource = "Export Note List"
     static let description = IntentDescription(
-        "Exports the results of a search as a document. Pass the file on to “Save File” or “Share”.",
+        "Exports the notes, e.g. from “Find Notes” or “Filter Notes”, as one list document. Pass the file on to “Save File” or “Share”.",
         categoryName: "Export"
     )
+
+    @Parameter(title: "Notes")
+    var notes: [NoteEntity]
 
     @Parameter(title: "Format", default: .pdf)
     var format: ExportFormat
 
-    @Parameter(title: "Search Text", description: "Words to look for. The syntax of the search field works too, e.g. “modified:last 7 days”.")
-    var text: String?
-
-    @Parameter(title: "Search In", default: .titleAndText)
-    var scope: SearchTextScope
-
-    @Parameter(title: "Tags", description: "Tags from the note properties (frontmatter). Also finds nested tags.")
-    var tags: [String]?
-
-    @Parameter(title: "Tags in Text", description: "#tags or [[links]] written in the note text.")
-    var inlineTags: [String]?
-
-    @Parameter(title: "Property", description: "Name of a frontmatter property, e.g. “status”.")
-    var propertyName: String?
-
-    @Parameter(title: "Property Value", description: "The property must contain this value, e.g. “active”.")
-    var propertyValue: String?
-
-    @Parameter(title: "Combine", default: .all)
-    var match: CriteriaMatch
+    @Parameter(title: "Title", description: "Heading of the list. Optional.")
+    var listTitle: String?
 
     static var parameterSummary: some ParameterSummary {
-        Summary("Export notes with \(\.$text) as \(\.$format)") {
-            \.$scope
-            \.$tags
-            \.$inlineTags
-            \.$propertyName
-            \.$propertyValue
-            \.$match
-        }
+        Summary("Export \(\.$notes) as \(\.$format) list \(\.$listTitle)")
     }
 
     @Dependency private var model: AppModel
@@ -363,10 +456,8 @@ struct ExportResultsIntent: NoteSearchIntent {
     func perform() async throws -> some ReturnsValue<IntentFile> {
         try await model.requireVault()
         try await model.requireFormat(format)
-        let query = try searchQuery()
-        let snapshot = await model.snapshot(for: query)
-        guard !snapshot.files.isEmpty else { throw VaultSearchIntentError.noResults }
-        let output = try ExportService.temporaryOutput(name: ResultListExport.fileName(for: query), format: format)
+        let snapshot = try await model.snapshot(of: notes, title: listTitle)
+        let output = try ExportService.temporaryOutput(name: snapshot.fileName, format: format)
         try await model.exporter.writeResults(snapshot, as: format, to: output)
         return .result(value: IntentFile(fileURL: output, filename: output.lastPathComponent, type: format.contentType))
     }
@@ -424,17 +515,15 @@ enum VaultSearchIntentError: Error, CustomLocalizedStringResourceConvertible {
     case noteNotFound
     case noResults
     case pandocRequired
-    case incompleteProperty
-    case invalidProperty
+    case missingValue
 
     var localizedStringResource: LocalizedStringResource {
         switch self {
         case .noVault: "Choose a vault in VaultSearch first."
         case .noteNotFound: "The note is no longer in the vault."
-        case .noResults: "The search found no notes."
+        case .noResults: "There are no notes to save or export."
         case .pandocRequired: "This format requires Pandoc. Install it with “brew install pandoc”."
-        case .incompleteProperty: "Enter both a property and a value, or leave both empty."
-        case .invalidProperty: "A property name may only contain letters, digits, “_” and “-”."
+        case .missingValue: "Choose a value for the criterion."
         }
     }
 }
@@ -455,9 +544,13 @@ extension AppModel {
         guard exporter.canExport(format) else { throw VaultSearchIntentError.pandocRequired }
     }
 
-    /// The results of `query` as the window would show them.
-    func snapshot(for query: String) async -> ResultsSnapshot {
-        let files = await search.indexedResults(for: query)
-        return ResultsSnapshot(query: query, files: files, highlightTerms: SearchQuery(query).textTerms)
+    /// The notes handed over by a shortcut, in their order, as a list to save or export.
+    func snapshot(of notes: [NoteEntity], title: String?) async throws -> ResultsSnapshot {
+        await search.waitUntilIndexed()
+        let byPath = Dictionary(search.files.map { ($0.path.path, $0) }, uniquingKeysWith: { first, _ in first })
+        let files = notes.compactMap { byPath[$0.id] }
+        guard !files.isEmpty else { throw VaultSearchIntentError.noResults }
+        let title = NoteFilter.trimmed(title) ?? String(localized: "Notes from Shortcuts")
+        return ResultsSnapshot(query: "", files: files, highlightTerms: [], title: title)
     }
 }

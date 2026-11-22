@@ -4,12 +4,12 @@ import AppIntents
 struct VaultSearchShortcuts: AppShortcutsProvider {
     static var appShortcuts: [AppShortcut] {
         AppShortcut(
-            intent: FindNotesIntent(),
+            intent: ShowInVaultSearchIntent(),
             phrases: [
                 "Find notes in \(.applicationName)",
                 "Search my vault with \(.applicationName)",
             ],
-            shortTitle: "Find Notes",
+            shortTitle: "Search Notes",
             systemImageName: "magnifyingglass"
         )
         AppShortcut(
@@ -39,7 +39,7 @@ struct VaultSearchShortcuts: AppShortcutsProvider {
 /// `VaultSearchApp.init` refers to this list, which keeps all of them.
 enum AppIntentTypes {
     static let all: [any AppIntent.Type] = [
-        FindNotesIntent.self,
+        FilterNotesIntent.self,
         ShowInVaultSearchIntent.self,
         SearchInVaultSearchIntent.self,
         OpenNoteIntent.self,

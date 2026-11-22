@@ -67,54 +67,95 @@ struct IntentSupportTests {
     }
 }
 
-@Suite("Siri and Shortcuts: search fields")
-struct NoteSearchCriteriaTests {
-    @Test func textIsPassedOnAsTyped() throws {
-        #expect(try NoteSearchCriteria(text: "  budget modified:today ").query == "budget modified:today")
+@Suite("Siri and Shortcuts: Filter Notes")
+struct NoteFilterTests {
+    let notes = [
+        makeNote("Budget 2026", folder: "Projects/2026", content: "Numbers", tags: ["finance"],
+                 frontmatter: ["status": "active"], created: "2026-11-17", modified: "2026-11-18"),
+        makeNote("Plan", folder: "Projects", content: "The budget is tight #todo", tags: ["project/idea"],
+                 frontmatter: ["status": "done", "people": ["Anna", "Ben"]], created: "2026-10-01", modified: "2026-11-10"),
+        makeNote("Ideas", content: "Nothing here", tags: ["idea"], created: "2025-05-01", modified: "2025-05-02"),
+    ]
+
+    func titles(_ filter: NoteFilter) throws -> [String] {
+        var filter = filter
+        filter.now = TestClock.now
+        filter.calendar = TestClock.calendar
+        let predicate = try filter.predicate()
+        return notes.filter(predicate.matches).map(\.title)
     }
 
-    @Test func scopedTextPrefixesEveryWord() throws {
-        #expect(try NoteSearchCriteria(text: "budget \"team meeting\"", scope: .title).query == "intitle:budget intitle:\"team meeting\"")
-        #expect(try NoteSearchCriteria(text: "a OR b", scope: .text).query == "intext:a OR intext:b")
+    @Test func text() throws {
+        #expect(try titles(.init(criterion: .text, text: "budget")) == ["Budget 2026", "Plan"])
+        #expect(try titles(.init(criterion: .text, text: "budget", scope: .title)) == ["Budget 2026"])
+        #expect(try titles(.init(criterion: .text, text: "budget", scope: .text)) == ["Plan"])
     }
 
-    @Test func allCriteriaAreCombinedWithAnd() throws {
-        let criteria = NoteSearchCriteria(
-            text: "budget", tags: ["finance", "project/alpha"], inlineTags: ["todo"],
-            propertyName: "status", propertyValue: "in progress"
-        )
-        #expect(try criteria.query == "budget tag:finance tag:project/alpha contenttag:todo status:\"in progress\"")
+    @Test func tags() throws {
+        #expect(try titles(.init(criterion: .tag, tag: "idea")) == ["Plan", "Ideas"])
+        #expect(try titles(.init(criterion: .inlineTag, inlineTag: "todo")) == ["Plan"])
     }
 
-    @Test func anyCriterionUsesOr() throws {
-        let criteria = NoteSearchCriteria(tags: ["idea", "plan"], match: .any)
-        #expect(try criteria.query == "tag:idea OR tag:plan")
+    @Test func propertyWithAndWithoutValue() throws {
+        #expect(try titles(.init(criterion: .property, propertyName: "Status", propertyValue: "active")) == ["Budget 2026"])
+        #expect(try titles(.init(criterion: .property, propertyName: "status")) == ["Budget 2026", "Plan"])
+        #expect(try titles(.init(criterion: .property, propertyName: "people", propertyValue: "Ben")) == ["Plan"])
     }
 
-    @Test func emptyFieldsAreIgnored() throws {
-        #expect(try NoteSearchCriteria(text: " ", tags: ["", " "], propertyName: "", propertyValue: " ").query == "")
+    @Test func folderIncludesSubfolders() throws {
+        #expect(try titles(.init(criterion: .folder, folder: "Projects")) == ["Budget 2026", "Plan"])
+        #expect(try titles(.init(criterion: .folder, folder: "Projects/2026/")) == ["Budget 2026"])
     }
 
-    @Test func propertyNeedsNameAndValue() {
-        #expect(throws: VaultSearchIntentError.self) { try NoteSearchCriteria(propertyName: "status").query }
-        #expect(throws: VaultSearchIntentError.self) { try NoteSearchCriteria(propertyValue: "active").query }
-        #expect(throws: VaultSearchIntentError.self) { try NoteSearchCriteria(propertyName: "my status", propertyValue: "x").query }
+    @Test func datePeriods() throws {
+        #expect(try titles(.init(criterion: .modified, period: .last7Days)) == ["Budget 2026"])
+        #expect(try titles(.init(criterion: .created, period: .thisYear)) == ["Budget 2026", "Plan"])
+        #expect(try titles(.init(criterion: .created, period: .since, date: TestClock.date("2026-10-01"))) == ["Budget 2026", "Plan"])
+        #expect(try titles(.init(criterion: .created, period: .before, date: TestClock.date("2026-10-01"))) == ["Ideas"])
+        #expect(try titles(.init(criterion: .modified, period: .onDay, date: TestClock.date("2026-11-10"))) == ["Plan"])
+        // Reversed dates are swapped.
+        #expect(try titles(.init(criterion: .modified, period: .between,
+                                 date: TestClock.date("2026-11-30"), endDate: TestClock.date("2026-11-01"))) == ["Budget 2026", "Plan"])
     }
 
-    @Test func builtQueriesFindTheRightNotes() throws {
-        let notes = [
-            makeNote("Budget 2026", content: "Numbers", tags: ["finance"]),
-            makeNote("Plan", content: "The budget is tight #todo", tags: ["project"]),
-            makeNote("Ideas", content: "Nothing here", tags: ["idea"]),
-        ]
-        func titles(_ criteria: NoteSearchCriteria) throws -> [String] {
-            SearchQuery.test(try criteria.query).titles(in: notes).sorted()
-        }
-        #expect(try titles(.init(text: "budget")) == ["Budget 2026", "Plan"])
-        #expect(try titles(.init(text: "budget", scope: .title)) == ["Budget 2026"])
-        #expect(try titles(.init(text: "budget", scope: .text)) == ["Plan"])
-        #expect(try titles(.init(inlineTags: ["todo"])) == ["Plan"])
-        #expect(try titles(.init(tags: ["finance", "idea"], match: .any)) == ["Budget 2026", "Ideas"])
-        #expect(try titles(.init(tags: ["finance", "idea"], match: .all)) == [])
+    @Test func missingValuesAreReported() {
+        #expect(throws: VaultSearchIntentError.self) { try NoteFilter(criterion: .tag, tag: " ").predicate() }
+        #expect(throws: VaultSearchIntentError.self) { try NoteFilter(criterion: .property).predicate() }
+        #expect(throws: VaultSearchIntentError.self) { try NoteFilter(criterion: .created, period: .between, date: .now).predicate() }
+    }
+
+    @Test func scopedTextKeepsOperators() {
+        #expect(NoteFilter.scoped("a OR \"b c\"", .title) == "intitle:a OR intitle:\"b c\"")
+        #expect(NoteFilter.scoped("a b", .titleAndText) == "a b")
+    }
+}
+
+@Suite("Siri and Shortcuts: Find Notes filters")
+struct NotePredicateTests {
+    let notes = [
+        makeNote("Budget", folder: "Projects/2026", tags: ["project/finance"], frontmatter: ["status": "active"]),
+        makeNote("Plan", folder: "Projects", frontmatter: ["status": "done"]),
+    ]
+
+    func titles(_ predicate: NotePredicate) -> [String] { notes.filter(predicate.matches).map(\.title) }
+
+    @Test func tagAtAnyLevel() {
+        #expect(titles(.tag("finance")) == ["Budget"])
+    }
+
+    @Test func propertyAsKeyValueOrAnyValue() {
+        #expect(titles(.property("status: done")) == ["Plan"])
+        #expect(titles(.property("active")) == ["Budget"])
+    }
+
+    @Test func folderExactOrWithSubfolders() {
+        #expect(titles(.folder("Projects", includingSubfolders: false)) == ["Plan"])
+        #expect(titles(.folder("projects", includingSubfolders: true)) == ["Budget", "Plan"])
+    }
+
+    @Test func entityListsPropertiesAndFolder() {
+        let entity = NoteEntity(notes[0])
+        #expect(entity.properties == ["status: active"])
+        #expect(entity.folderPath == "Projects/2026")
     }
 }

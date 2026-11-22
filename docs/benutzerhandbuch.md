@@ -274,25 +274,27 @@ VaultSearch stellt seine Notizen und Aktionen macOS zur Verfügung. So kannst du
 
 | Aktion | Was sie macht |
 |---|---|
-| **Notizen finden** | Gibt die passenden Notizen an den Kurzbefehl weiter, damit die nächste Aktion damit arbeiten kann. |
-| **In VaultSearch anzeigen** | Öffnet das Fenster und zeigt dort die Ergebnisse. |
+| **Notizen finden** | Findet Notizen mit Filterzeilen, wie bei Apples Notizen oder Erinnerungen: Name, Text, Tags, Eigenschaften, Ordner, Erstellungs- und Änderungsdatum. Du wählst, ob *alle* oder *beliebige* Filter zutreffen müssen, die Sortierung und eine Höchstzahl. |
+| **Notizen filtern** | Behält die Notizen, die ein Kriterium erfüllen. Das Kriterium wählst du aus Menüs (siehe unten). |
+| **In VaultSearch anzeigen** | Öffnet das Fenster und zeigt dort die Ergebnisse einer Suche. |
 | **Notiz in Obsidian öffnen** | Öffnet eine Notiz. |
-| **Suchergebnisse im Vault sichern** | Sichert die Ergebnisse als Notiz im Exportordner, wie **Treffer im Vault sichern**. |
-| **Suchergebnisse exportieren** | Erstellt aus den Ergebnissen ein Dokument (PDF, Word, …). |
+| **Notizliste im Vault sichern** | Sichert Notizen als Listen-Notiz im Exportordner, wie **Treffer im Vault sichern**. |
+| **Notizliste exportieren** | Erstellt ein Dokument (PDF, Word, …), das die Notizen auflistet. |
 | **Notiz exportieren** | Erstellt aus einer Notiz ein Dokument. |
 
-**Finden**, **Anzeigen**, **Sichern** und **Suchergebnisse exportieren** haben dieselben Suchfelder. Lass leer, was du nicht brauchst:
+**Notizen filtern** liest sich wie ein Satz. Im ersten Menü wählst du das Kriterium, der Rest des Satzes passt sich an:
 
-| Feld | Bedeutung |
+| Kriterium | Du wählst |
 |---|---|
-| **Suchbegriff** | Gesuchte Wörter. Auch die ganze Suchsyntax funktioniert, z. B. `geändert:letzte 7 Tage`. |
-| **Suchen in** | *Titel und Text*, *Nur Titel* oder *Nur Text*. |
-| **Tags** | Tags aus den Eigenschaften (`tag:`). Mit + fügst du weitere hinzu. |
-| **Tags im Text** | `#Tags` oder `[[Links]]` im Text (`contenttag:`). |
-| **Eigenschaft** und **Wert der Eigenschaft** | z. B. `status` und `aktiv`. Fülle beide aus oder keines. |
-| **Verknüpfung** | *Alle Kriterien (UND)* oder *Mindestens ein Kriterium (ODER)*. Jeder Tag zählt als eigenes Kriterium. |
+| **Text** | die Wörter und ob in *Titel und Text*, *Nur Titel* oder *Nur Text* gesucht wird |
+| **Tag** / **Tag im Text** | einen Tag aus deinem Vault (Tag in den Eigenschaften oder `#Tag` im Text) |
+| **Eigenschaft** | eine Eigenschaft aus deinem Vault und einen ihrer Werte; ohne Wert alle Notizen mit dieser Eigenschaft |
+| **Ordner** | einen Ordner, einschließlich Unterordnern |
+| **Erstellungsdatum** / **Änderungsdatum** | einen Zeitraum wie *In den letzten 7 Tagen* oder *Am*, *Seit*, *Vor dem*, *Zwischen* mit Datum |
 
-Die Export-Aktionen geben die Datei an die nächste Aktion weiter, zum Beispiel **Datei sichern** oder **Teilen**. Sie verwenden deine Einstellungen unter Einstellungen ▸ Export, einschließlich Pandoc und Vorlagen.
+Ohne Notizen aus einer vorherigen Aktion durchsucht **Notizen filtern** den ganzen Vault. Mehrere Kriterien kombinierst du, indem du mehrere **Notizen filtern** hintereinander setzt: Jede behält die Notizen der vorherigen, die auch passen (UND). Für *eines davon* (ODER) nimm **Notizen finden**.
+
+Sichern und Exportieren übernehmen die Notizen aus **Notizen finden** oder **Notizen filtern**. Die Export-Aktionen geben die Datei an die nächste Aktion weiter, zum Beispiel **Datei sichern** oder **Teilen**. Sie verwenden deine Einstellungen unter Einstellungen ▸ Export, einschließlich Pandoc und Vorlagen.
 
 Läuft VaultSearch nicht, startet macOS die App. Die erste Anfrage wartet dann, bis der Vault eingelesen ist.
 

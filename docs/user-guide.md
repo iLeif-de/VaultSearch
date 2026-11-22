@@ -64,6 +64,8 @@ All text comparisons ignore case and accents, so `cafe` finds “Café”.
 | `budget` | whose title or text contains “budget” |
 | `budget meeting` | containing **both** words, anywhere |
 | `"budget meeting"` | containing the exact phrase |
+| `intitle:budget` | with “budget” in the title only (German: `imtitel:`) |
+| `intext:budget` | with “budget” in the text only, not the title (German: `imtext:`) |
 
 Plain text does **not** search tags. Use `tag:` for that, or combine both with `OR`.
 
@@ -273,12 +275,23 @@ VaultSearch hands its notes and actions to macOS, so you can use them without op
 
 | Action | What it does |
 |---|---|
-| **Find Notes** | Returns the notes matching a search. The search syntax is the same as in the search field. |
-| **Search in VaultSearch** | Shows the results of a search in the window. |
+| **Find Notes** | Hands the matching notes to the shortcut, so the next action can work with them. |
+| **Show in VaultSearch** | Opens the window and shows the results there. |
 | **Open Note in Obsidian** | Opens a note. |
 | **Save Search Results to Vault** | Saves the results as a note in the export folder, like **Save Results to Vault**. |
 | **Export Search Results** | Creates a document (PDF, Word, …) from the results. |
 | **Export Note** | Creates a document from one note. |
+
+**Find**, **Show**, **Save** and **Export Search Results** share these search fields. Leave the ones you don't need empty:
+
+| Field | Meaning |
+|---|---|
+| **Search Text** | Words to look for. The full search syntax works here too, e.g. `modified:last 7 days`. |
+| **Search In** | *Title and Text*, *Title Only* or *Text Only*. |
+| **Tags** | Tags from the properties (`tag:`). Add several with +. |
+| **Tags in Text** | `#tags` or `[[links]]` in the text (`contenttag:`). |
+| **Property** and **Property Value** | e.g. `status` and `active`. Fill in both or neither. |
+| **Combine** | *All Criteria (AND)* or *Any Criterion (OR)*. Each tag counts as a criterion of its own. |
 
 The export actions hand the file on to the next action, for example **Save File** or **Share**. They use your settings in Settings ▸ Export, including Pandoc and templates.
 

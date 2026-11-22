@@ -7,6 +7,7 @@ import Foundation
 /// `AND` / `UND` may be written explicitly.
 ///
 /// - `word`, `"exact phrase"`: title or content contains the text
+/// - `intitle:word` / `intext:word` (German: `imtitel:` / `imtext:`): only the title, only the content
 /// - `tag:name`: frontmatter tag at any level of the hierarchy: `name`, `name/…`
 ///   and `…/name`; closer matches are ranked first (see `tagScore`)
 /// - `contenttag:name`: `#name`, `#…/name` or `[[name]]` in the note body
@@ -21,6 +22,8 @@ struct SearchQuery {
 
     enum Term {
         case text(String)
+        case titleText(String)
+        case bodyText(String)
         case tag(String)
         case contentTag(String)
         case property(key: String, value: String)
@@ -57,9 +60,14 @@ struct SearchQuery {
 
     var isEmpty: Bool { groups.isEmpty }
 
-    /// Plain text terms, used to highlight matches.
+    /// Plain text terms, used to highlight matches and to rank title hits.
     var textTerms: [String] {
-        terms.compactMap { if case .text(let text) = $0 { text } else { nil } }
+        terms.compactMap {
+            switch $0 {
+            case .text(let text), .titleText(let text), .bodyText(let text): text
+            default: nil
+            }
+        }
     }
 
     // MARK: Matching
@@ -108,6 +116,10 @@ struct SearchQuery {
             switch term {
             case .text(let text):
                 return file.title.localizedStandardContains(text) || file.content.localizedStandardContains(text)
+            case .titleText(let text):
+                return file.title.localizedStandardContains(text)
+            case .bodyText(let text):
+                return file.content.localizedStandardContains(text)
             case .tag(let tag):
                 return file.tags.contains { Self.tagScore(tag: $0, query: tag) > 0 }
             case .contentTag(let tag):
@@ -213,6 +225,11 @@ struct SearchQuery {
         let lowered = token.lowercased()
         if lowered.hasPrefix("tag:"), token.count > 4 {
             return .tag(String(token.dropFirst(4)).trimmingPrefix("#").description)
+        }
+        for (prefix, make) in [("intitle:", Term.titleText), ("imtitel:", Term.titleText),
+                               ("intext:", Term.bodyText), ("imtext:", Term.bodyText)]
+        where lowered.hasPrefix(prefix) && token.count > prefix.count {
+            return make(String(token.dropFirst(prefix.count)))
         }
         if lowered.hasPrefix("contenttag:"), token.count > 11 {
             return .contentTag(String(token.dropFirst(11)).trimmingPrefix("#").description)

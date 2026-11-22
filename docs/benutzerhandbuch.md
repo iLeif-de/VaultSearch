@@ -64,6 +64,8 @@ Groß-/Kleinschreibung und Akzente spielen beim Textvergleich keine Rolle, `cafe
 | `budget` | deren Titel oder Text „budget“ enthält |
 | `budget besprechung` | die **beide** Wörter enthalten, egal wo |
 | `"budget besprechung"` | die genau diese Wortfolge enthalten |
+| `imtitel:budget` | die „budget“ nur im Titel enthalten (auch `intitle:`) |
+| `imtext:budget` | die „budget“ nur im Text enthalten, nicht im Titel (auch `intext:`) |
 
 Normaler Text durchsucht **keine** Tags. Dafür gibt es `tag:`; beides lässt sich mit `ODER` verbinden.
 
@@ -272,12 +274,23 @@ VaultSearch stellt seine Notizen und Aktionen macOS zur Verfügung. So kannst du
 
 | Aktion | Was sie macht |
 |---|---|
-| **Notizen finden** | Gibt die Notizen zurück, die zu einer Suche passen. Es gilt dieselbe Suchsyntax wie im Suchfeld. |
-| **In VaultSearch suchen** | Zeigt die Ergebnisse einer Suche im Fenster. |
+| **Notizen finden** | Gibt die passenden Notizen an den Kurzbefehl weiter, damit die nächste Aktion damit arbeiten kann. |
+| **In VaultSearch anzeigen** | Öffnet das Fenster und zeigt dort die Ergebnisse. |
 | **Notiz in Obsidian öffnen** | Öffnet eine Notiz. |
 | **Suchergebnisse im Vault sichern** | Sichert die Ergebnisse als Notiz im Exportordner, wie **Treffer im Vault sichern**. |
 | **Suchergebnisse exportieren** | Erstellt aus den Ergebnissen ein Dokument (PDF, Word, …). |
 | **Notiz exportieren** | Erstellt aus einer Notiz ein Dokument. |
+
+**Finden**, **Anzeigen**, **Sichern** und **Suchergebnisse exportieren** haben dieselben Suchfelder. Lass leer, was du nicht brauchst:
+
+| Feld | Bedeutung |
+|---|---|
+| **Suchbegriff** | Gesuchte Wörter. Auch die ganze Suchsyntax funktioniert, z. B. `geändert:letzte 7 Tage`. |
+| **Suchen in** | *Titel und Text*, *Nur Titel* oder *Nur Text*. |
+| **Tags** | Tags aus den Eigenschaften (`tag:`). Mit + fügst du weitere hinzu. |
+| **Tags im Text** | `#Tags` oder `[[Links]]` im Text (`contenttag:`). |
+| **Eigenschaft** und **Wert der Eigenschaft** | z. B. `status` und `aktiv`. Fülle beide aus oder keines. |
+| **Verknüpfung** | *Alle Kriterien (UND)* oder *Mindestens ein Kriterium (ODER)*. Jeder Tag zählt als eigenes Kriterium. |
 
 Die Export-Aktionen geben die Datei an die nächste Aktion weiter, zum Beispiel **Datei sichern** oder **Teilen**. Sie verwenden deine Einstellungen unter Einstellungen ▸ Export, einschließlich Pandoc und Vorlagen.
 

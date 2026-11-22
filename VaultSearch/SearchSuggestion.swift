@@ -95,6 +95,8 @@ struct SearchSuggestion: Identifiable {
             (dateKey(.created), String(localized: "Creation date"), "calendar"),
             (dateKey(.modified), String(localized: "Last modified"), "clock"),
             ("contenttag:", String(localized: "#tag or [[link]] in the text"), "link"),
+            (usesGerman ? "imtitel:" : "intitle:", String(localized: "Only in the title"), "textformat"),
+            (usesGerman ? "imtext:" : "intext:", String(localized: "Only in the text"), "text.alignleft"),
         ] + properties.map { ("\($0.lowercased()):", String(localized: "Property"), "list.bullet.rectangle") }
 
         var seen = Set<String>()

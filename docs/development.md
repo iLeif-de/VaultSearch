@@ -115,14 +115,16 @@ VaultSearchApp
 
   | Intent | Schema | Result |
   |---|---|---|
-  | `SearchInVaultSearchIntent` | `.system.searchInApp` | sets `AppModel.requestedSearch`; `ContentView` takes it into the search field |
   | `FindNotesIntent` | – | `[NoteEntity]` |
+  | `ShowInVaultSearchIntent` | – | sets `AppModel.requestedSearch`; `ContentView` takes it into the search field |
+  | `SearchInVaultSearchIntent` | `.system.searchInApp` | the same for Siri; `isDiscoverable = false`, so Shortcuts lists only “Show in VaultSearch” |
   | `OpenNoteIntent` | `.system.open` | opens in Obsidian, `openAppWhenRun = false` |
   | `SaveResultsToVaultIntent` | – | the new note as `IntentFile` |
   | `ExportResultsIntent`, `ExportNoteIntent` | – | the document as `IntentFile`, written to a fresh folder in the temporary directory |
 
 - **Signing.** Shortcuts and Siri only connect to a build signed with a development team (`linkd` logs “Unable to get teamId” for ad-hoc builds, and actions then hang until they time out). Ad-hoc builds still list the actions, but cannot run them. Choose your team under Signing & Capabilities.
 - **Build number.** Shortcuts re-reads the actions only when `CURRENT_PROJECT_VERSION` changes. Raise it after changing intents, especially when older copies of the app are around.
+- **Search fields.** Find, Show, Save and Export Results conform to `NoteSearchIntent` and declare the same `@Parameter`s (text, scope, tags, inline tags, property, combine). `NoteSearchCriteria` turns them into the search field syntax: scoped text becomes `intitle:` / `intext:`, tags `tag:` / `contenttag:`, and “Any Criterion” joins the criteria with `OR`.
 - **Exports without a window.** `ExportService.writeResultsToVault`, `writeResults` and `writeNote` do the work without panels or alerts. The menu actions wrap them with a save panel, `perform` (progress, opening the result, template hint) and error alerts.
 
 ## Indexing

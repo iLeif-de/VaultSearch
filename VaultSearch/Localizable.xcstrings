@@ -31,6 +31,16 @@
         }
       }
     },
+    "#tags or [[links]] written in the note text." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "#Tags oder [[Links]] im Notiztext."
+          }
+        }
+      }
+    },
     "%@ · %@" : {
       "localizations" : {
         "de" : {
@@ -121,6 +131,16 @@
         }
       }
     },
+    "A property name may only contain letters, digits, “_” and “-”." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Name einer Eigenschaft darf nur Buchstaben, Ziffern, „_“ und „-“ enthalten."
+          }
+        }
+      }
+    },
     "About VaultSearch" : {
       "localizations" : {
         "de" : {
@@ -157,6 +177,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Einen Filter zur Suche hinzufügen"
+          }
+        }
+      }
+    },
+    "All Criteria (AND)" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle Kriterien (UND)"
+          }
+        }
+      }
+    },
+    "Any Criterion (OR)" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mindestens ein Kriterium (ODER)"
           }
         }
       }
@@ -331,6 +371,16 @@
         }
       }
     },
+    "Combine" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verknüpfung"
+          }
+        }
+      }
+    },
     "Conversion" : {
       "localizations" : {
         "de" : {
@@ -491,6 +541,16 @@
         }
       }
     },
+    "Enter both a property and a value, or leave both empty." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gib Eigenschaft und Wert an oder lass beide leer."
+          }
+        }
+      }
+    },
     "EPUB" : {
       "localizations" : {
         "de" : {
@@ -641,22 +701,22 @@
         }
       }
     },
+    "Export notes with ${text} as ${format}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notizen mit ${text} als ${format} exportieren"
+          }
+        }
+      }
+    },
     "Export Results As" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Treffer exportieren als"
-          }
-        }
-      }
-    },
-    "Export results of ${query} as ${format}" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ergebnisse von ${query} als ${format} exportieren"
           }
         }
       }
@@ -761,12 +821,12 @@
         }
       }
     },
-    "Find notes matching ${query}" : {
+    "Find notes with ${text}" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Notizen zu ${query} finden"
+            "value" : "Notizen mit ${text} finden"
           }
         }
       }
@@ -1091,6 +1151,16 @@
         }
       }
     },
+    "Name of a frontmatter property, e.g. “status”." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name einer Eigenschaft im Frontmatter, z. B. „status“."
+          }
+        }
+      }
+    },
     "Next Match" : {
       "localizations" : {
         "de" : {
@@ -1281,6 +1351,46 @@
         }
       }
     },
+    "Only in the text" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur im Text"
+          }
+        }
+      }
+    },
+    "Only in the text, not the title (German: imtext:)" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur im Text, nicht im Titel (auch intext:)"
+          }
+        }
+      }
+    },
+    "Only in the title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur im Titel"
+          }
+        }
+      }
+    },
+    "Only in the title (German: imtitel:)" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur im Titel (auch intitle:)"
+          }
+        }
+      }
+    },
     "Open exported files" : {
       "localizations" : {
         "de" : {
@@ -1387,6 +1497,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Öffnet eine Notiz des Vaults in Obsidian."
+          }
+        }
+      }
+    },
+    "Opens VaultSearch and shows the results of the search in the window." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öffnet VaultSearch und zeigt die Ergebnisse der Suche im Fenster."
           }
         }
       }
@@ -1551,6 +1671,16 @@
         }
       }
     },
+    "Property Value" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wert der Eigenschaft"
+          }
+        }
+      }
+    },
     "Read all notes of the vault again (⌘R)" : {
       "localizations" : {
         "de" : {
@@ -1651,6 +1781,16 @@
         }
       }
     },
+    "Returns the notes matching the search to the shortcut, e.g. to export them. Without any criteria, it returns the most recently changed notes." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gibt die passenden Notizen an den Kurzbefehl weiter, z. B. zum Exportieren. Ohne Kriterien liefert die Aktion die zuletzt geänderten Notizen."
+          }
+        }
+      }
+    },
     "Rich Text" : {
       "localizations" : {
         "de" : {
@@ -1681,12 +1821,12 @@
         }
       }
     },
-    "Save results of ${query} to the vault" : {
+    "Save notes with ${text} to the vault" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ergebnisse von ${query} im Vault sichern"
+            "value" : "Notizen mit ${text} im Vault sichern"
           }
         }
       }
@@ -1791,6 +1931,16 @@
         }
       }
     },
+    "Search In" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suchen in"
+          }
+        }
+      }
+    },
     "Search in VaultSearch" : {
       "localizations" : {
         "de" : {
@@ -1817,6 +1967,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Suchsyntax …"
+          }
+        }
+      }
+    },
+    "Search Text" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suchbegriff"
           }
         }
       }
@@ -1941,6 +2101,26 @@
         }
       }
     },
+    "Show in VaultSearch" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In VaultSearch anzeigen"
+          }
+        }
+      }
+    },
+    "Show notes with ${text} in VaultSearch" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notizen mit ${text} in VaultSearch anzeigen"
+          }
+        }
+      }
+    },
     "Shows the results of a search in the VaultSearch window." : {
       "localizations" : {
         "de" : {
@@ -2001,6 +2181,26 @@
         }
       }
     },
+    "Tags from the note properties (frontmatter). Also finds nested tags." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tags aus den Eigenschaften der Notiz (Frontmatter). Findet auch verschachtelte Tags."
+          }
+        }
+      }
+    },
+    "Tags in Text" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tags im Text"
+          }
+        }
+      }
+    },
     "Template Not Used" : {
       "localizations" : {
         "de" : {
@@ -2037,6 +2237,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Text"
+          }
+        }
+      }
+    },
+    "Text Only" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur Text"
           }
         }
       }
@@ -2091,6 +2301,16 @@
         }
       }
     },
+    "The property must contain this value, e.g. “active”." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Eigenschaft muss diesen Wert enthalten, z. B. „aktiv“."
+          }
+        }
+      }
+    },
     "The search found no notes." : {
       "localizations" : {
         "de" : {
@@ -2127,6 +2347,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dieses Format erfordert Pandoc. Installiere es mit „brew install pandoc“."
+          }
+        }
+      }
+    },
+    "Title and Text" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Titel und Text"
+          }
+        }
+      }
+    },
+    "Title Only" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur Titel"
           }
         }
       }
@@ -2397,6 +2637,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "today, yesterday (heute, gestern)"
+          }
+        }
+      }
+    },
+    "Words to look for. The syntax of the search field works too, e.g. “modified:last 7 days”." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gesuchte Wörter. Die Syntax des Suchfelds funktioniert auch, z. B. „geändert:letzte 7 Tage“."
           }
         }
       }

@@ -62,6 +62,33 @@ struct SearchQueryTextTests {
     }
 }
 
+@Suite("Search: title and text only")
+struct SearchQueryScopeTests {
+    let notes = [
+        makeNote("Budget", content: "Numbers"),
+        makeNote("Plan", content: "The budget is tight"),
+    ]
+
+    @Test func titleOnly() {
+        #expect(SearchQuery.test("intitle:budget").titles(in: notes) == ["Budget"])
+        #expect(SearchQuery.test("imtitel:budget").titles(in: notes) == ["Budget"])
+    }
+
+    @Test func textOnly() {
+        #expect(SearchQuery.test("intext:budget").titles(in: notes) == ["Plan"])
+        #expect(SearchQuery.test("imtext:budget").titles(in: notes) == ["Plan"])
+    }
+
+    @Test func phraseAndHighlighting() {
+        #expect(SearchQuery.test("intext:\"budget is\"").titles(in: notes) == ["Plan"])
+        #expect(SearchQuery.test("intitle:plan intext:tight").textTerms == ["plan", "tight"])
+    }
+
+    @Test func bareKeyIsIgnoredWhileTyping() {
+        #expect(SearchQuery.test("intitle:").isEmpty)
+    }
+}
+
 @Suite("Search: hierarchical tags")
 struct SearchQueryTagTests {
     let notes = [

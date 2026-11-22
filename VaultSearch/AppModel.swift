@@ -3,8 +3,11 @@ import Combine
 import SwiftUI
 
 /// Shared state for all windows: settings plus the search index built from them.
+/// There is exactly one, so windows, Siri, Shortcuts and AppleScript see the same index.
 @MainActor
 final class AppModel: ObservableObject {
+    static let shared = AppModel()
+
     let settings = AppSettings()
     let search = SearchService()
     let exporter: ExportService
@@ -13,7 +16,7 @@ final class AppModel: ObservableObject {
     /// True while unit tests run inside the app; the vault is then left alone.
     static let isRunningTests = ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
 
-    init() {
+    private init() {
         exporter = ExportService(settings: settings)
         guard !Self.isRunningTests else { return }
         // The export folder holds result lists of earlier searches; it is never searched itself.

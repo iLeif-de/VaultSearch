@@ -19,8 +19,8 @@ This guide explains how VaultSearch is built and how to change it. For using the
 
 | | |
 |---|---|
-| Platform | macOS 15 or later (`MACOSX_DEPLOYMENT_TARGET = 15.0`) |
-| Tooling | Xcode 16 or later (uses the `@Entry` macro and String Catalogs) |
+| Platform | macOS 27 or later (`MACOSX_DEPLOYMENT_TARGET = 27.0`) |
+| Tooling | Xcode 27 or later (App Intents with App Schemas, `@Entry` macro, String Catalogs) |
 | Language | Swift, Swift 5 language mode, SwiftUI with AppKit where needed |
 | Dependencies | none (no Swift packages) |
 | Sandbox | off: VaultSearch reads any vault folder the user chooses and launches Pandoc and PDF engines with `Process` |
@@ -155,7 +155,7 @@ The index lives in memory only. Search results are computed from `files` on a de
 ## User interface
 
 - **Main window** (`ContentView`):
-  - `NavigationSplitView` with `.searchable(placement: .sidebar)` and `.searchFocused`, which is why the app needs macOS 15.
+  - `NavigationSplitView` with `.searchable(placement: .sidebar)` and `.searchFocused`.
   - Search runs in `.task(id: SearchKey)`, debounced by 120 ms. When the selection is no longer among the results, the first hit is selected.
 - **Result rows** (`ResultRow`) show `MarkdownFile.snippet(around:)`. It runs on `plain`, a copy of the content with Obsidian syntax removed. Matches are emphasised by `Highlighter`.
 - **Preview** (`NoteDetailView`):

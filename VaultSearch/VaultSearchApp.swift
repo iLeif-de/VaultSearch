@@ -5,11 +5,17 @@
 //  Created by Leif Jensen-Pistorius on 27.04.25.
 //
 
+import AppIntents
 import SwiftUI
 
 @main
 struct VaultSearchApp: App {
-    @StateObject private var model = AppModel()
+    @StateObject private var model = AppModel.shared
+
+    init() {
+        // App Intents (Siri, Shortcuts, Spotlight) get the shared model through `@Dependency`.
+        AppDependencyManager.shared.add { await AppModel.shared }
+    }
 
     var body: some Scene {
         WindowGroup {

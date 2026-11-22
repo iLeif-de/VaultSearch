@@ -92,6 +92,20 @@ final class SearchService: ObservableObject {
         }.value
     }
 
+    /// Waits until a running index pass has finished. Siri and Shortcuts can start the app
+    /// and ask right away, before the notes have been read.
+    func waitUntilIndexed() async {
+        while isIndexing, let task = indexTask {
+            await task.value
+        }
+    }
+
+    /// Like `results(for:)`, but waits for the index first.
+    func indexedResults(for text: String) async -> [MarkdownFile] {
+        await waitUntilIndexed()
+        return await results(for: text)
+    }
+
     func file(with id: MarkdownFile.ID?) -> MarkdownFile? {
         guard let id else { return nil }
         return files.first { $0.id == id }

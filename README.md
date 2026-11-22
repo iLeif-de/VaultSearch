@@ -33,7 +33,7 @@ VaultSearch reads the Markdown notes of an [Obsidian](https://obsidian.md) vault
 
 ## Requirements
 
-- macOS 15 Sequoia or later
+- macOS 27 or later
 - An Obsidian vault (any folder of Markdown files works)
 - Optional, for more export formats and better typesetting: [Pandoc](https://pandoc.org) and a PDF engine, e.g. `brew install pandoc`
 
@@ -47,7 +47,7 @@ cd VaultSearch
 open VaultSearch.xcodeproj
 ```
 
-In Xcode choose **Product ▸ Run** (⌘R), or **Product ▸ Archive** for a release build. Xcode 16 or later is required. When it starts, choose your vault folder.
+In Xcode choose **Product ▸ Run** (⌘R), or **Product ▸ Archive** for a release build. Xcode 27 or later is required. When it starts, choose your vault folder.
 
 **Product ▸ Test** (⌘U) runs the unit tests. To try the app without your own notes, choose the sample vault in [`docs/demo-vault`](docs/demo-vault).
 

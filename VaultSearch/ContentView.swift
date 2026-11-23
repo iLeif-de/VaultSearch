@@ -5,6 +5,7 @@
 //  Created by Leif Jensen-Pistorius on 27.04.25.
 //
 
+import AppIntents
 import SwiftUI
 
 struct ContentView: View {
@@ -84,7 +85,16 @@ struct ContentView: View {
         }
         .task {
             if settings.vaultPath != nil { isSearchFocused = true }
+            takeRequestedSearch()
         }
+        .onChange(of: model.requestedSearch) { takeRequestedSearch() }
+    }
+
+    /// Takes over a search from Siri or Shortcuts; the first window to see it wins.
+    private func takeRequestedSearch() {
+        guard let text = model.requestedSearch else { return }
+        model.requestedSearch = nil
+        searchText = text
     }
 
     // MARK: Sidebar
@@ -152,9 +162,11 @@ struct ContentView: View {
 
     @ViewBuilder private var detail: some View {
         if let file = selectedFile {
-            NoteDetailView(file: file, highlightTerms: query.textTerms) { tag in
-                searchText = "tag:\(SearchSuggestion.quoted(tag))"
+            NoteDetailView(file: file, highlightTerms: query.textTerms) { search in
+                searchText = search
             }
+            // Tells Siri which note is on screen, so “open this in Obsidian” works.
+            .appEntityIdentifier(EntityIdentifier(for: NoteEntity.self, identifier: file.path.path))
         } else {
             ContentUnavailableView {
                 Label("No Note Selected", systemImage: "doc.text.magnifyingglass")

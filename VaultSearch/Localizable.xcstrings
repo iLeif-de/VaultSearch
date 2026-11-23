@@ -181,6 +181,16 @@
         }
       }
     },
+    "Before" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vor dem"
+          }
+        }
+      }
+    },
     "Between" : {
       "localizations" : {
         "de" : {
@@ -217,6 +227,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Auswählen"
+          }
+        }
+      }
+    },
+    "Choose a value for the criterion." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wähle einen Wert für das Kriterium aus."
+          }
+        }
+      }
+    },
+    "Choose a vault in VaultSearch first." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wähle zuerst in VaultSearch einen Vault aus."
           }
         }
       }
@@ -331,6 +361,16 @@
         }
       }
     },
+    "Copy" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopieren"
+          }
+        }
+      }
+    },
     "Copy Install Command" : {
       "localizations" : {
         "de" : {
@@ -381,16 +421,6 @@
         }
       }
     },
-    "Created %@" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Erstellt %@"
-          }
-        }
-      }
-    },
     "Created on a day (also 28.04.25)" : {
       "localizations" : {
         "de" : {
@@ -407,6 +437,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Erstellungsdatum"
+          }
+        }
+      }
+    },
+    "Creation Date" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erstellungsdatum"
+          }
+        }
+      }
+    },
+    "Criterion" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kriterium"
           }
         }
       }
@@ -477,6 +527,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Doppelklicken, um in Obsidian zu öffnen"
+          }
+        }
+      }
+    },
+    "End Date" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enddatum"
+          }
+        }
+      }
+    },
+    "EPUB" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "EPUB"
           }
         }
       }
@@ -581,6 +651,26 @@
         }
       }
     },
+    "Export ${notes} as ${format} list ${listTitle}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${notes} als ${format}-Liste ${listTitle} exportieren"
+          }
+        }
+      }
+    },
+    "Export ${note} as ${format}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${note} als ${format} exportieren"
+          }
+        }
+      }
+    },
     "Export Failed" : {
       "localizations" : {
         "de" : {
@@ -607,6 +697,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Notiz exportieren als"
+          }
+        }
+      }
+    },
+    "Export Note List" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notizliste exportieren"
           }
         }
       }
@@ -661,12 +761,122 @@
         }
       }
     },
+    "Exports a note as a document. Pass the file on to “Save File” or “Share”." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exportiert eine Notiz als Dokument. Gib die Datei an „Datei sichern“ oder „Teilen“ weiter."
+          }
+        }
+      }
+    },
+    "Exports the notes, e.g. from “Find Notes” or “Filter Notes”, as one list document. Pass the file on to “Save File” or “Share”." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exportiert die Notizen, z. B. aus „Notizen finden“ oder „Notizen filtern“, als ein Listendokument. Gib die Datei an „Datei sichern“ oder „Teilen“ weiter."
+          }
+        }
+      }
+    },
     "Filter" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Filter"
+          }
+        }
+      }
+    },
+    "Filter ${notes} by ${criterion} ${folder}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${notes} nach ${criterion} ${folder} filtern"
+          }
+        }
+      }
+    },
+    "Filter ${notes} by ${criterion} ${inlineTag}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${notes} nach ${criterion} ${inlineTag} filtern"
+          }
+        }
+      }
+    },
+    "Filter ${notes} by ${criterion} ${period}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${notes} nach ${criterion} ${period} filtern"
+          }
+        }
+      }
+    },
+    "Filter ${notes} by ${criterion} ${period} ${date}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${notes} nach ${criterion} ${period} ${date} filtern"
+          }
+        }
+      }
+    },
+    "Filter ${notes} by ${criterion} ${period} ${date} and ${endDate}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${notes} nach ${criterion} ${period} ${date} und ${endDate} filtern"
+          }
+        }
+      }
+    },
+    "Filter ${notes} by ${criterion} ${propertyName} with ${propertyValue}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${notes} nach ${criterion} ${propertyName} mit ${propertyValue} filtern"
+          }
+        }
+      }
+    },
+    "Filter ${notes} by ${criterion} ${tag}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${notes} nach ${criterion} ${tag} filtern"
+          }
+        }
+      }
+    },
+    "Filter ${notes} by ${criterion} ${text} in ${scope}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${notes} nach ${criterion} ${text} in ${scope} filtern"
+          }
+        }
+      }
+    },
+    "Filter Notes" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notizen filtern"
           }
         }
       }
@@ -711,6 +921,16 @@
         }
       }
     },
+    "Finds notes of the vault with filters for name, text, tags, properties, folder and dates." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Findet Notizen des Vaults mit Filtern für Name, Text, Tags, Eigenschaften, Ordner und Datum."
+          }
+        }
+      }
+    },
     "Folder" : {
       "localizations" : {
         "de" : {
@@ -721,12 +941,42 @@
         }
       }
     },
+    "Folder and its subfolders" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordner und Unterordner"
+          }
+        }
+      }
+    },
     "Folder in Vault" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ordner im Vault"
+          }
+        }
+      }
+    },
+    "Folder Path" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordnerpfad"
+          }
+        }
+      }
+    },
+    "Format" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Format"
           }
         }
       }
@@ -781,12 +1031,62 @@
         }
       }
     },
+    "Heading of the list. Optional." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Überschrift der Liste. Optional."
+          }
+        }
+      }
+    },
     "Highlight search matches" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Suchtreffer hervorheben"
+          }
+        }
+      }
+    },
+    "HTML" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HTML"
+          }
+        }
+      }
+    },
+    "In the Last 30 Days" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In den letzten 30 Tagen"
+          }
+        }
+      }
+    },
+    "In the Last 7 Days" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In den letzten 7 Tagen"
+          }
+        }
+      }
+    },
+    "Includes its subfolders." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mit Unterordnern."
           }
         }
       }
@@ -821,6 +1121,16 @@
         }
       }
     },
+    "Keeps the notes that match one criterion: text, tag, property, folder or date. Choose the values from menus filled from your vault. Without notes from a previous action, the whole vault is searched. Add another “Filter Notes” after it to combine criteria." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Behält die Notizen, die ein Kriterium erfüllen: Text, Tag, Eigenschaft, Ordner oder Datum. Die Werte wählst du aus Menüs, die aus deinem Vault gefüllt werden. Ohne Notizen aus einer vorherigen Aktion wird der ganze Vault durchsucht. Mit einem weiteren „Notizen filtern“ danach kombinierst du Kriterien."
+          }
+        }
+      }
+    },
     "Last 30 Days" : {
       "localizations" : {
         "de" : {
@@ -847,6 +1157,46 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zuletzt geändert"
+          }
+        }
+      }
+    },
+    "Last Month" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Letzter Monat"
+          }
+        }
+      }
+    },
+    "Last Week" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Letzte Woche"
+          }
+        }
+      }
+    },
+    "Last Year" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Letztes Jahr"
+          }
+        }
+      }
+    },
+    "Leave empty to find every note that has the property." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leer lassen, um alle Notizen mit dieser Eigenschaft zu finden."
           }
         }
       }
@@ -881,6 +1231,16 @@
         }
       }
     },
+    "Markdown" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Markdown"
+          }
+        }
+      }
+    },
     "Markdown…" : {
       "localizations" : {
         "de" : {
@@ -897,6 +1257,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bedingung"
+          }
+        }
+      }
+    },
+    "Modification Date" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Änderungsdatum"
           }
         }
       }
@@ -1051,12 +1421,52 @@
         }
       }
     },
+    "Notes" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notizen"
+          }
+        }
+      }
+    },
     "Notes containing both words in title, text or tags" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Notizen, die beide Wörter in Titel, Text oder Tags enthalten"
+          }
+        }
+      }
+    },
+    "Notes from a previous action. Leave empty to search the whole vault." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notizen aus einer vorherigen Aktion. Leer lassen, um den ganzen Vault zu durchsuchen."
+          }
+        }
+      }
+    },
+    "Notes from Shortcuts" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notizen aus Kurzbefehle"
+          }
+        }
+      }
+    },
+    "Notes in the folder and its subfolders (German: pfad:)" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notizen im Ordner und seinen Unterordnern (auch path:)"
           }
         }
       }
@@ -1101,6 +1511,46 @@
         }
       }
     },
+    "Only in the text" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur im Text"
+          }
+        }
+      }
+    },
+    "Only in the text, not the title (German: imtext:)" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur im Text, nicht im Titel (auch intext:)"
+          }
+        }
+      }
+    },
+    "Only in the title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur im Titel"
+          }
+        }
+      }
+    },
+    "Only in the title (German: imtitel:)" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur im Titel (auch intitle:)"
+          }
+        }
+      }
+    },
     "Open exported files" : {
       "localizations" : {
         "de" : {
@@ -1131,12 +1581,42 @@
         }
       }
     },
+    "Open Note" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notiz öffnen"
+          }
+        }
+      }
+    },
+    "Open Note in Obsidian" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notiz in Obsidian öffnen"
+          }
+        }
+      }
+    },
     "Open with Default App" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mit Standard-App öffnen"
+          }
+        }
+      }
+    },
+    "OpenDocument" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OpenDocument"
           }
         }
       }
@@ -1171,12 +1651,72 @@
         }
       }
     },
+    "Opens a note of the vault in Obsidian." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öffnet eine Notiz des Vaults in Obsidian."
+          }
+        }
+      }
+    },
+    "Opens VaultSearch and shows the notes of a folder and its subfolders." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öffnet VaultSearch und zeigt die Notizen eines Ordners samt Unterordnern."
+          }
+        }
+      }
+    },
+    "Opens VaultSearch and shows the notes with a tag, including nested tags." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öffnet VaultSearch und zeigt die Notizen mit einem Tag, auch verschachtelte Tags."
+          }
+        }
+      }
+    },
+    "Opens VaultSearch and shows the results of a search in the window." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öffnet VaultSearch und zeigt die Ergebnisse einer Suche im Fenster."
+          }
+        }
+      }
+    },
     "Operators >=, >, <=, <" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Operatoren >=, >, <=, <"
+          }
+        }
+      }
+    },
+    "Path" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pfad"
+          }
+        }
+      }
+    },
+    "PDF" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PDF"
           }
         }
       }
@@ -1261,6 +1801,16 @@
         }
       }
     },
+    "Period" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeitraum"
+          }
+        }
+      }
+    },
     "Preview" : {
       "localizations" : {
         "de" : {
@@ -1297,6 +1847,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vorherige Woche, vorheriger Monat oder vorheriges Jahr"
+          }
+        }
+      }
+    },
+    "Properties" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eigenschaften"
           }
         }
       }
@@ -1411,6 +1971,16 @@
         }
       }
     },
+    "Rich Text" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rich Text"
+          }
+        }
+      }
+    },
     "Rich Text…" : {
       "localizations" : {
         "de" : {
@@ -1427,6 +1997,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fortlaufender Zeitraum in Tagen, Wochen, Monaten oder Jahren"
+          }
+        }
+      }
+    },
+    "Save ${notes} as list ${listTitle} to the vault" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${notes} als Liste ${listTitle} im Vault sichern"
+          }
+        }
+      }
+    },
+    "Save Note List to Vault" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notizliste im Vault sichern"
           }
         }
       }
@@ -1461,6 +2051,96 @@
         }
       }
     },
+    "Saved %lld notes to “%@”." : {
+      "localizations" : {
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld Notiz in „%2$@“ gesichert."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld Notizen in „%2$@“ gesichert."
+                }
+              }
+            }
+          }
+        },
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Saved %1$lld note to “%2$@”."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Saved %1$lld notes to “%2$@”."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Saves the notes, e.g. from “Find Notes” or “Filter Notes”, as a list note in the export folder of the vault." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sichert die Notizen, z. B. aus „Notizen finden“ oder „Notizen filtern“, als Listen-Notiz im Exportordner des Vaults."
+          }
+        }
+      }
+    },
+    "Search" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suche"
+          }
+        }
+      }
+    },
+    "Search In" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suchen in"
+          }
+        }
+      }
+    },
+    "Search in VaultSearch" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In VaultSearch suchen"
+          }
+        }
+      }
+    },
+    "Search Notes" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notizen suchen"
+          }
+        }
+      }
+    },
     "Search Syntax" : {
       "localizations" : {
         "de" : {
@@ -1477,6 +2157,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Suchsyntax …"
+          }
+        }
+      }
+    },
+    "Search Text" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suchbegriff"
+          }
+        }
+      }
+    },
+    "Search text, e.g. “tag:idea” or “modified:last 7 days”." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suchtext, z. B. „tag:idee“ oder „geändert:letzte 7 Tage“."
           }
         }
       }
@@ -1551,6 +2251,46 @@
         }
       }
     },
+    "Show ${text} in VaultSearch" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${text} in VaultSearch anzeigen"
+          }
+        }
+      }
+    },
+    "Show Folder" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordner zeigen"
+          }
+        }
+      }
+    },
+    "Show folder ${folder} in VaultSearch" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordner ${folder} in VaultSearch anzeigen"
+          }
+        }
+      }
+    },
+    "Show Folder in VaultSearch" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordner in VaultSearch anzeigen"
+          }
+        }
+      }
+    },
     "Show Full License" : {
       "localizations" : {
         "de" : {
@@ -1581,6 +2321,66 @@
         }
       }
     },
+    "Show in VaultSearch" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In VaultSearch anzeigen"
+          }
+        }
+      }
+    },
+    "Show notes tagged ${tag} in VaultSearch" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notizen mit Tag ${tag} in VaultSearch anzeigen"
+          }
+        }
+      }
+    },
+    "Show Tag" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tag zeigen"
+          }
+        }
+      }
+    },
+    "Show Tag in VaultSearch" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tag in VaultSearch anzeigen"
+          }
+        }
+      }
+    },
+    "Shows the results of a search in the VaultSearch window." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeigt die Ergebnisse einer Suche im Fenster von VaultSearch."
+          }
+        }
+      }
+    },
+    "Since" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seit"
+          }
+        }
+      }
+    },
     "Source on GitHub" : {
       "localizations" : {
         "de" : {
@@ -1607,6 +2407,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tag"
+          }
+        }
+      }
+    },
+    "Tag in Text" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tag im Text"
+          }
+        }
+      }
+    },
+    "Tags" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tags"
           }
         }
       }
@@ -1661,6 +2481,26 @@
         }
       }
     },
+    "Text Only" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur Text"
+          }
+        }
+      }
+    },
+    "The note is no longer in the vault." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Notiz ist nicht mehr im Vault."
+          }
+        }
+      }
+    },
     "The PDF could not be created." : {
       "localizations" : {
         "de" : {
@@ -1701,6 +2541,36 @@
         }
       }
     },
+    "The syntax of the search field works too, e.g. “tag:idea modified:last 7 days”." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Syntax des Suchfelds funktioniert auch, z. B. „tag:idee geändert:letzte 7 Tage“."
+          }
+        }
+      }
+    },
+    "The syntax of the search field works too." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Syntax des Suchfelds funktioniert auch."
+          }
+        }
+      }
+    },
+    "There are no notes to save or export." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es gibt keine Notizen zum Sichern oder Exportieren."
+          }
+        }
+      }
+    },
     "This Month" : {
       "localizations" : {
         "de" : {
@@ -1727,6 +2597,46 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dieses Format erfordert Pandoc. Installiere es mit „brew install pandoc“."
+          }
+        }
+      }
+    },
+    "This Year" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dieses Jahr"
+          }
+        }
+      }
+    },
+    "Title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Titel"
+          }
+        }
+      }
+    },
+    "Title and Text" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Titel und Text"
+          }
+        }
+      }
+    },
+    "Title Only" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur Titel"
           }
         }
       }
@@ -1797,6 +2707,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Standardvorlage verwenden"
+          }
+        }
+      }
+    },
+    "Value" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wert"
           }
         }
       }
@@ -1891,12 +2811,52 @@
         }
       }
     },
+    "What should I search for?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wonach soll ich suchen?"
+          }
+        }
+      }
+    },
+    "Which folder?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Welcher Ordner?"
+          }
+        }
+      }
+    },
+    "Which tag?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Welcher Tag?"
+          }
+        }
+      }
+    },
     "Without Pandoc, VaultSearch converts with macOS: PDF, Word, OpenDocument, Rich Text and HTML. EPUB requires Pandoc. Install PDF engines such as typst, tectonic or weasyprint with Homebrew." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ohne Pandoc konvertiert VaultSearch mit macOS: PDF, Word, OpenDocument, Rich Text und HTML. EPUB erfordert Pandoc. PDF-Engines wie typst, tectonic oder weasyprint lassen sich mit Homebrew installieren."
+          }
+        }
+      }
+    },
+    "Word" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Word"
           }
         }
       }
@@ -1987,6 +2947,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "today, yesterday (heute, gestern)"
+          }
+        }
+      }
+    },
+    "Yesterday" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gestern"
           }
         }
       }

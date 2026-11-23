@@ -19,8 +19,8 @@ This guide explains how VaultSearch is built and how to change it. For using the
 
 | | |
 |---|---|
-| Platform | macOS 15 or later (`MACOSX_DEPLOYMENT_TARGET = 15.0`) |
-| Tooling | Xcode 16 or later (uses the `@Entry` macro and String Catalogs) |
+| Platform | macOS 27 or later (`MACOSX_DEPLOYMENT_TARGET = 27.0`) |
+| Tooling | Xcode 27 or later (App Intents with App Schemas, `@Entry` macro, String Catalogs) |
 | Language | Swift, Swift 5 language mode, SwiftUI with AppKit where needed |
 | Dependencies | none (no Swift packages) |
 | Sandbox | off: VaultSearch reads any vault folder the user chooses and launches Pandoc and PDF engines with `Process` |
@@ -50,6 +50,13 @@ VaultSearch/
 ├── DateFilterView.swift      Sheet for custom date filters
 ├── SearchSyntaxView.swift    Help window
 ├── SettingsView.swift        Settings window (General and Export tabs)
+├── Intents/
+│   ├── NoteEntity.swift          Notes, folders and the vault for Siri/Shortcuts/Spotlight (notes app schema)
+│   ├── NoteIntents.swift         Actions (search, open, save, export), ExportFormat as AppEnum, errors
+│   └── VaultSearchShortcuts.swift  App Shortcuts with their phrases; AppIntentTypes
+├── Scripting/
+│   ├── VaultSearch.sdef          AppleScript dictionary (bundle resource)
+│   └── ScriptingSupport.swift    AppDelegate (application keys), scriptable note, commands
 ├── Export/
 │   ├── ExportFormat.swift        Formats and errors
 │   ├── ExportService.swift       Save panels, running exports, templates, alerts
@@ -63,6 +70,7 @@ VaultSearch/
 │   ├── VaultSearchAboutView.swift  VaultSearch configuration
 │   └── LICENSE                   Shown in the About window (bundle resource)
 ├── Localizable.xcstrings     English source strings and German translations
+├── AppShortcuts.xcstrings    German phrases of the App Shortcuts
 └── Assets.xcassets           App icon and accent colour
 Design/
 ├── AppIcon.svg               Master icon
@@ -97,6 +105,43 @@ VaultSearchApp
   | `noteFind` | `NoteDetailView` | ⌥⌘F, ⌘G, ⇧⌘G |
 
 - **Note actions.** `NoteActions` collects these actions: open in Obsidian, open with the default app, Finder, and copy link or path. Menus, context menus and toolbars all call it.
+- **App Intents.** `AppModel.shared` is the only instance. `VaultSearchApp.init` registers it with `AppDependencyManager`, and intents and entity queries receive it with `@Dependency`. See [Siri, Shortcuts and Spotlight](#siri-shortcuts-and-spotlight).
+
+## Siri, Shortcuts and Spotlight
+
+- **Entities** (`Intents/NoteEntity.swift`) follow the App Schemas of macOS 27 for the notes domain: `NoteEntity` (`.notes.note`), `NoteFolderEntity` (`.notes.folder`) and `VaultEntity` (`.notes.account`). The schema requires `name`, `isPinned` and `attachments`; Obsidian has no pinned notes and attachments are not read, so they are always `false` and empty. The schema's create and update intents are deliberately not implemented, because VaultSearch does not change notes.
+- **Ids.** A note's id is its absolute path, like `MarkdownFile.id`. A folder's id is `vault/relative/path`.
+- **Queries wait for the index.** Siri can launch the app and ask at once, so queries and intents call `SearchService.waitUntilIndexed()` / `indexedResults(for:)` first.
+- **Spotlight.** After every index run (`SearchService.generation`) `AppModel.updateSpotlight()` indexes new and changed notes and deletes removed ones. The first run after launch replaces all entries. `NoteEntityQuery` also implements `IndexedEntityQuery`, so the system can ask for a re-index.
+- **On-screen context.** `ContentView` marks the preview with `.appEntityIdentifier`, so Siri knows the note on screen.
+- **Intents** (`Intents/NoteIntents.swift`):
+
+  | Intent | Schema | Result |
+  |---|---|---|
+  | “Find Notes” | – | built by Shortcuts from `NoteEntityQuery` (`EntityPropertyQuery`): filter rows from `properties`, All/Any, `sortingOptions`, limit. Each comparator maps to a `NotePredicate` |
+  | `FilterNotesIntent` | – | `[NoteEntity]`; one criterion chosen with `Switch(\.$criterion)` in the summary, menus from `DynamicOptionsProvider`s (tags, property names, values of the chosen property via `@IntentParameterDependency`, folders). `NoteFilter` turns the fields into a `NotePredicate` |
+  | `ShowInVaultSearchIntent` | – | sets `AppModel.requestedSearch`; `ContentView` takes it into the search field |
+  | `SearchInVaultSearchIntent` | `.system.searchInApp` | the same for Siri; `isDiscoverable = false`, so Shortcuts lists only “Show in VaultSearch” |
+  | `OpenNoteIntent` | `.system.open` | opens in Obsidian, `openAppWhenRun = false` |
+  | `SaveResultsToVaultIntent` | – | takes `[NoteEntity]`; the new list note as `IntentFile` |
+  | `ExportResultsIntent`, `ExportNoteIntent` | – | take notes / a note; the document as `IntentFile`, written to a fresh folder in the temporary directory |
+
+- **Signing.** Shortcuts and Siri only connect to a build signed with a development team (`linkd` logs “Unable to get teamId” for ad-hoc builds, and actions then hang until they time out). Ad-hoc builds still list the actions, but cannot run them. Choose your team under Signing & Capabilities.
+- **Keep every intent referenced.** Shortcuts instantiates intents by type name, but the Release optimizer removes types no code refers to, and the action then fails with an “internal error” (the app logs “type … does not exist in the process’s memory space”). Debug builds and tests do not show this. Add every new intent to `AppIntentTypes.all` (`Intents/VaultSearchShortcuts.swift`).
+- **Build number.** Shortcuts re-reads the actions only when `CURRENT_PROJECT_VERSION` changes. Raise it after changing intents, especially when older copies of the app are around.
+- **Entity properties for filtering.** `NoteEntity.properties` lists the frontmatter as `key: value`, `folderPath` the folder; both exist for the filter rows of “Find Notes”. A filter row “Properties contains `status: active`” checks one property, a value alone checks all.
+- **Lists without a query.** `ResultsSnapshot.title` replaces the “Search: …” heading when Shortcuts hands over notes instead of a search.
+- **Exports without a window.** `ExportService.writeResultsToVault`, `writeResults` and `writeNote` do the work without panels or alerts. The menu actions wrap them with a save panel, `perform` (progress, opening the result, template hint) and error alerts.
+
+## AppleScript
+
+- **Turning it on.** `Config/Info.plist` sets `NSAppleScriptEnabled` and `OSAScriptingDefinition`; Xcode merges it with the generated Info.plist (`INFOPLIST_FILE`). It lives outside the synchronized `VaultSearch/` folder, so it is not also copied as a resource.
+- **Dictionary.** `Scripting/VaultSearch.sdef` includes the Cocoa Standard Suite and adds the VaultSearch suite (code `VSrc`): the `note` class, the application's `notes`, `vault path` and `indexing`, and the commands `search`, `show search`, `open in Obsidian`, `export`, `save to vault` and `reindex`. User documentation: [automation.md](automation.md).
+- **Application keys.** `AppDelegate` (via `@NSApplicationDelegateAdaptor`) answers `scriptNotes`, `scriptVaultPath` and `scriptIndexing` in `application(_:delegateHandlesKey:)`. `ScriptingSupport.notes` caches one `ScriptableNote` per note until the next index run (`SearchService.generation`).
+- **Notes.** `ScriptableNote` (`VSScriptableNote`) wraps a `MarkdownFile`; its `objectSpecifier` is a unique-ID specifier (the file path). `frontmatter` is built as an `NSAppleEventDescriptor` record with user fields, because an `NSDictionary` arrives empty.
+- **Commands.** All commands subclass `VaultSearchCommand`, which overrides `execute()`: otherwise Cocoa sends a command whose direct parameter is a note (`export note "Plan"`, `export every note whose …`) to the notes. The `responds-to` entries on `note` only satisfy AppleScript's check. Commands that wait for the index or an export call `suspendExecution()` and resume with the result. `export` exports a single note when the direct parameter is one note, and a list document for a list.
+- **Keep the classes.** As with the intents, Cocoa finds these classes by name. `ScriptingSupport.classes` refers to them, and `AppDelegate` calls `ScriptingSupport.keep()`.
+- **Testing by hand.** `osascript -e 'tell application "VaultSearch" to count of notes'`; the examples in [automation.md](automation.md#applescript-examples) were run this way.
 
 ## Indexing
 
@@ -104,6 +149,7 @@ VaultSearchApp
 
 1. **Enumerate.** `entries(in:excluded:)` walks the vault with `.skipsHiddenFiles` and skips excluded folders. A folder is excluded if its path relative to the vault, its absolute path or its name is in the set. It returns all `.md` files with their creation and modification dates.
 2. **Parse.** `index(vaultURL:excluded:progress:)` reads every file and parses it with `parse(_:)`. This is a small YAML subset reader: `key: value`, `key: [a, b]` and `- item` lists. Tags come from the `tags` key, without a leading `#` and deduplicated. The body without frontmatter becomes `MarkdownFile.content`.
+   - **Dates.** `MarkdownFile.createdDate` / `modifiedDate` prefer a frontmatter date (`erstellt`/`created`, `geändert`/`geaendert`/`modified`/`updated`, parsed by `FrontmatterDate`) over the file dates. A date without time on the same day as the file date keeps the file's time. Everything uses these; only change detection (`==`, Spotlight) uses `fileCreatedDate` / `fileModifiedDate`. `createdDateKey` / `modifiedDateKey` name the keys used. The preview's property box (`MarkdownFile.previewProperties`) shows the dates, the folder path (one `pfad:` link per folder) and the frontmatter; every value carries its search.
 3. **Publish.** `apply(_:)` publishes the result and derives:
    - `recentFiles`: the 100 most recently modified notes,
    - `knownTags`: sorted by frequency,
@@ -155,7 +201,7 @@ The index lives in memory only. Search results are computed from `files` on a de
 ## User interface
 
 - **Main window** (`ContentView`):
-  - `NavigationSplitView` with `.searchable(placement: .sidebar)` and `.searchFocused`, which is why the app needs macOS 15.
+  - `NavigationSplitView` with `.searchable(placement: .sidebar)` and `.searchFocused`.
   - Search runs in `.task(id: SearchKey)`, debounced by 120 ms. When the selection is no longer among the results, the first hit is selected.
 - **Result rows** (`ResultRow`) show `MarkdownFile.snippet(around:)`. It runs on `plain`, a copy of the content with Obsidian syntax removed. Matches are emphasised by `Highlighter`.
 - **Preview** (`NoteDetailView`):

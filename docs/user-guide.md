@@ -10,6 +10,7 @@ VaultSearch searches the Markdown notes of an Obsidian vault as you type and exp
 - [Finding the match inside a note](#finding-the-match-inside-a-note)
 - [Working with notes](#working-with-notes)
 - [Export](#export)
+- [Siri, Shortcuts and Spotlight](#siri-shortcuts-and-spotlight)
 - [Settings](#settings)
 - [Keyboard shortcuts](#keyboard-shortcuts)
 - [Troubleshooting](#troubleshooting)
@@ -63,6 +64,9 @@ All text comparisons ignore case and accents, so `cafe` finds “Café”.
 | `budget` | whose title or text contains “budget” |
 | `budget meeting` | containing **both** words, anywhere |
 | `"budget meeting"` | containing the exact phrase |
+| `intitle:budget` | with “budget” in the title only (German: `imtitel:`) |
+| `intext:budget` | with “budget” in the text only, not the title (German: `imtext:`) |
+| `path:Projects/2026` | in this folder or one of its subfolders (German: `pfad:`) |
 
 Plain text does **not** search tags. Use `tag:` for that, or combine both with `OR`.
 
@@ -117,7 +121,9 @@ source:podcast
 
 ### Dates
 
-`created:` refers to the file's creation date and `modified:` to its last change. In German you can write `erstellt:` and `geändert:` (or `geaendert:`).
+`created:` refers to the creation date and `modified:` to the last change. In German you can write `erstellt:` and `geändert:` (or `geaendert:`).
+
+When the frontmatter has a date in `erstellt` or `created` (or `geändert`, `modified`, `updated`), that date counts, otherwise the date of the file. The preview, the sorting, the export and Shortcuts use the same dates. Recognised forms are `2026-09-14`, `2026-09-14 10:30`, `2026-09-14T10:30` and `14.09.2026`.
 
 | Value | Meaning |
 |---|---|
@@ -163,7 +169,14 @@ The **Note** menu, the context menu of the result list and the toolbar of the pr
 | Export Note As ▸ … | |
 | Share | |
 
-Clicking a tag in the preview searches for that tag.
+Below the title, the preview shows the tags and a box with the creation date, the modification date, the folder path and the frontmatter properties. Every value is a link that filters the search:
+
+- a tag searches `tag:…`,
+- a date (shown as `14.09.2026`) searches `created:` / `modified:` for that day,
+- each folder of the path searches `path:` for that folder and its subfolders,
+- a property value searches for notes with the same value, e.g. `autor:"Leif Jensen-Pistorius"`; in a list each item is a link of its own.
+
+The frontmatter keys of the dates (`erstellt`, `geändert`, …) and a folder property that only repeats the path are not listed twice.
 
 ## Export
 
@@ -260,6 +273,17 @@ The **Edit** menu of each template offers:
 
 Without Pandoc, Word files are made from HTML, so fonts, sizes and colours for Word come from the stylesheet. macOS applies only part of the CSS there; background colours, for example, are not supported.
 
+## Siri, Shortcuts and Spotlight
+
+VaultSearch hands its notes and actions to macOS, so you can use them without opening the window:
+
+- **Siri** runs your own shortcuts by their name, e.g. “Hey Siri, show household book”. This is the most reliable way; Siri on the Mac does not always recognise the built-in phrases.
+- **Spotlight** lists the notes of your vault; choosing one opens it in Obsidian.
+- **Shortcuts** offers *Find Notes* (filter rows, All/Any), *Filter Notes* (one criterion from menus filled from your vault), *Show in VaultSearch*, *Open Note in Obsidian* and actions to export notes or save a note list to the vault.
+- **AppleScript** can search, read notes and their frontmatter, export and save lists.
+
+[Automating VaultSearch](automation.md) describes all actions and the AppleScript dictionary, with examples.
+
 ## Settings
 
 Open with **VaultSearch ▸ Settings…** (⌘,).
@@ -335,5 +359,6 @@ VaultSearch works entirely on your Mac:
 
 - It reads your vault and keeps the index in memory.
 - It sends nothing over the network.
+- Titles, text, tags and dates of your notes are added to the Spotlight index of your Mac, so Siri and Spotlight can find them. When you ask Siri about your notes, Apple's privacy terms for Siri and Apple Intelligence apply.
 - Pandoc and PDF engines run locally.
 - Settings are stored in the app's preferences (`com.leifjp.VaultSearch`).

@@ -10,6 +10,7 @@ VaultSearch durchsucht die Markdown-Notizen eines Obsidian-Vaults schon beim Tip
 - [Die Fundstelle in der Notiz finden](#die-fundstelle-in-der-notiz-finden)
 - [Mit Notizen arbeiten](#mit-notizen-arbeiten)
 - [Export](#export)
+- [Siri, Kurzbefehle und Spotlight](#siri-kurzbefehle-und-spotlight)
 - [Einstellungen](#einstellungen)
 - [Tastaturkurzbefehle](#tastaturkurzbefehle)
 - [Fehlerbehebung](#fehlerbehebung)
@@ -63,6 +64,9 @@ Groß-/Kleinschreibung und Akzente spielen beim Textvergleich keine Rolle, `cafe
 | `budget` | deren Titel oder Text „budget“ enthält |
 | `budget besprechung` | die **beide** Wörter enthalten, egal wo |
 | `"budget besprechung"` | die genau diese Wortfolge enthalten |
+| `imtitel:budget` | die „budget“ nur im Titel enthalten (auch `intitle:`) |
+| `imtext:budget` | die „budget“ nur im Text enthalten, nicht im Titel (auch `intext:`) |
+| `pfad:Projekte/2026` | die in diesem Ordner oder einem Unterordner liegen (auch `path:`) |
 
 Normaler Text durchsucht **keine** Tags. Dafür gibt es `tag:`; beides lässt sich mit `ODER` verbinden.
 
@@ -116,7 +120,9 @@ quelle:podcast
 
 ### Datum
 
-`erstellt:` bezieht sich auf das Erstellungsdatum der Datei und `geändert:` (auch `geaendert:`) auf die letzte Änderung. Die englischen Formen `created:` und `modified:` funktionieren ebenso.
+`erstellt:` bezieht sich auf das Erstellungsdatum und `geändert:` (auch `geaendert:`) auf die letzte Änderung. Die englischen Formen `created:` und `modified:` funktionieren ebenso.
+
+Steht im Frontmatter ein Datum unter `erstellt` oder `created` (bzw. `geändert`, `modified`, `updated`), gilt dieses Datum, sonst das Datum der Datei. Vorschau, Sortierung, Export und Kurzbefehle verwenden dieselben Daten. Erkannt werden `2026-09-14`, `2026-09-14 10:30`, `2026-09-14T10:30` und `14.09.2026`.
 
 | Wert | Bedeutung |
 |---|---|
@@ -162,7 +168,14 @@ Das Menü **Notiz**, das Kontextmenü der Trefferliste und die Symbolleiste der 
 | Notiz exportieren als ▸ … | |
 | Teilen | |
 
-Ein Klick auf einen Tag in der Vorschau sucht nach diesem Tag.
+Unter dem Titel zeigt die Vorschau die Tags und eine Box mit Erstellungsdatum, Änderungsdatum, Ordnerpfad und den Eigenschaften aus dem Frontmatter. Jeder Wert ist ein Link, der die Suche filtert:
+
+- ein Tag sucht `tag:…`,
+- ein Datum (angezeigt als `14.09.2026`) sucht `erstellt:` bzw. `geändert:` mit diesem Tag,
+- jeder Ordner im Pfad sucht `pfad:` mit diesem Ordner und seinen Unterordnern,
+- der Wert einer Eigenschaft sucht Notizen mit demselben Wert, z. B. `autor:"Leif Jensen-Pistorius"`; bei Listen ist jeder Eintrag ein eigener Link.
+
+Die Frontmatter-Schlüssel der Daten (`erstellt`, `geändert`, …) und eine Ordner-Eigenschaft, die nur den Pfad wiederholt, erscheinen nicht doppelt.
 
 ## Export
 
@@ -258,6 +271,17 @@ Das Menü **Bearbeiten** jeder Vorlage bietet:
 - **×** kehrt zur eingebauten Standardvorlage zurück.
 
 Ohne Pandoc entstehen Word-Dateien aus HTML; Schrift, Größen und Farben für Word kommen dann aus dem Stylesheet. macOS übernimmt dabei nur einen Teil des CSS, Hintergrundfarben zum Beispiel nicht.
+
+## Siri, Kurzbefehle und Spotlight
+
+VaultSearch stellt seine Notizen und Aktionen macOS zur Verfügung. So kannst du sie nutzen, ohne das Fenster zu öffnen:
+
+- **Siri** startet eigene Kurzbefehle über ihren Namen, z. B. „Hey Siri, Haushaltsbuch zeigen“. Das ist der zuverlässigste Weg; die eingebauten Siri-Sätze erkennt Siri auf dem Mac nicht immer.
+- **Spotlight** zeigt die Notizen deines Vaults; wählst du eine aus, öffnet sie sich in Obsidian.
+- **Kurzbefehle** bietet *Notizen finden* (Filterzeilen, Alle/Beliebige), *Notizen filtern* (ein Kriterium aus Menüs, die aus deinem Vault gefüllt werden), *In VaultSearch anzeigen*, *Notiz in Obsidian öffnen* sowie Aktionen zum Exportieren und zum Sichern einer Notizliste im Vault.
+- **AppleScript** kann suchen, Notizen und ihr Frontmatter lesen, exportieren und Listen sichern.
+
+[VaultSearch automatisieren](automatisierung.md) beschreibt alle Aktionen und das AppleScript-Verzeichnis, mit Beispielen.
 
 ## Einstellungen
 

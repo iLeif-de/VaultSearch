@@ -62,6 +62,44 @@ struct SearchQueryTextTests {
     }
 }
 
+@Suite("Search: title and text only")
+struct SearchQueryScopeTests {
+    let notes = [
+        makeNote("Budget", content: "Numbers"),
+        makeNote("Plan", content: "The budget is tight"),
+    ]
+
+    @Test func titleOnly() {
+        #expect(SearchQuery.test("intitle:budget").titles(in: notes) == ["Budget"])
+        #expect(SearchQuery.test("imtitel:budget").titles(in: notes) == ["Budget"])
+    }
+
+    @Test func textOnly() {
+        #expect(SearchQuery.test("intext:budget").titles(in: notes) == ["Plan"])
+        #expect(SearchQuery.test("imtext:budget").titles(in: notes) == ["Plan"])
+    }
+
+    @Test func phraseAndHighlighting() {
+        #expect(SearchQuery.test("intext:\"budget is\"").titles(in: notes) == ["Plan"])
+        #expect(SearchQuery.test("intitle:plan intext:tight").textTerms == ["plan", "tight"])
+    }
+
+    @Test func folderAndSubfolders() {
+        let notes = [
+            makeNote("A", folder: "Projects/2026"),
+            makeNote("B", folder: "Projects"),
+            makeNote("C", folder: "Projects 2"),
+            makeNote("D"),
+        ]
+        #expect(SearchQuery.test("path:projects").titles(in: notes).sorted() == ["A", "B"])
+        #expect(SearchQuery.test("pfad:\"Projects/2026/\"").titles(in: notes) == ["A"])
+    }
+
+    @Test func bareKeyIsIgnoredWhileTyping() {
+        #expect(SearchQuery.test("intitle:").isEmpty)
+    }
+}
+
 @Suite("Search: hierarchical tags")
 struct SearchQueryTagTests {
     let notes = [

@@ -12,6 +12,9 @@ struct SearchSyntaxView: View {
         ("Text", [
             Entry(syntax: "meeting notes", meaning: "Notes containing both words in title, text or tags"),
             Entry(syntax: "\"meeting notes\"", meaning: "Exact phrase"),
+            Entry(syntax: "intitle:meeting", meaning: "Only in the title (German: imtitel:)"),
+            Entry(syntax: "intext:meeting", meaning: "Only in the text, not the title (German: imtext:)"),
+            Entry(syntax: "path:Projects/2026", meaning: "Notes in the folder and its subfolders (German: pfad:)"),
             Entry(syntax: "idea OR tag:idea", meaning: "Either: OR / ODER separates alternatives (upper case)"),
         ]),
         ("Tags and Properties", [

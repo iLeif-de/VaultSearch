@@ -1,0 +1,156 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Export ${note} with ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${note} mit ${applicationName} exportieren"
+          }
+        }
+      }
+    },
+    "Export a note with ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exportiere einen Eintrag mit ${applicationName}"
+          }
+        }
+      }
+    },
+    "Export the note ${note} with ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exportiere ${note} mit ${applicationName}"
+          }
+        }
+      }
+    },
+    "Find notes in ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Durchsuche ${applicationName}"
+          }
+        }
+      }
+    },
+    "Open ${target} with ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${target} mit ${applicationName} öffnen"
+          }
+        }
+      }
+    },
+    "Open a note with ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öffne einen Eintrag mit ${applicationName}"
+          }
+        }
+      }
+    },
+    "Open the note ${target} with ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öffne ${target} mit ${applicationName}"
+          }
+        }
+      }
+    },
+    "Search in ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suche in ${applicationName}"
+          }
+        }
+      }
+    },
+    "Search my vault with ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Durchsuche meinen Vault mit ${applicationName}"
+          }
+        }
+      }
+    },
+    "Show a folder in ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeig einen Ordner in ${applicationName}"
+          }
+        }
+      }
+    },
+    "Show folder ${folder} in ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeig den Ordner ${folder} in ${applicationName}"
+          }
+        }
+      }
+    },
+    "Show notes in folder ${folder} with ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öffne den Ordner ${folder} in ${applicationName}"
+          }
+        }
+      }
+    },
+    "Show notes tagged ${tag} in ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeig alles mit Tag ${tag} in ${applicationName}"
+          }
+        }
+      }
+    },
+    "Show notes with a tag in ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeig einen Tag in ${applicationName}"
+          }
+        }
+      }
+    },
+    "Show tag ${tag} in ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeig den Tag ${tag} in ${applicationName}"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

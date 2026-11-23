@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dictionary SYSTEM "file://localhost/System/Library/DTDs/sdef.dtd">
+<dictionary xmlns:xi="http://www.w3.org/2003/XInclude" title="VaultSearch Terminology">
+
+    <xi:include href="file:///System/Library/ScriptingDefinitions/CocoaStandard.sdef" xpointer="xpointer(/dictionary/suite)"/>
+
+    <suite name="VaultSearch Suite" code="VSrc" description="Search, open and export the notes of your Obsidian vault. VaultSearch only reads the vault; “save to vault” adds a list note to the export folder.">
+
+        <enumeration name="export format" code="VSef">
+            <enumerator name="PDF" code="Fpdf" description="PDF document"/>
+            <enumerator name="Word" code="Fdoc" description="Word document (.docx)"/>
+            <enumerator name="OpenDocument" code="Fodt" description="OpenDocument text (.odt)"/>
+            <enumerator name="rich text" code="Frtf" description="Rich Text (.rtf)"/>
+            <enumerator name="HTML" code="Fhtm" description="Web page (.html)"/>
+            <enumerator name="EPUB" code="Fepb" description="EPUB e-book; requires Pandoc"/>
+            <enumerator name="Markdown" code="Fmd " description="Markdown (.md)"/>
+        </enumeration>
+
+        <class-extension extends="application" description="VaultSearch’s top-level scripting object.">
+            <cocoa class="NSApplication"/>
+            <element type="note" access="r" description="All notes of the vault, as far as they have been read.">
+                <cocoa key="scriptNotes"/>
+            </element>
+            <property name="vault path" code="VSvp" type="text" access="r" description="POSIX path of the vault folder, or empty when no vault is chosen.">
+                <cocoa key="scriptVaultPath"/>
+            </property>
+            <property name="indexing" code="VSix" type="boolean" access="r" description="True while VaultSearch reads the vault. “search” waits for it; “every note” returns what has been read so far.">
+                <cocoa key="scriptIndexing"/>
+            </property>
+        </class-extension>
+
+        <class name="note" code="VSnt" plural="notes" inherits="item" description="A Markdown note of the vault. All properties are read-only.">
+            <cocoa class="VSScriptableNote"/>
+            <property name="id" code="ID  " type="text" access="r" description="The POSIX path of the note file; unique.">
+                <cocoa key="uniqueID"/>
+            </property>
+            <property name="name" code="pnam" type="text" access="r" description="The title: the file name without “.md”.">
+                <cocoa key="name"/>
+            </property>
+            <property name="path" code="VSpa" type="text" access="r" description="The POSIX path of the note file.">
+                <cocoa key="path"/>
+            </property>
+            <property name="folder" code="VSfo" type="text" access="r" description="The folder inside the vault, e.g. “Projects/2026”; empty at the root.">
+                <cocoa key="folder"/>
+            </property>
+            <property name="tags" code="VStg" access="r" description="The tags from the frontmatter.">
+                <type type="text" list="yes"/>
+                <cocoa key="tags"/>
+            </property>
+            <property name="frontmatter" code="VSpr" type="any" access="r" description="The frontmatter properties other than tags, as a record; list values become lists.">
+                <cocoa key="frontmatter"/>
+            </property>
+            <property name="creation date" code="ascd" type="date" access="r" description="The frontmatter date “erstellt”/“created” if there is one, otherwise the file’s creation date.">
+                <cocoa key="creationDate"/>
+            </property>
+            <property name="modification date" code="asmo" type="date" access="r" description="The frontmatter date “geändert”/“modified” if there is one, otherwise the file’s modification date.">
+                <cocoa key="modificationDate"/>
+            </property>
+            <property name="content" code="VSct" type="text" access="r" description="The Markdown text without frontmatter.">
+                <cocoa key="content"/>
+            </property>
+            <property name="Obsidian URL" code="VSur" type="text" access="r" description="The obsidian:// link that opens the note.">
+                <cocoa key="obsidianURL"/>
+            </property>
+            <!-- Needed so AppleScript accepts a note as direct parameter; the commands run in VaultSearchCommand. -->
+            <responds-to command="open in Obsidian"><cocoa method="handleScriptCommand:"/></responds-to>
+            <responds-to command="export"><cocoa method="handleScriptCommand:"/></responds-to>
+            <responds-to command="save to vault"><cocoa method="handleScriptCommand:"/></responds-to>
+        </class>
+
+        <command name="search" code="VSrcSrch" description="Searches the vault with the syntax of the search field and returns the matching notes, best matches first. Waits until the vault has been read.">
+            <cocoa class="VSSearchCommand"/>
+            <direct-parameter type="text" description="The search, e.g. “tag:idea modified:last 7 days”. Empty returns the most recently changed notes."/>
+            <parameter name="limit" code="VSlm" type="integer" optional="yes" description="At most this many notes.">
+                <cocoa key="limit"/>
+            </parameter>
+            <result description="The matching notes.">
+                <type type="note" list="yes"/>
+            </result>
+        </command>
+
+        <command name="show search" code="VSrcShow" description="Brings VaultSearch to the front and shows the results of a search in the window.">
+            <cocoa class="VSShowSearchCommand"/>
+            <direct-parameter type="text" description="The search."/>
+        </command>
+
+        <command name="open in Obsidian" code="VSrcOpOb" description="Opens notes in Obsidian.">
+            <cocoa class="VSOpenInObsidianCommand"/>
+            <direct-parameter description="A note or a list of notes.">
+                <type type="note"/>
+                <type type="note" list="yes"/>
+            </direct-parameter>
+        </command>
+
+        <command name="export" code="VSrcExpt" description="Exports a note as a document, or a list of notes as one list document. Uses the export settings of VaultSearch, including Pandoc and templates.">
+            <cocoa class="VSExportCommand"/>
+            <direct-parameter description="A note, or a list of notes for a list document.">
+                <type type="note"/>
+                <type type="note" list="yes"/>
+            </direct-parameter>
+            <parameter name="as" code="VSfm" type="export format" optional="yes" description="The format; PDF if omitted.">
+                <cocoa key="format"/>
+            </parameter>
+            <parameter name="to" code="VSto" type="file" optional="yes" description="The file to write. If omitted, a new file in the temporary folder.">
+                <cocoa key="file"/>
+            </parameter>
+            <parameter name="titled" code="VStt" type="text" optional="yes" description="Heading of a list document.">
+                <cocoa key="title"/>
+            </parameter>
+            <result type="file" description="The exported file."/>
+        </command>
+
+        <command name="save to vault" code="VSrcSvVt" description="Saves a list of notes as a list note in the export folder of the vault, like “Save Results to Vault”.">
+            <cocoa class="VSSaveToVaultCommand"/>
+            <direct-parameter description="The notes.">
+                <type type="note" list="yes"/>
+            </direct-parameter>
+            <parameter name="titled" code="VStt" type="text" optional="yes" description="Heading of the list note.">
+                <cocoa key="title"/>
+            </parameter>
+            <result type="file" description="The new list note."/>
+        </command>
+
+        <command name="reindex" code="VSrcRind" description="Reads the vault again and waits until it is done.">
+            <cocoa class="VSReindexCommand"/>
+        </command>
+    </suite>
+</dictionary>

@@ -6,8 +6,10 @@
 
 <p align="center">
   A native Mac app that searches your Obsidian vault as you type, and exports what it finds.<br>
+  <a href="https://studio.ileif.de/projekte/vaultsearch">Website</a> ·
   <a href="docs/user-guide.md">User Guide</a> ·
   <a href="docs/benutzerhandbuch.md">Benutzerhandbuch (Deutsch)</a> ·
+  <a href="docs/automation.md">Automation</a> ·
   <a href="docs/development.md">Developer Guide</a>
 </p>
 
@@ -29,11 +31,12 @@ VaultSearch reads the Markdown notes of an [Obsidian](https://obsidian.md) vault
   - Save a result list as a Markdown note in your vault, with links or embedded notes.
   - Export single notes or result lists as PDF, Word, OpenDocument, RTF, HTML, EPUB or Markdown.
   - Pandoc is used when it is installed, otherwise the conversion built into macOS. Templates are supported.
+- **Shortcuts, Spotlight, Siri and AppleScript.** Find, filter and export notes in Shortcuts and start your shortcuts with Siri, search your notes in Spotlight, or script VaultSearch with AppleScript.
 - **A Mac app.** It has a native sidebar and search field, menus with keyboard shortcuts, a Settings window and VoiceOver labels. The interface is in English and German.
 
 ## Requirements
 
-- macOS 15 Sequoia or later
+- macOS 27 or later
 - An Obsidian vault (any folder of Markdown files works)
 - Optional, for more export formats and better typesetting: [Pandoc](https://pandoc.org) and a PDF engine, e.g. `brew install pandoc`
 
@@ -47,7 +50,7 @@ cd VaultSearch
 open VaultSearch.xcodeproj
 ```
 
-In Xcode choose **Product ▸ Run** (⌘R), or **Product ▸ Archive** for a release build. Xcode 16 or later is required. When it starts, choose your vault folder.
+In Xcode choose **Product ▸ Run** (⌘R), or **Product ▸ Archive** for a release build. Xcode 27 or later is required. When it starts, choose your vault folder.
 
 **Product ▸ Test** (⌘U) runs the unit tests. To try the app without your own notes, choose the sample vault in [`docs/demo-vault`](docs/demo-vault).
 
@@ -71,6 +74,7 @@ The full syntax is in the [User Guide](docs/user-guide.md#search-syntax) and und
 
 - [User Guide](docs/user-guide.md): using the app, search syntax, export, settings, troubleshooting
 - [Benutzerhandbuch](docs/benutzerhandbuch.md): the same in German
+- [Automating VaultSearch](docs/automation.md) / [VaultSearch automatisieren](docs/automatisierung.md): Siri, Shortcuts and AppleScript, with examples
 - [Developer Guide](docs/development.md): architecture, code tour, localisation, icons, building
 
 ## License

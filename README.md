@@ -6,6 +6,7 @@
 
 <p align="center">
   A native Mac app that searches your Obsidian vault as you type, and exports what it finds.<br>
+  <a href="https://studio.ileif.de/projekte/vaultsearch">Website</a> ·
   <a href="docs/user-guide.md">User Guide</a> ·
   <a href="docs/benutzerhandbuch.md">Benutzerhandbuch (Deutsch)</a> ·
   <a href="docs/automation.md">Automation</a> ·

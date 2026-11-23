@@ -24,7 +24,7 @@ VaultSearch can be used without its window: from **Siri**, **Spotlight**, the **
 
 ## Siri and Spotlight
 
-**Siri** knows these phrases. Instead of “VaultSearch” you can also say the German name **“Notizsuche”**:
+**Siri** knows these phrases. In German you can also say **“Wolt Suche”** instead of “VaultSearch”:
 
 | You say | VaultSearch |
 |---|---|
@@ -34,13 +34,15 @@ VaultSearch can be used without its window: from **Siri**, **Spotlight**, the **
 | “Open *Budget 2026* with VaultSearch” | opens the note in Obsidian |
 | “Export *Budget 2026* with VaultSearch” | exports the note (PDF unless you change the format) |
 
-Siri learns the tags and folders of your vault after every index run. Say nested tags by their last part: “haushaltsbuch” for `project/haushaltsbuch`, and “2026” for the folder `Projects/2026`.
+In German, avoid the word “Notiz”: Siri hands every sentence with “Notiz” or “Notizen” to Apple Notes before VaultSearch is asked. The German phrases (see [Automatisierung](automatisierung.md#siri-und-spotlight)) do without it.
+
+Siri learns the tags and folders of your vault after every index run. Say nested tags by their last part: “haushaltsbuch” for `project/haushaltsbuch`, and “2026” for the folder `Projects/2026`. Folder names with numbers (“02 Projects”) are hard for Siri.
 
 Apple does not allow free search words inside these phrases (“Show my notes about Obsidian”); that is what the follow-up question is for. Whether Siri with Apple Intelligence hands such free sentences to VaultSearch directly is up to macOS.
 
 While a note is shown in the preview, Siri knows which note “this” means.
 
-The name “Notizsuche” is built into the app; there is no setting for it, because macOS reads it only when the app is installed.
+The name “Wolt Suche” is built into the app; there is no setting for it, because macOS reads it only when the app is installed.
 
 **Without any app name**, use your own shortcuts: Siri runs every shortcut by its name. A shortcut called “Weekly review” starts with “Hey Siri, weekly review”.
 

@@ -24,23 +24,25 @@ VaultSearch lässt sich auch ohne Fenster nutzen: mit **Siri**, **Spotlight**, d
 
 ## Siri und Spotlight
 
-**Siri** kennt diese Sätze. Statt „VaultSearch“ kannst du überall auch **„Notizsuche“** sagen:
+**Siri** kennt diese Sätze. Statt „VaultSearch“ kannst du überall auch **„Wolt Suche“** sagen:
 
 | Du sagst | VaultSearch |
 |---|---|
-| „In Notizsuche suchen“ – Siri fragt „Wonach soll ich suchen?“ | zeigt die Treffer im Fenster |
-| „Zeig Notizen mit Tag *idee* in Notizsuche“ | zeigt alle Notizen mit dem Tag (auch verschachtelt) |
-| „Zeig den Ordner *Projekte* in Notizsuche“ | zeigt die Notizen des Ordners samt Unterordnern |
-| „Öffne *Budget 2026* mit Notizsuche“ | öffnet die Notiz in Obsidian |
-| „Exportiere *Budget 2026* mit Notizsuche“ | exportiert die Notiz (als PDF, solange du das Format nicht änderst) |
+| „Suche in Wolt Suche“ – Siri fragt „Wonach soll ich suchen?“ | zeigt die Treffer im Fenster |
+| „Zeig den Tag *Idee* in Wolt Suche“ | zeigt alle Notizen mit dem Tag (auch verschachtelt) |
+| „Zeig den Ordner *Projekte* in Wolt Suche“ | zeigt die Notizen des Ordners samt Unterordnern |
+| „Öffne *Budget 2026* mit Wolt Suche“ | öffnet die Notiz in Obsidian |
+| „Exportiere *Budget 2026* mit Wolt Suche“ | exportiert die Notiz (als PDF, solange du das Format nicht änderst) |
 
-Tags und Ordner aus deinem Vault lernt Siri nach jedem Einlesen. Verschachtelte Tags nennst du mit ihrem letzten Teil: für `project/haushaltsbuch` sagst du „haushaltsbuch“. Ordner ebenso: „2026“ für `Projekte/2026`.
+**Vermeide das Wort „Notiz“.** Siri gibt jeden Satz mit „Notiz“ oder „Notizen“ an Apples Notizen-App weiter, noch bevor VaultSearch gefragt wird. Deshalb kommen die Sätze oben ohne dieses Wort aus.
 
-Freie Suchwörter in einem Satz („Zeig mir meine Notizen zu Obsidian“) erlaubt Apple in diesen Sätzen nicht. Dafür gibt es die Rückfrage. Ob Siri solche freien Sätze mit Apple Intelligence direkt an VaultSearch weitergibt, entscheidet macOS.
+Tags und Ordner aus deinem Vault lernt Siri nach jedem Einlesen. Verschachtelte Tags nennst du mit ihrem letzten Teil: für `project/haushaltsbuch` sagst du „Haushaltsbuch“. Ordner ebenso: „2026“ für `Projekte/2026`. Ordnernamen mit Nummern („02 Projekte“) versteht Siri schlecht.
+
+Freie Suchwörter in einem Satz („Zeig mir alles zu Obsidian“) erlaubt Apple in diesen Sätzen nicht. Dafür gibt es die Rückfrage. Ob Siri solche freien Sätze mit Apple Intelligence direkt an VaultSearch weitergibt, entscheidet macOS.
 
 Solange eine Notiz in der Vorschau zu sehen ist, weiß Siri, welche mit „diese“ gemeint ist.
 
-Der Name „Notizsuche“ steht fest in der App; eine Einstellung dafür gibt es nicht, weil macOS ihn nur bei der Installation liest.
+Der Name „Wolt Suche“ steht fest in der App; eine Einstellung dafür gibt es nicht, weil macOS ihn nur bei der Installation liest.
 
 **Ganz ohne App-Namen** geht es mit eigenen Kurzbefehlen: Siri startet jeden Kurzbefehl über seinen Namen. Heißt ein Kurzbefehl „Wochenrückblick“, genügt „Hey Siri, Wochenrückblick“.
 

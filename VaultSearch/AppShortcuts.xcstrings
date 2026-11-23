@@ -16,7 +16,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Eine Notiz mit ${applicationName} exportieren"
+            "value" : "Exportiere einen Eintrag mit ${applicationName}"
           }
         }
       }
@@ -36,7 +36,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Notizen in ${applicationName} finden"
+            "value" : "Durchsuche ${applicationName}"
           }
         }
       }
@@ -56,7 +56,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Eine Notiz mit ${applicationName} öffnen"
+            "value" : "Öffne einen Eintrag mit ${applicationName}"
           }
         }
       }
@@ -76,7 +76,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "In ${applicationName} suchen"
+            "value" : "Suche in ${applicationName}"
           }
         }
       }
@@ -86,7 +86,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Meinen Vault mit ${applicationName} durchsuchen"
+            "value" : "Durchsuche meinen Vault mit ${applicationName}"
           }
         }
       }
@@ -116,7 +116,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zeig Notizen im Ordner ${folder} mit ${applicationName}"
+            "value" : "Öffne den Ordner ${folder} in ${applicationName}"
           }
         }
       }
@@ -126,7 +126,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zeig Notizen mit Tag ${tag} in ${applicationName}"
+            "value" : "Zeig alles mit Tag ${tag} in ${applicationName}"
           }
         }
       }
@@ -136,7 +136,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zeig Notizen mit einem Tag in ${applicationName}"
+            "value" : "Zeig einen Tag in ${applicationName}"
           }
         }
       }

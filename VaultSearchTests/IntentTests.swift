@@ -191,6 +191,13 @@ struct TextToTagAndFolderTests {
         #expect(SearchQuery.tagScore(tag: "project/haushaltsbuch", query: "haushaltsbuch") > 0)
     }
 
+    @Test func dictatedDashesAndSpacesBecomeHyphens() {
+        #expect(TagQuery.match("PV–Anlage", in: tags) == ["pv-anlage"])   // en dash
+        #expect(TagQuery.match("PV—Anlage", in: tags) == ["pv-anlage"])   // em dash
+        #expect(TagQuery.match("PV Anlage", in: tags) == ["pv-anlage"])
+        #expect(NoteFolderQuery.match("Haus–Bau", in: ["Projekte/Haus-Bau"]) == ["Projekte/Haus-Bau"])
+    }
+
     @Test func fullPathStaysExact() {
         #expect(TagQuery.match("energy/pv-anlage", in: tags) == ["energy/pv-anlage"])
     }

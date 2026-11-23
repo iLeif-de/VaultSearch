@@ -165,10 +165,11 @@ Ein Kurzbefehl kann beim Start nachfragen, statt feste Werte zu haben. So deckt 
 **Tag per Diktat**
 
 1. **Text diktieren**.
-2. **Text ersetzen** – Leerzeichen in *Diktierter Text* durch `-` ersetzen, aus „PV Anlage“ wird `PV-Anlage`.
-3. **Tag in VaultSearch anzeigen** – *Tag* = *Aktualisierter Text*.
+2. **Tag in VaultSearch anzeigen** – *Tag* = *Diktierter Text*.
 
-Du sagst einen Tag, VaultSearch zeigt alle Notizen damit. Ein Tag, der auf mehreren Ebenen vorkommt (`pv-anlage`, `energy/pv-anlage` …), braucht keine Rückfrage: Gezeigt werden alle Ebenen. Nur den vollen Pfad (`energy/pv-anlage`) sucht VaultSearch genau. Ordner gehen ebenso mit **Ordner in VaultSearch anzeigen**; gibt es einen Ordnernamen mehrfach, fragt der Kurzbefehl, welcher gemeint ist.
+Du sagst einen Tag, VaultSearch zeigt alle Notizen damit.
+
+**Bindestriche und Leerzeichen:** Diktat schreibt „PV Anlage“ oft mit Leerzeichen oder mit Gedankenstrich (`PV–Anlage`, `–` statt `-`). VaultSearch macht daraus selbst `pv-anlage`, weil Tags weder Leerzeichen noch Gedankenstriche enthalten; ein Schritt **Text ersetzen** ist nicht nötig. Bei Ordnern gleicht VaultSearch nur die Striche an, denn Ordnernamen dürfen Leerzeichen enthalten. Im Suchfeld und bei **In VaultSearch anzeigen** zählt dagegen genau der Text: Dort findet `tag:pv–anlage` mit Gedankenstrich nichts. Ein Tag, der auf mehreren Ebenen vorkommt (`pv-anlage`, `energy/pv-anlage` …), braucht keine Rückfrage: Gezeigt werden alle Ebenen. Nur den vollen Pfad (`energy/pv-anlage`) sucht VaultSearch genau. Ordner gehen ebenso mit **Ordner in VaultSearch anzeigen**; gibt es einen Ordnernamen mehrfach, fragt der Kurzbefehl, welcher gemeint ist.
 
 **Notiz exportieren mit Rückfrage**
 

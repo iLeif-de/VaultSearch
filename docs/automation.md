@@ -165,10 +165,11 @@ A shortcut can ask when it starts instead of using fixed values. Then one shortc
 **A tag by dictation**
 
 1. **Dictate Text**.
-2. **Replace Text** – spaces in *Dictated Text* with `-`, so “PV Anlage” becomes `PV-Anlage`.
-3. **Show Tag in VaultSearch** – *Tag* = *Updated Text*.
+2. **Show Tag in VaultSearch** – *Tag* = *Dictated Text*.
 
-You say a tag, and VaultSearch shows all notes with it. A tag that exists on several levels (`pv-anlage`, `energy/pv-anlage` …) needs no question: all levels are shown. Only a full path (`energy/pv-anlage`) is searched exactly. Folders work the same with **Show Folder in VaultSearch**; if a folder name exists more than once, the shortcut asks which one is meant.
+You say a tag, and VaultSearch shows all notes with it.
+
+**Hyphens and spaces:** Dictation often writes a tag with a space or a dash (`PV–Anlage`, `–` instead of `-`). VaultSearch turns this into `pv-anlage` itself, because tags contain neither spaces nor dashes; no **Replace Text** step is needed. For folders only the dashes are made plain, because folder names may contain spaces. In the search field and in **Show in VaultSearch**, the text counts exactly: there, `tag:pv–anlage` with a dash finds nothing. A tag that exists on several levels (`pv-anlage`, `energy/pv-anlage` …) needs no question: all levels are shown. Only a full path (`energy/pv-anlage`) is searched exactly. Folders work the same with **Show Folder in VaultSearch**; if a folder name exists more than once, the shortcut asks which one is meant.
 
 **Export a note with questions**
 

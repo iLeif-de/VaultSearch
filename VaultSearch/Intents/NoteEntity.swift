@@ -304,7 +304,9 @@ struct NoteFolderQuery: EntityStringQuery {
     }
 
     static func match(_ string: String, in folders: [String]) -> [String] {
+        // Folder names may contain spaces, so only the dashes of dictation are made plain.
         let query = string.trimmingCharacters(in: CharacterSet(charactersIn: "/").union(.whitespacesAndNewlines))
+            .replacingOccurrences(of: "[\\u2010-\\u2015\\u2212]", with: "-", options: .regularExpression)
         guard !query.isEmpty else { return [] }
         if let folder = folders.first(where: { $0.caseInsensitiveCompare(query) == .orderedSame }) {
             return [folder]
@@ -370,8 +372,7 @@ struct TagQuery: EntityStringQuery {
     /// nested tag gives a single tag: `tag:` finds every level anyway, so asking which
     /// `pv-anlage` was meant would only get in the way. Only partial words offer a choice.
     static func match(_ string: String, in tags: [String]) -> [String] {
-        let query = string.trimmingCharacters(in: .whitespacesAndNewlines)
-            .trimmingCharacters(in: CharacterSet(charactersIn: "#/"))
+        let query = normalized(string)
         guard !query.isEmpty else { return [] }
         if let tag = tags.first(where: { $0.caseInsensitiveCompare(query) == .orderedSame }) {
             return [tag]
@@ -380,6 +381,15 @@ struct TagQuery: EntityStringQuery {
             return [query]
         }
         return Array(tags.filter { $0.localizedStandardContains(query) }.prefix(50))
+    }
+
+    /// Dictation writes “PV–Anlage” (en dash) or “PV Anlage”. Tags have neither dashes other
+    /// than “-” nor spaces, so both become “-”.
+    static func normalized(_ string: String) -> String {
+        string.trimmingCharacters(in: .whitespacesAndNewlines)
+            .trimmingCharacters(in: CharacterSet(charactersIn: "#/"))
+            .replacingOccurrences(of: "[\\u2010-\\u2015\\u2212]", with: "-", options: .regularExpression)
+            .replacingOccurrences(of: "\\s+", with: "-", options: .regularExpression)
     }
 
     /// The most used tags; Siri learns these as values for “Show notes tagged …”.

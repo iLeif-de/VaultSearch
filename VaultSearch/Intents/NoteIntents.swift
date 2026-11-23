@@ -548,7 +548,11 @@ extension AppModel {
     func snapshot(of notes: [NoteEntity], title: String?) async throws -> ResultsSnapshot {
         await search.waitUntilIndexed()
         let byPath = Dictionary(search.files.map { ($0.path.path, $0) }, uniquingKeysWith: { first, _ in first })
-        let files = notes.compactMap { byPath[$0.id] }
+        return try snapshot(files: notes.compactMap { byPath[$0.id] }, title: title)
+    }
+
+    /// A list of notes without a search, to save or export (Shortcuts, AppleScript).
+    func snapshot(files: [MarkdownFile], title: String?) throws -> ResultsSnapshot {
         guard !files.isEmpty else { throw VaultSearchIntentError.noResults }
         let title = NoteFilter.trimmed(title) ?? String(localized: "Notes from Shortcuts")
         return ResultsSnapshot(query: "", files: files, highlightTerms: [], title: title)

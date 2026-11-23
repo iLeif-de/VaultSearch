@@ -53,7 +53,10 @@ VaultSearch/
 ├── Intents/
 │   ├── NoteEntity.swift          Notes, folders and the vault for Siri/Shortcuts/Spotlight (notes app schema)
 │   ├── NoteIntents.swift         Actions (search, open, save, export), ExportFormat as AppEnum, errors
-│   └── VaultSearchShortcuts.swift  App Shortcuts with their phrases
+│   └── VaultSearchShortcuts.swift  App Shortcuts with their phrases; AppIntentTypes
+├── Scripting/
+│   ├── VaultSearch.sdef          AppleScript dictionary (bundle resource)
+│   └── ScriptingSupport.swift    AppDelegate (application keys), scriptable note, commands
 ├── Export/
 │   ├── ExportFormat.swift        Formats and errors
 │   ├── ExportService.swift       Save panels, running exports, templates, alerts
@@ -129,6 +132,16 @@ VaultSearchApp
 - **Entity properties for filtering.** `NoteEntity.properties` lists the frontmatter as `key: value`, `folderPath` the folder; both exist for the filter rows of “Find Notes”. A filter row “Properties contains `status: active`” checks one property, a value alone checks all.
 - **Lists without a query.** `ResultsSnapshot.title` replaces the “Search: …” heading when Shortcuts hands over notes instead of a search.
 - **Exports without a window.** `ExportService.writeResultsToVault`, `writeResults` and `writeNote` do the work without panels or alerts. The menu actions wrap them with a save panel, `perform` (progress, opening the result, template hint) and error alerts.
+
+## AppleScript
+
+- **Turning it on.** `Config/Info.plist` sets `NSAppleScriptEnabled` and `OSAScriptingDefinition`; Xcode merges it with the generated Info.plist (`INFOPLIST_FILE`). It lives outside the synchronized `VaultSearch/` folder, so it is not also copied as a resource.
+- **Dictionary.** `Scripting/VaultSearch.sdef` includes the Cocoa Standard Suite and adds the VaultSearch suite (code `VSrc`): the `note` class, the application's `notes`, `vault path` and `indexing`, and the commands `search`, `show search`, `open in Obsidian`, `export`, `save to vault` and `reindex`. User documentation: [automation.md](automation.md).
+- **Application keys.** `AppDelegate` (via `@NSApplicationDelegateAdaptor`) answers `scriptNotes`, `scriptVaultPath` and `scriptIndexing` in `application(_:delegateHandlesKey:)`. `ScriptingSupport.notes` caches one `ScriptableNote` per note until the next index run (`SearchService.generation`).
+- **Notes.** `ScriptableNote` (`VSScriptableNote`) wraps a `MarkdownFile`; its `objectSpecifier` is a unique-ID specifier (the file path). `frontmatter` is built as an `NSAppleEventDescriptor` record with user fields, because an `NSDictionary` arrives empty.
+- **Commands.** All commands subclass `VaultSearchCommand`, which overrides `execute()`: otherwise Cocoa sends a command whose direct parameter is a note (`export note "Plan"`, `export every note whose …`) to the notes. The `responds-to` entries on `note` only satisfy AppleScript's check. Commands that wait for the index or an export call `suspendExecution()` and resume with the result. `export` exports a single note when the direct parameter is one note, and a list document for a list.
+- **Keep the classes.** As with the intents, Cocoa finds these classes by name. `ScriptingSupport.classes` refers to them, and `AppDelegate` calls `ScriptingSupport.keep()`.
+- **Testing by hand.** `osascript -e 'tell application "VaultSearch" to count of notes'`; the examples in [automation.md](automation.md#applescript-examples) were run this way.
 
 ## Indexing
 

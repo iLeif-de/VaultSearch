@@ -8,6 +8,7 @@
   A native Mac app that searches your Obsidian vault as you type, and exports what it finds.<br>
   <a href="docs/user-guide.md">User Guide</a> ·
   <a href="docs/benutzerhandbuch.md">Benutzerhandbuch (Deutsch)</a> ·
+  <a href="docs/automation.md">Automation</a> ·
   <a href="docs/development.md">Developer Guide</a>
 </p>
 
@@ -29,7 +30,7 @@ VaultSearch reads the Markdown notes of an [Obsidian](https://obsidian.md) vault
   - Save a result list as a Markdown note in your vault, with links or embedded notes.
   - Export single notes or result lists as PDF, Word, OpenDocument, RTF, HTML, EPUB or Markdown.
   - Pandoc is used when it is installed, otherwise the conversion built into macOS. Templates are supported.
-- **Siri, Shortcuts and Spotlight.** Ask Siri about your notes in your own words, find them in Spotlight, and use search, open and export as actions in Shortcuts.
+- **Siri, Shortcuts, Spotlight and AppleScript.** Ask Siri about your notes in your own words, find them in Spotlight, filter and export notes in Shortcuts, or script VaultSearch with AppleScript.
 - **A Mac app.** It has a native sidebar and search field, menus with keyboard shortcuts, a Settings window and VoiceOver labels. The interface is in English and German.
 
 ## Requirements
@@ -72,6 +73,7 @@ The full syntax is in the [User Guide](docs/user-guide.md#search-syntax) and und
 
 - [User Guide](docs/user-guide.md): using the app, search syntax, export, settings, troubleshooting
 - [Benutzerhandbuch](docs/benutzerhandbuch.md): the same in German
+- [Automating VaultSearch](docs/automation.md) / [VaultSearch automatisieren](docs/automatisierung.md): Siri, Shortcuts and AppleScript, with examples
 - [Developer Guide](docs/development.md): architecture, code tour, localisation, icons, building
 
 ## License

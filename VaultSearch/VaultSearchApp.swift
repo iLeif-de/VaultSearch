@@ -11,6 +11,8 @@ import SwiftUI
 @main
 struct VaultSearchApp: App {
     @StateObject private var model = AppModel.shared
+    /// Answers AppleScript's application keys; see `Scripting/ScriptingSupport.swift`.
+    @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
 
     init() {
         // App Intents (Siri, Shortcuts, Spotlight) get the shared model through `@Dependency`.

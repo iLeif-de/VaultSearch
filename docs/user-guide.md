@@ -275,39 +275,14 @@ Without Pandoc, Word files are made from HTML, so fonts, sizes and colours for W
 
 ## Siri, Shortcuts and Spotlight
 
-VaultSearch hands its notes and actions to macOS, so you can use them without opening the window.
+VaultSearch hands its notes and actions to macOS, so you can use them without opening the window:
 
-**Siri.** Ask in your own words, for example “Show my notes about the budget meeting in VaultSearch” or “Export this note as PDF”. While a note is shown in the preview, Siri knows which note “this” means.
+- **Siri** understands requests in your own words, e.g. “Show my notes about the budget meeting in VaultSearch”. While a note is shown in the preview, Siri knows which note “this” means.
+- **Spotlight** lists the notes of your vault; choosing one opens it in Obsidian.
+- **Shortcuts** offers *Find Notes* (filter rows, All/Any), *Filter Notes* (one criterion from menus filled from your vault), *Show in VaultSearch*, *Open Note in Obsidian* and actions to export notes or save a note list to the vault.
+- **AppleScript** can search, read notes and their frontmatter, export and save lists.
 
-**Spotlight.** After the first index run, the notes of your vault also appear in Spotlight. Choosing one opens it in Obsidian.
-
-**Shortcuts.** The Shortcuts app lists these actions under VaultSearch:
-
-| Action | What it does |
-|---|---|
-| **Find Notes** | Finds notes with filter rows, like Apple's Notes or Reminders: name, text, tags, properties, folder, creation and modification date. Choose *All* or *Any* of the filters, the sort order and a limit. |
-| **Filter Notes** | Keeps the notes that match one criterion, chosen from menus (see below). |
-| **Show in VaultSearch** | Opens the window and shows the results of a search there. |
-| **Open Note in Obsidian** | Opens a note. |
-| **Save Note List to Vault** | Saves notes as a list note in the export folder, like **Save Results to Vault**. |
-| **Export Note List** | Creates one document (PDF, Word, …) listing the notes. |
-| **Export Note** | Creates a document from one note. |
-
-**Filter Notes** reads like a sentence. Choose the criterion in the first menu, and the rest of the sentence follows:
-
-| Criterion | You choose |
-|---|---|
-| **Text** | the words, and whether to search *Title and Text*, *Title Only* or *Text Only* |
-| **Tag** / **Tag in Text** | a tag from your vault (a tag in the properties, or `#tag` in the text) |
-| **Property** | a property of your vault and one of its values; without a value, every note with the property |
-| **Folder** | a folder, including its subfolders |
-| **Creation Date** / **Modification Date** | a period such as *In the Last 7 Days*, or *On*, *Since*, *Before* or *Between* with dates |
-
-Without notes from a previous action, **Filter Notes** searches the whole vault. To combine criteria, put several **Filter Notes** one after another: each keeps the notes of the previous one that also match (AND). For *any of* (OR), use **Find Notes**.
-
-The save and export actions take the notes from **Find Notes** or **Filter Notes**. The export actions hand the file on to the next action, for example **Save File** or **Share**. They use your settings in Settings ▸ Export, including Pandoc and templates.
-
-If VaultSearch is not running, macOS starts it. The first request then waits until the vault has been read.
+[Automating VaultSearch](automation.md) describes all actions and the AppleScript dictionary, with examples.
 
 ## Settings
 

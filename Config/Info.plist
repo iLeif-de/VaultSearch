@@ -7,5 +7,21 @@
 	<true/>
 	<key>OSAScriptingDefinition</key>
 	<string>VaultSearch.sdef</string>
+	<!-- Other names Siri accepts for the app, e.g. “Notizen in Notizsuche finden”. -->
+	<key>INAlternativeAppNames</key>
+	<array>
+		<dict>
+			<key>INAlternativeAppName</key>
+			<string>Notizsuche</string>
+			<key>INAlternativeAppNamePronunciationHint</key>
+			<string>Notiz suche</string>
+		</dict>
+		<dict>
+			<key>INAlternativeAppName</key>
+			<string>Tresor</string>
+			<key>INAlternativeAppNamePronunciationHint</key>
+			<string>Tresor</string>
+		</dict>
+	</array>
 </dict>
 </plist>

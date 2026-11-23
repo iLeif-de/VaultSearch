@@ -31,6 +31,10 @@ VaultSearch can be used without its window: from **Siri**, **Spotlight**, the **
 - “Export this note as PDF” – while a note is shown in the preview, Siri knows which note “this” is.
 - “Open this in Obsidian”
 
+**Other names for Siri.** Besides “VaultSearch”, Siri also accepts the German names **“Notizsuche”** and **“Tresor”**, e.g. “Notizen in Notizsuche finden”. The names are built into the app; there is no setting for them, because macOS reads them only when the app is installed.
+
+**Without any app name**, use your own shortcuts: Siri runs every shortcut by its name. A shortcut called “Weekly review” starts with “Hey Siri, weekly review”.
+
 **Spotlight** lists the notes of your vault after the first index run. Choosing one opens it in Obsidian. Titles, text, tags and dates are added to the Spotlight index of your Mac.
 
 ## Shortcuts

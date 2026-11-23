@@ -31,6 +31,10 @@ VaultSearch lässt sich auch ohne Fenster nutzen: mit **Siri**, **Spotlight**, d
 - „Exportier diese Notiz als PDF“ – solange eine Notiz in der Vorschau zu sehen ist, weiß Siri, welche mit „diese“ gemeint ist.
 - „Öffne das in Obsidian“
 
+**Andere Namen für Siri.** Statt „VaultSearch“ versteht Siri auch **„Notizsuche“** und **„Tresor“**, z. B. „Notizen in Notizsuche finden“. Die Namen stehen fest in der App; eine Einstellung dafür gibt es nicht, weil macOS sie nur bei der Installation liest.
+
+**Ganz ohne App-Namen** geht es mit eigenen Kurzbefehlen: Siri startet jeden Kurzbefehl über seinen Namen. Heißt ein Kurzbefehl „Wochenrückblick“, genügt „Hey Siri, Wochenrückblick“.
+
 **Spotlight** zeigt nach dem ersten Einlesen die Notizen deines Vaults. Wählst du eine aus, öffnet sie sich in Obsidian. Titel, Text, Tags und Daten landen dafür im Spotlight-Index deines Macs.
 
 ## Kurzbefehle

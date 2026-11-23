@@ -24,7 +24,7 @@ VaultSearch can be used without its window: from **Siri**, **Spotlight**, the **
 
 ## Siri and Spotlight
 
-**Siri** knows these phrases. In German you can also say **“Wolt Suche”** instead of “VaultSearch”:
+**Siri** knows these phrases:
 
 | You say | VaultSearch |
 |---|---|
@@ -41,8 +41,6 @@ Siri learns the tags and folders of your vault after every index run. Say nested
 Apple does not allow free search words inside these phrases (“Show my notes about Obsidian”); that is what the follow-up question is for. Whether Siri with Apple Intelligence hands such free sentences to VaultSearch directly is up to macOS.
 
 While a note is shown in the preview, Siri knows which note “this” means.
-
-The name “Wolt Suche” is built into the app; there is no setting for it, because macOS reads it only when the app is installed.
 
 **Without any app name**, use your own shortcuts: Siri runs every shortcut by its name. A shortcut called “Weekly review” starts with “Hey Siri, weekly review”.
 

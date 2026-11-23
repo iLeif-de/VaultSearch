@@ -24,15 +24,15 @@ VaultSearch lässt sich auch ohne Fenster nutzen: mit **Siri**, **Spotlight**, d
 
 ## Siri und Spotlight
 
-**Siri** kennt diese Sätze. Statt „VaultSearch“ kannst du überall auch **„Wolt Suche“** sagen:
+**Siri** kennt diese Sätze:
 
 | Du sagst | VaultSearch |
 |---|---|
-| „Suche in Wolt Suche“ – Siri fragt „Wonach soll ich suchen?“ | zeigt die Treffer im Fenster |
-| „Zeig den Tag *Idee* in Wolt Suche“ | zeigt alle Notizen mit dem Tag (auch verschachtelt) |
-| „Zeig den Ordner *Projekte* in Wolt Suche“ | zeigt die Notizen des Ordners samt Unterordnern |
-| „Öffne *Budget 2026* mit Wolt Suche“ | öffnet die Notiz in Obsidian |
-| „Exportiere *Budget 2026* mit Wolt Suche“ | exportiert die Notiz (als PDF, solange du das Format nicht änderst) |
+| „Suche in VaultSearch“ – Siri fragt „Wonach soll ich suchen?“ | zeigt die Treffer im Fenster |
+| „Zeig den Tag *Idee* in VaultSearch“ | zeigt alle Notizen mit dem Tag (auch verschachtelt) |
+| „Zeig den Ordner *Projekte* in VaultSearch“ | zeigt die Notizen des Ordners samt Unterordnern |
+| „Öffne *Budget 2026* mit VaultSearch“ | öffnet die Notiz in Obsidian |
+| „Exportiere *Budget 2026* mit VaultSearch“ | exportiert die Notiz (als PDF, solange du das Format nicht änderst) |
 
 **Vermeide das Wort „Notiz“.** Siri gibt jeden Satz mit „Notiz“ oder „Notizen“ an Apples Notizen-App weiter, noch bevor VaultSearch gefragt wird. Deshalb kommen die Sätze oben ohne dieses Wort aus.
 
@@ -41,8 +41,6 @@ Tags und Ordner aus deinem Vault lernt Siri nach jedem Einlesen. Verschachtelte 
 Freie Suchwörter in einem Satz („Zeig mir alles zu Obsidian“) erlaubt Apple in diesen Sätzen nicht. Dafür gibt es die Rückfrage. Ob Siri solche freien Sätze mit Apple Intelligence direkt an VaultSearch weitergibt, entscheidet macOS.
 
 Solange eine Notiz in der Vorschau zu sehen ist, weiß Siri, welche mit „diese“ gemeint ist.
-
-Der Name „Wolt Suche“ steht fest in der App; eine Einstellung dafür gibt es nicht, weil macOS ihn nur bei der Installation liest.
 
 **Ganz ohne App-Namen** geht es mit eigenen Kurzbefehlen: Siri startet jeden Kurzbefehl über seinen Namen. Heißt ein Kurzbefehl „Wochenrückblick“, genügt „Hey Siri, Wochenrückblick“.
 

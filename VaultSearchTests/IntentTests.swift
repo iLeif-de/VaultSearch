@@ -159,3 +159,22 @@ struct NotePredicateTests {
         #expect(entity.folderPath == "Projects/2026")
     }
 }
+
+@Suite("Siri: tags and folders")
+struct SiriValueTests {
+    @Test func nestedTagIsSpokenByItsLastPart() {
+        let entity = TagEntity(id: "project/haushaltsbuch")
+        #expect(String(localized: entity.displayRepresentation.title) == "haushaltsbuch")
+        #expect(TagEntity(id: "idea").displayRepresentation.synonyms.isEmpty)
+    }
+
+    @Test func folderIsSpokenByItsName() {
+        let folder = NoteFolderEntity(vault: "Vault", path: "Projects/2026")
+        #expect(String(localized: folder.displayRepresentation.title) == "2026")
+    }
+
+    @Test func everyIntentIsKept() {
+        AppIntentTypes.keep()
+        #expect(AppIntentTypes.all.count == 9)
+    }
+}

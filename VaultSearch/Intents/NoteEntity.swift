@@ -268,8 +268,10 @@ struct NoteFolderEntity {
     @Property(title: "Path")
     var path: String
 
+    /// The last folder name as title, so Siri understands “folder 2026”; the path as subtitle and synonym.
     var displayRepresentation: DisplayRepresentation {
-        DisplayRepresentation(title: "\(path)", image: .init(systemName: "folder"))
+        DisplayRepresentation(title: "\(name)", subtitle: name == path ? nil : "\(path)",
+                              image: .init(systemName: "folder"), synonyms: ["\(path)"])
     }
 
     init(vault: String, path: String) {
@@ -297,8 +299,54 @@ struct NoteFolderQuery: EntityQuery {
         return await MainActor.run {
             let files = model.search.files
             guard let vault = files.first?.vaultName else { return [] }
-            return Set(files.map(\.folder)).filter { !$0.isEmpty }.sorted().map { NoteFolderEntity(vault: vault, path: $0) }
+            // Parent folders too, so “Projects” is offered when only “Projects/2026” holds notes.
+            var folders = Set<String>()
+            for file in files {
+                var path = file.folder
+                while !path.isEmpty {
+                    folders.insert(path)
+                    path = (path as NSString).deletingLastPathComponent
+                }
+            }
+            return folders.sorted().prefix(300).map { NoteFolderEntity(vault: vault, path: $0) }
         }
+    }
+}
+
+/// A tag of the vault, so Siri can understand it in one sentence. Nested tags are spoken by their last part.
+struct TagEntity: AppEntity {
+    static let typeDisplayRepresentation: TypeDisplayRepresentation = "Tag"
+    static let defaultQuery = TagQuery()
+
+    /// The full tag, e.g. `project/haushaltsbuch`.
+    let id: String
+
+    var displayRepresentation: DisplayRepresentation {
+        let last = id.split(separator: "/").last.map(String.init) ?? id
+        return DisplayRepresentation(title: "\(last)", subtitle: last == id ? nil : "#\(id)",
+                                     image: .init(systemName: "number"),
+                                     synonyms: last == id ? [] : ["\(id.replacingOccurrences(of: "/", with: " "))"])
+    }
+}
+
+struct TagQuery: EntityStringQuery {
+    @Dependency private var model: AppModel
+
+    func entities(for identifiers: [TagEntity.ID]) async throws -> [TagEntity] {
+        identifiers.map(TagEntity.init)
+    }
+
+    func entities(matching string: String) async throws -> [TagEntity] {
+        await model.search.waitUntilIndexed()
+        return await MainActor.run {
+            model.search.knownTags.filter { $0.localizedStandardContains(string) }.prefix(50).map(TagEntity.init)
+        }
+    }
+
+    /// The most used tags; Siri learns these as values for “Show notes tagged …”.
+    func suggestedEntities() async throws -> [TagEntity] {
+        await model.search.waitUntilIndexed()
+        return await MainActor.run { model.search.knownTags.prefix(300).map(TagEntity.init) }
     }
 }
 

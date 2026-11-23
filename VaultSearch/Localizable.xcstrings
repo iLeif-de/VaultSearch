@@ -1661,6 +1661,26 @@
         }
       }
     },
+    "Opens VaultSearch and shows the notes of a folder and its subfolders." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öffnet VaultSearch und zeigt die Notizen eines Ordners samt Unterordnern."
+          }
+        }
+      }
+    },
+    "Opens VaultSearch and shows the notes with a tag, including nested tags." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öffnet VaultSearch und zeigt die Notizen mit einem Tag, auch verschachtelte Tags."
+          }
+        }
+      }
+    },
     "Opens VaultSearch and shows the results of a search in the window." : {
       "localizations" : {
         "de" : {
@@ -2241,6 +2261,36 @@
         }
       }
     },
+    "Show Folder" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordner zeigen"
+          }
+        }
+      }
+    },
+    "Show folder ${folder} in VaultSearch" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordner ${folder} in VaultSearch anzeigen"
+          }
+        }
+      }
+    },
+    "Show Folder in VaultSearch" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordner in VaultSearch anzeigen"
+          }
+        }
+      }
+    },
     "Show Full License" : {
       "localizations" : {
         "de" : {
@@ -2277,6 +2327,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "In VaultSearch anzeigen"
+          }
+        }
+      }
+    },
+    "Show notes tagged ${tag} in VaultSearch" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notizen mit Tag ${tag} in VaultSearch anzeigen"
+          }
+        }
+      }
+    },
+    "Show Tag" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tag zeigen"
+          }
+        }
+      }
+    },
+    "Show Tag in VaultSearch" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tag in VaultSearch anzeigen"
           }
         }
       }
@@ -2727,6 +2807,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Webseite folgt"
+          }
+        }
+      }
+    },
+    "What should I search for?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wonach soll ich suchen?"
+          }
+        }
+      }
+    },
+    "Which folder?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Welcher Ordner?"
+          }
+        }
+      }
+    },
+    "Which tag?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Welcher Tag?"
           }
         }
       }

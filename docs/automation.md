@@ -24,14 +24,23 @@ VaultSearch can be used without its window: from **Siri**, **Spotlight**, the **
 
 ## Siri and Spotlight
 
-**Siri** understands requests in your own words, for example:
+**Siri** knows these phrases. Instead of “VaultSearch” you can also say the German name **“Notizsuche”**:
 
-- “Search my vault with VaultSearch”
-- “Show my notes about the budget meeting in VaultSearch”
-- “Export this note as PDF” – while a note is shown in the preview, Siri knows which note “this” is.
-- “Open this in Obsidian”
+| You say | VaultSearch |
+|---|---|
+| “Search in VaultSearch” – Siri asks “What should I search for?” | shows the results in the window |
+| “Show notes tagged *idea* in VaultSearch” | shows the notes with the tag (nested tags too) |
+| “Show folder *Projects* in VaultSearch” | shows the notes of the folder and its subfolders |
+| “Open *Budget 2026* with VaultSearch” | opens the note in Obsidian |
+| “Export *Budget 2026* with VaultSearch” | exports the note (PDF unless you change the format) |
 
-**Other names for Siri.** Besides “VaultSearch”, Siri also accepts the German names **“Notizsuche”** and **“Tresor”**, e.g. “Notizen in Notizsuche finden”. The names are built into the app; there is no setting for them, because macOS reads them only when the app is installed.
+Siri learns the tags and folders of your vault after every index run. Say nested tags by their last part: “haushaltsbuch” for `project/haushaltsbuch`, and “2026” for the folder `Projects/2026`.
+
+Apple does not allow free search words inside these phrases (“Show my notes about Obsidian”); that is what the follow-up question is for. Whether Siri with Apple Intelligence hands such free sentences to VaultSearch directly is up to macOS.
+
+While a note is shown in the preview, Siri knows which note “this” means.
+
+The name “Notizsuche” is built into the app; there is no setting for it, because macOS reads it only when the app is installed.
 
 **Without any app name**, use your own shortcuts: Siri runs every shortcut by its name. A shortcut called “Weekly review” starts with “Hey Siri, weekly review”.
 
@@ -48,6 +57,8 @@ In the Shortcuts app, search for “VaultSearch”:
 | **Find Notes** | filter rows | notes |
 | **Filter Notes** | notes (optional) and one criterion | notes |
 | **Show in VaultSearch** | search text | – (shows the results in the window) |
+| **Show Tag in VaultSearch** | a tag | – (shows its notes in the window) |
+| **Show Folder in VaultSearch** | a folder | – (shows its notes in the window) |
 | **Open Note in Obsidian** | a note | – |
 | **Export Note** | a note, format | file |
 | **Export Note List** | notes, format, title (optional) | file |

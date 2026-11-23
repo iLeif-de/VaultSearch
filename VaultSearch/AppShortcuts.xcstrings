@@ -21,6 +21,16 @@
         }
       }
     },
+    "Export the note ${note} with ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exportiere ${note} mit ${applicationName}"
+          }
+        }
+      }
+    },
     "Find notes in ${applicationName}" : {
       "localizations" : {
         "de" : {
@@ -51,12 +61,92 @@
         }
       }
     },
+    "Open the note ${target} with ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öffne ${target} mit ${applicationName}"
+          }
+        }
+      }
+    },
+    "Search in ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In ${applicationName} suchen"
+          }
+        }
+      }
+    },
     "Search my vault with ${applicationName}" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Meinen Vault mit ${applicationName} durchsuchen"
+          }
+        }
+      }
+    },
+    "Show a folder in ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeig einen Ordner in ${applicationName}"
+          }
+        }
+      }
+    },
+    "Show folder ${folder} in ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeig den Ordner ${folder} in ${applicationName}"
+          }
+        }
+      }
+    },
+    "Show notes in folder ${folder} with ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeig Notizen im Ordner ${folder} mit ${applicationName}"
+          }
+        }
+      }
+    },
+    "Show notes tagged ${tag} in ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeig Notizen mit Tag ${tag} in ${applicationName}"
+          }
+        }
+      }
+    },
+    "Show notes with a tag in ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeig Notizen mit einem Tag in ${applicationName}"
+          }
+        }
+      }
+    },
+    "Show tag ${tag} in ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeig den Tag ${tag} in ${applicationName}"
           }
         }
       }

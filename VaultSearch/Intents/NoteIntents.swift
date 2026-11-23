@@ -340,7 +340,8 @@ struct ShowInVaultSearchIntent: AppIntent {
     )
     static let openAppWhenRun = true
 
-    @Parameter(title: "Search Text", description: "The syntax of the search field works too, e.g. “tag:idea modified:last 7 days”.")
+    @Parameter(title: "Search Text", description: "The syntax of the search field works too, e.g. “tag:idea modified:last 7 days”.",
+               requestValueDialog: "What should I search for?")
     var text: String
 
     static var parameterSummary: some ParameterSummary {
@@ -352,6 +353,50 @@ struct ShowInVaultSearchIntent: AppIntent {
     @MainActor
     func perform() async throws -> some IntentResult {
         model.requestSearch(text)
+        return .result()
+    }
+}
+
+/// Shows the notes with a tag; for one-sentence Siri requests (“Show notes tagged idea in VaultSearch”).
+struct ShowTagIntent: AppIntent {
+    static let title: LocalizedStringResource = "Show Tag in VaultSearch"
+    static let description = IntentDescription("Opens VaultSearch and shows the notes with a tag, including nested tags.", categoryName: "Search")
+    static let openAppWhenRun = true
+
+    @Parameter(title: "Tag", requestValueDialog: "Which tag?")
+    var tag: TagEntity
+
+    static var parameterSummary: some ParameterSummary {
+        Summary("Show notes tagged \(\.$tag) in VaultSearch")
+    }
+
+    @Dependency private var model: AppModel
+
+    @MainActor
+    func perform() async throws -> some IntentResult {
+        model.requestSearch("tag:" + SearchSuggestion.quoted(tag.id))
+        return .result()
+    }
+}
+
+/// Shows the notes of a folder and its subfolders; for one-sentence Siri requests.
+struct ShowFolderIntent: AppIntent {
+    static let title: LocalizedStringResource = "Show Folder in VaultSearch"
+    static let description = IntentDescription("Opens VaultSearch and shows the notes of a folder and its subfolders.", categoryName: "Search")
+    static let openAppWhenRun = true
+
+    @Parameter(title: "Folder", requestValueDialog: "Which folder?")
+    var folder: NoteFolderEntity
+
+    static var parameterSummary: some ParameterSummary {
+        Summary("Show folder \(\.$folder) in VaultSearch")
+    }
+
+    @Dependency private var model: AppModel
+
+    @MainActor
+    func perform() async throws -> some IntentResult {
+        model.requestSearch(SearchSuggestion.pathKey + SearchSuggestion.quoted(folder.path))
         return .result()
     }
 }

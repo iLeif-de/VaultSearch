@@ -1,3 +1,4 @@
+import AppIntents
 import AppKit
 import Combine
 import CoreSpotlight
@@ -39,7 +40,11 @@ final class AppModel: ObservableObject {
         search.$generation
             .dropFirst()
             .sink { [weak self] _ in
-                MainActor.assumeIsolated { self?.updateSpotlight() }
+                MainActor.assumeIsolated {
+                    self?.updateSpotlight()
+                    // Siri learns the current tags and folders for “Show notes tagged …”.
+                    VaultSearchShortcuts.updateAppShortcutParameters()
+                }
             }
             .store(in: &cancellables)
     }

@@ -36,6 +36,11 @@ struct SearchQuery {
     private let calendar: Calendar
 
     static let orOperators: Set<String> = ["OR", "ODER", "|"]
+    /// Keys with a meaning of their own; `key:value` with them is not a property search.
+    static let operatorKeys: Set<String> = [
+        "tag", "contenttag", "intitle", "intext", "imtitel", "imtext",
+        "created", "erstellt", "modified", "geändert", "geaendert",
+    ]
     static let andOperators: Set<String> = ["AND", "UND", "&"]
 
     init(_ text: String, now: Date = .now, calendar: Calendar = .current) {

@@ -13,10 +13,22 @@ struct MarkdownFile: Identifiable, Hashable {
     let content: String
     let frontmatter: [String: Any]
     let tags: [String]
+    /// Creation and modification date: the frontmatter value (`erstellt`/`created`,
+    /// `geändert`/`modified`) when there is one, otherwise the date of the file.
+    /// Display, search, sorting and Shortcuts all use these.
     let createdDate: Date
     let modifiedDate: Date
+    /// Dates of the file itself, for change detection.
+    let fileCreatedDate: Date
+    let fileModifiedDate: Date
+    /// Frontmatter keys whose dates were used above; the preview does not repeat them.
+    let dateKeys: Set<String>
     let vaultName: String
 
+    static let createdKeys = ["erstellt", "created"]
+    static let modifiedKeys = ["geändert", "geaendert", "modified", "updated"]
+
+    /// `createdDate` and `modifiedDate` are the dates of the file.
     init(path: URL, relativePath: String, content: String, frontmatter: [String: Any],
          tags: [String], createdDate: Date, modifiedDate: Date, vaultName: String) {
         self.path = path
@@ -25,9 +37,22 @@ struct MarkdownFile: Identifiable, Hashable {
         self.content = content
         self.frontmatter = frontmatter
         self.tags = tags
-        self.createdDate = createdDate
-        self.modifiedDate = modifiedDate
+        self.fileCreatedDate = createdDate
+        self.fileModifiedDate = modifiedDate
         self.vaultName = vaultName
+
+        var dateKeys = Set<String>()
+        func date(_ keys: [String], fallback: Date) -> Date {
+            for (key, value) in frontmatter where keys.contains(key.lowercased()) {
+                guard let text = value as? String, let parsed = FrontmatterDate.parse(text, fileDate: fallback) else { continue }
+                dateKeys.insert(key)
+                return parsed
+            }
+            return fallback
+        }
+        self.createdDate = date(Self.createdKeys, fallback: createdDate)
+        self.modifiedDate = date(Self.modifiedKeys, fallback: modifiedDate)
+        self.dateKeys = dateKeys
     }
 
     /// Folder inside the vault, empty for notes at the root.
@@ -35,28 +60,40 @@ struct MarkdownFile: Identifiable, Hashable {
         (relativePath as NSString).deletingLastPathComponent
     }
 
-    /// Prefers an explicit `erstellt`/`created` frontmatter value over the file system date.
-    var createdLabel: String {
-        for key in ["erstellt", "created"] {
-            if let value = frontmatter[key] as? String, !value.isEmpty { return value }
+    /// One frontmatter entry for the preview; list properties keep their items apart.
+    struct DisplayProperty: Identifiable {
+        let key: String
+        let values: [String]
+        var id: String { key }
+
+        /// The search for notes with this value, or nil when the key cannot be written as `key:value`.
+        func query(for value: String) -> String? {
+            guard key.first?.isLetter == true,
+                  key.allSatisfy({ $0.isLetter || $0.isNumber || $0 == "_" || $0 == "-" }),
+                  !SearchQuery.operatorKeys.contains(key.lowercased()) else { return nil }
+            let value = value.replacingOccurrences(of: "\"", with: "")
+            return "\(key):" + SearchSuggestion.quoted(value)
         }
-        return createdDate.formatted(date: .abbreviated, time: .omitted)
     }
 
-    /// Frontmatter entries suitable for display, excluding tags.
-    var displayProperties: [(key: String, value: String)] {
+    /// Frontmatter entries for the preview. Leaves out tags (shown as buttons), the dates shown
+    /// in the header, and a folder property that only repeats the folder of the note.
+    var displayProperties: [DisplayProperty] {
         frontmatter
-            .filter { $0.key.lowercased() != "tags" }
-            .map { entry in
-                let value: String
-                if let list = entry.value as? [String] {
-                    value = list.joined(separator: ", ")
-                } else {
-                    value = String(describing: entry.value)
+            .filter { entry in
+                let key = entry.key.lowercased()
+                if key == "tags" || dateKeys.contains(entry.key) { return false }
+                if ["ordner", "folder"].contains(key), let value = entry.value as? String,
+                   value.trimmingCharacters(in: CharacterSet(charactersIn: "/ ")) == folder {
+                    return false
                 }
-                return (entry.key, value)
+                return true
             }
-            .filter { !$0.value.isEmpty }
+            .map { entry in
+                let values = (entry.value as? [String]) ?? [String(describing: entry.value)]
+                return DisplayProperty(key: entry.key, values: values.filter { !$0.isEmpty })
+            }
+            .filter { !$0.values.isEmpty }
             .sorted { $0.key.localizedStandardCompare($1.key) == .orderedAscending }
     }
 
@@ -121,11 +158,51 @@ struct MarkdownFile: Identifiable, Hashable {
     }
 
     static func == (lhs: MarkdownFile, rhs: MarkdownFile) -> Bool {
-        lhs.path == rhs.path && lhs.modifiedDate == rhs.modifiedDate
+        lhs.path == rhs.path && lhs.fileModifiedDate == rhs.fileModifiedDate
     }
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(path)
-        hasher.combine(modifiedDate)
+        hasher.combine(fileModifiedDate)
+    }
+}
+
+/// Dates written in the frontmatter, e.g. `2026-09-14`, `2026-09-14T10:30` or `14.09.2026`.
+enum FrontmatterDate {
+    private static let formats = [
+        "yyyy-MM-dd'T'HH:mm:ssXXXXX", "yyyy-MM-dd'T'HH:mm:ss", "yyyy-MM-dd'T'HH:mm",
+        "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", "yyyy-MM-dd",
+        "dd.MM.yyyy HH:mm", "dd.MM.yyyy",
+    ]
+
+    private static let formatters: [DateFormatter] = formats.map { format in
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = format
+        formatter.isLenient = false
+        return formatter
+    }
+
+    /// Only these shapes are read; DateFormatter alone would also accept e.g. `14/09/2026`.
+    private static let shapes = [
+        #"^\d{4}-\d{2}-\d{2}([ T]\d{2}:\d{2}(:\d{2})?([+-]\d{2}:?\d{2}|Z)?)?$"#,
+        #"^\d{1,2}\.\d{1,2}\.\d{4}( \d{1,2}:\d{2})?$"#,
+    ]
+
+    /// A value without time on the same day as `fileDate` returns `fileDate`, which is more precise.
+    static func parse(_ text: String, fileDate: Date, calendar: Calendar = .current) -> Date? {
+        let text = text.trimmingCharacters(in: CharacterSet(charactersIn: "\"'").union(.whitespaces))
+        guard shapes.contains(where: { text.range(of: $0, options: .regularExpression) != nil }) else { return nil }
+        for (format, formatter) in zip(formats, formatters) {
+            let formatter = formatter.timeZone == calendar.timeZone ? formatter : {
+                let copy = formatter.copy() as! DateFormatter
+                copy.timeZone = calendar.timeZone
+                return copy
+            }()
+            guard let date = formatter.date(from: text) else { continue }
+            if !format.contains("HH") && calendar.isDate(date, inSameDayAs: fileDate) { return fileDate }
+            return date
+        }
+        return nil
     }
 }

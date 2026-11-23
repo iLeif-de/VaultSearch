@@ -51,9 +51,9 @@ final class AppModel: ObservableObject {
         let previous = spotlightDates
         spotlightTask?.cancel()
         spotlightTask = Task {
-            let current = Dictionary(files.map { ($0.path.path, $0.modifiedDate) }, uniquingKeysWith: { first, _ in first })
+            let current = Dictionary(files.map { ($0.path.path, $0.fileModifiedDate) }, uniquingKeysWith: { first, _ in first })
             let changed = await Task.detached(priority: .utility) {
-                files.filter { previous?[$0.path.path] != $0.modifiedDate }.map(NoteEntity.init)
+                files.filter { previous?[$0.path.path] != $0.fileModifiedDate }.map(NoteEntity.init)
             }.value
             guard !Task.isCancelled else { return }
             let index = CSSearchableIndex.default()

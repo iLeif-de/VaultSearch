@@ -361,6 +361,16 @@
         }
       }
     },
+    "Copy" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopieren"
+          }
+        }
+      }
+    },
     "Copy Install Command" : {
       "localizations" : {
         "de" : {
@@ -2067,6 +2077,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Suche"
+          }
+        }
+      }
+    },
+    "Search for notes with %@: %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nach Notizen mit %1$@: %2$@ suchen"
           }
         }
       }

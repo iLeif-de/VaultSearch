@@ -119,7 +119,9 @@ quelle:podcast
 
 ### Datum
 
-`erstellt:` bezieht sich auf das Erstellungsdatum der Datei und `geändert:` (auch `geaendert:`) auf die letzte Änderung. Die englischen Formen `created:` und `modified:` funktionieren ebenso.
+`erstellt:` bezieht sich auf das Erstellungsdatum und `geändert:` (auch `geaendert:`) auf die letzte Änderung. Die englischen Formen `created:` und `modified:` funktionieren ebenso.
+
+Steht im Frontmatter ein Datum unter `erstellt` oder `created` (bzw. `geändert`, `modified`, `updated`), gilt dieses Datum, sonst das Datum der Datei. Vorschau, Sortierung, Export und Kurzbefehle verwenden dieselben Daten. Erkannt werden `2026-09-14`, `2026-09-14 10:30`, `2026-09-14T10:30` und `14.09.2026`.
 
 | Wert | Bedeutung |
 |---|---|
@@ -165,7 +167,7 @@ Das Menü **Notiz**, das Kontextmenü der Trefferliste und die Symbolleiste der 
 | Notiz exportieren als ▸ … | |
 | Teilen | |
 
-Ein Klick auf einen Tag in der Vorschau sucht nach diesem Tag.
+Ein Klick auf einen Tag in der Vorschau sucht nach diesem Tag. Ein Klick auf den Wert einer Eigenschaft sucht nach Notizen mit demselben Wert, z. B. `autor:"Leif Jensen-Pistorius"`; bei Listen ist jeder Eintrag einzeln anklickbar. Die Eigenschaften-Box lässt weg, was schon im Kopf steht: Erstellungs- und Änderungsdatum sowie eine Ordner-Eigenschaft, die nur den Ordner der Notiz wiederholt.
 
 ## Export
 

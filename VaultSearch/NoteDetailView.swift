@@ -6,7 +6,8 @@ import AppKit
 struct NoteDetailView: View {
     let file: MarkdownFile
     let highlightTerms: [String]
-    var onSelectTag: (String) -> Void = { _ in }
+    /// Puts a search into the search field, e.g. `tag:idea` or `status:active`.
+    var onSearch: (String) -> Void = { _ in }
     @EnvironmentObject private var exporter: ExportService
 
     @State private var lines: [AttributedString] = []
@@ -231,7 +232,7 @@ struct NoteDetailView: View {
             if !file.tags.isEmpty {
                 FlowLayout(spacing: 6) {
                     ForEach(file.tags, id: \.self) { tag in
-                        Button("#\(tag)") { onSelectTag(tag) }
+                        Button("#\(tag)") { onSearch("tag:\(SearchSuggestion.quoted(tag))") }
                             .buttonStyle(TagButtonStyle())
                             .help("Search for notes tagged #\(tag)")
                     }
@@ -241,13 +242,12 @@ struct NoteDetailView: View {
             let properties = file.displayProperties
             if !properties.isEmpty {
                 Grid(alignment: .leadingFirstTextBaseline, horizontalSpacing: 14, verticalSpacing: 4) {
-                    ForEach(properties, id: \.key) { property in
+                    ForEach(properties) { property in
                         GridRow {
                             Text(property.key)
                                 .foregroundStyle(.secondary)
                                 .gridColumnAlignment(.trailing)
-                            Text(property.value)
-                                .textSelection(.enabled)
+                            PropertyValuesView(property: property, onSearch: onSearch)
                         }
                     }
                 }
@@ -259,7 +259,7 @@ struct NoteDetailView: View {
     }
 
     @ViewBuilder private var metadata: some View {
-        Label("Created \(file.createdLabel)", systemImage: "calendar")
+        Label("Created \(file.createdDate.formatted(date: .abbreviated, time: .omitted))", systemImage: "calendar")
         Label {
             Text("Modified \(file.modifiedDate.formatted(.relative(presentation: .named)))")
         } icon: {
@@ -350,6 +350,37 @@ enum MarkdownPreview {
             .replacingOccurrences(of: #"!?\[\[([^\]]+)\]\]"#, with: "$1", options: .regularExpression)
         let options = AttributedString.MarkdownParsingOptions(interpretedSyntax: .inlineOnlyPreservingWhitespace)
         return (try? AttributedString(markdown: prepared, options: options)) ?? AttributedString(prepared)
+    }
+}
+
+/// The values of one frontmatter property; each value searches for notes with the same value.
+private struct PropertyValuesView: View {
+    let property: MarkdownFile.DisplayProperty
+    let onSearch: (String) -> Void
+
+    var body: some View {
+        FlowLayout(spacing: 0) {
+            ForEach(Array(property.values.enumerated()), id: \.offset) { index, value in
+                HStack(spacing: 0) {
+                    if let query = property.query(for: value) {
+                        Button(value) { onSearch(query) }
+                            .buttonStyle(.link)
+                            .help("Search for notes with \(property.key): \(value)")
+                            .contextMenu {
+                                Button("Copy") {
+                                    NSPasteboard.general.clearContents()
+                                    NSPasteboard.general.setString(value, forType: .string)
+                                }
+                            }
+                    } else {
+                        Text(value).textSelection(.enabled)
+                    }
+                    if index < property.values.count - 1 {
+                        Text(verbatim: ", ").foregroundStyle(.secondary)
+                    }
+                }
+            }
+        }
     }
 }
 

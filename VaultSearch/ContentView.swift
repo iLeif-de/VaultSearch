@@ -162,8 +162,8 @@ struct ContentView: View {
 
     @ViewBuilder private var detail: some View {
         if let file = selectedFile {
-            NoteDetailView(file: file, highlightTerms: query.textTerms) { tag in
-                searchText = "tag:\(SearchSuggestion.quoted(tag))"
+            NoteDetailView(file: file, highlightTerms: query.textTerms) { search in
+                searchText = search
             }
             // Tells Siri which note is on screen, so “open this in Obsidian” works.
             .appEntityIdentifier(EntityIdentifier(for: NoteEntity.self, identifier: file.path.path))

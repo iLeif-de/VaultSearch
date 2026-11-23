@@ -120,7 +120,9 @@ source:podcast
 
 ### Dates
 
-`created:` refers to the file's creation date and `modified:` to its last change. In German you can write `erstellt:` and `geändert:` (or `geaendert:`).
+`created:` refers to the creation date and `modified:` to the last change. In German you can write `erstellt:` and `geändert:` (or `geaendert:`).
+
+When the frontmatter has a date in `erstellt` or `created` (or `geändert`, `modified`, `updated`), that date counts, otherwise the date of the file. The preview, the sorting, the export and Shortcuts use the same dates. Recognised forms are `2026-09-14`, `2026-09-14 10:30`, `2026-09-14T10:30` and `14.09.2026`.
 
 | Value | Meaning |
 |---|---|
@@ -166,7 +168,7 @@ The **Note** menu, the context menu of the result list and the toolbar of the pr
 | Export Note As ▸ … | |
 | Share | |
 
-Clicking a tag in the preview searches for that tag.
+Clicking a tag in the preview searches for that tag. Clicking a property value searches for notes with the same value, e.g. `autor:"Leif Jensen-Pistorius"`; in a list each item can be clicked. The property box leaves out what the header already shows: the creation and modification date and a folder property that only repeats the folder of the note.
 
 ## Export
 

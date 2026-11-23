@@ -421,16 +421,6 @@
         }
       }
     },
-    "Created %@" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Erstellt %@"
-          }
-        }
-      }
-    },
     "Created on a day (also 28.04.25)" : {
       "localizations" : {
         "de" : {
@@ -951,6 +941,16 @@
         }
       }
     },
+    "Folder and its subfolders" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordner und Unterordner"
+          }
+        }
+      }
+    },
     "Folder in Vault" : {
       "localizations" : {
         "de" : {
@@ -1457,6 +1457,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Notizen aus Kurzbefehle"
+          }
+        }
+      }
+    },
+    "Notes in the folder and its subfolders (German: pfad:)" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notizen im Ordner und seinen Unterordnern (auch path:)"
           }
         }
       }
@@ -2077,16 +2087,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Suche"
-          }
-        }
-      }
-    },
-    "Search for notes with %@: %@" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nach Notizen mit %1$@: %2$@ suchen"
           }
         }
       }

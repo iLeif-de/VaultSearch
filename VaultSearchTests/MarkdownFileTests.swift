@@ -114,17 +114,43 @@ struct FrontmatterDisplayTests {
             "autor": "Leif", "aliases": ["One", "Two"], "leer": "",
         ])
         #expect(note.displayProperties.map(\.key) == ["aliases", "autor"])
-        #expect(note.displayProperties.first?.values == ["One", "Two"])
+        #expect(note.displayProperties.first?.values.map(\.text) == ["One", "Two"])
         // A folder property that differs from the real folder stays.
         #expect(makeNote("A", folder: "x", frontmatter: ["ordner": "y"]).displayProperties.map(\.key) == ["ordner"])
     }
 
-    @Test func clickingAValueSearchesForIt() {
-        let property = MarkdownFile.DisplayProperty(key: "autor", values: ["Leif Jensen"])
-        #expect(property.query(for: "Leif Jensen") == "autor:\"Leif Jensen\"")
-        #expect(MarkdownFile.DisplayProperty(key: "my key", values: ["x"]).query(for: "x") == nil)
-        #expect(MarkdownFile.DisplayProperty(key: "tag", values: ["x"]).query(for: "x") == nil)
+    @Test func clickingAValueSearchesForIt() throws {
+        let query = try #require(MarkdownFile.DisplayProperty.query(key: "autor", value: "Leif Jensen"))
+        #expect(query == "autor:\"Leif Jensen\"")
+        #expect(MarkdownFile.DisplayProperty.query(key: "my key", value: "x") == nil)
+        #expect(MarkdownFile.DisplayProperty.query(key: "tag", value: "x") == nil)
+        #expect(MarkdownFile.DisplayProperty.query(key: "pfad", value: "x") == nil)
         let note = makeNote("A", frontmatter: ["autor": "Leif Jensen"])
-        #expect(SearchQuery.test(property.query(for: "Leif Jensen")!).titles(in: [note]) == ["A"])
+        #expect(SearchQuery.test(query).titles(in: [note]) == ["A"])
+    }
+
+    @Test func datesAndPathAreRowsWithSearches() throws {
+        let note = makeNote("A", folder: "Projects/2026", frontmatter: ["erstellt": "2024-04-27", "autor": "Leif"], modified: "2026-11-10")
+        let rows = note.previewProperties
+        // Dates and folder first, then the frontmatter.
+        #expect(rows.count == 4)
+        #expect(rows[0].key == "erstellt")
+        #expect(rows[0].values.map(\.text) == ["2024-04-27"])
+        let createdQuery = try #require(rows[0].values.first?.query)
+        #expect(createdQuery.hasSuffix(":2024-04-27"))
+        #expect(rows[1].values.map(\.text) == [FrontmatterDate.day(note.modifiedDate)])
+        #expect(rows[2].values.map(\.text) == ["Projects", "2026"])
+        #expect(rows[2].separator == " / ")
+        let pathQueries = rows[2].values.compactMap(\.query)
+        #expect(pathQueries.count == 2)
+        #expect(pathQueries[1].hasSuffix(":Projects/2026"))
+        #expect(rows[3].key == "autor")
+        // Both searches find the note again.
+        #expect(SearchQuery(createdQuery).titles(in: [note]) == ["A"])  // the app searches in local time, like the preview
+        #expect(SearchQuery.test(pathQueries[0]).titles(in: [note]) == ["A"])
+    }
+
+    @Test func noteAtTheRootHasNoPathRow() {
+        #expect(makeNote("A").previewProperties.count == 2)
     }
 }

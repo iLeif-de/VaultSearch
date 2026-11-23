@@ -21,8 +21,11 @@ struct MarkdownFile: Identifiable, Hashable {
     /// Dates of the file itself, for change detection.
     let fileCreatedDate: Date
     let fileModifiedDate: Date
-    /// Frontmatter keys whose dates were used above; the preview does not repeat them.
-    let dateKeys: Set<String>
+    /// Frontmatter keys whose dates were used above, nil when the file date is used.
+    let createdDateKey: String?
+    let modifiedDateKey: String?
+    /// Both keys; the frontmatter rows of the preview leave them out.
+    var dateKeys: Set<String> { Set([createdDateKey, modifiedDateKey].compactMap { $0 }) }
     let vaultName: String
 
     static let createdKeys = ["erstellt", "created"]
@@ -41,18 +44,15 @@ struct MarkdownFile: Identifiable, Hashable {
         self.fileModifiedDate = modifiedDate
         self.vaultName = vaultName
 
-        var dateKeys = Set<String>()
-        func date(_ keys: [String], fallback: Date) -> Date {
+        func date(_ keys: [String], fallback: Date) -> (Date, String?) {
             for (key, value) in frontmatter where keys.contains(key.lowercased()) {
                 guard let text = value as? String, let parsed = FrontmatterDate.parse(text, fileDate: fallback) else { continue }
-                dateKeys.insert(key)
-                return parsed
+                return (parsed, key)
             }
-            return fallback
+            return (fallback, nil)
         }
-        self.createdDate = date(Self.createdKeys, fallback: createdDate)
-        self.modifiedDate = date(Self.modifiedKeys, fallback: modifiedDate)
-        self.dateKeys = dateKeys
+        (self.createdDate, self.createdDateKey) = date(Self.createdKeys, fallback: createdDate)
+        (self.modifiedDate, self.modifiedDateKey) = date(Self.modifiedKeys, fallback: modifiedDate)
     }
 
     /// Folder inside the vault, empty for notes at the root.
@@ -60,24 +60,59 @@ struct MarkdownFile: Identifiable, Hashable {
         (relativePath as NSString).deletingLastPathComponent
     }
 
-    /// One frontmatter entry for the preview; list properties keep their items apart.
+    /// One row of the property box in the preview. Every value can carry a search.
     struct DisplayProperty: Identifiable {
+        struct Value: Hashable {
+            let text: String
+            /// The search a click puts into the search field; nil when it cannot be written as a search.
+            let query: String?
+        }
+
         let key: String
-        let values: [String]
+        let values: [Value]
+        var separator = ", "
         var id: String { key }
 
-        /// The search for notes with this value, or nil when the key cannot be written as `key:value`.
-        func query(for value: String) -> String? {
+        /// A frontmatter property; each value searches for `key:value`.
+        static func frontmatter(key: String, values: [String]) -> DisplayProperty {
+            DisplayProperty(key: key, values: values.map { Value(text: $0, query: query(key: key, value: $0)) })
+        }
+
+        /// `key:value`, or nil when the key has spaces or other characters, or is an operator such as `tag`.
+        static func query(key: String, value: String) -> String? {
             guard key.first?.isLetter == true,
                   key.allSatisfy({ $0.isLetter || $0.isNumber || $0 == "_" || $0 == "-" }),
                   !SearchQuery.operatorKeys.contains(key.lowercased()) else { return nil }
-            let value = value.replacingOccurrences(of: "\"", with: "")
-            return "\(key):" + SearchSuggestion.quoted(value)
+            return "\(key):" + SearchSuggestion.quoted(value.replacingOccurrences(of: "\"", with: ""))
         }
     }
 
-    /// Frontmatter entries for the preview. Leaves out tags (shown as buttons), the dates shown
-    /// in the header, and a folder property that only repeats the folder of the note.
+    /// The rows of the property box: creation and modification date, the folder path, then the
+    /// frontmatter. Dates and folders search with `erstellt:`, `geändert:` and `pfad:`.
+    var previewProperties: [DisplayProperty] {
+        func dateRow(_ field: SearchQuery.DateField, _ date: Date, frontmatterKey: String?) -> DisplayProperty {
+            let searchKey = SearchSuggestion.dateKey(field)
+            let day = FrontmatterDate.day(date)
+            return DisplayProperty(key: frontmatterKey ?? String(searchKey.dropLast()),
+                                   values: [.init(text: day, query: searchKey + day)])
+        }
+        var rows = [
+            dateRow(.created, createdDate, frontmatterKey: createdDateKey),
+            dateRow(.modified, modifiedDate, frontmatterKey: modifiedDateKey),
+        ]
+        if !folder.isEmpty {
+            let parts = folder.split(separator: "/").map(String.init)
+            let values = parts.indices.map { index in
+                let prefix = parts[...index].joined(separator: "/")
+                return DisplayProperty.Value(text: parts[index], query: SearchSuggestion.pathKey + SearchSuggestion.quoted(prefix))
+            }
+            rows.append(DisplayProperty(key: String(SearchSuggestion.pathKey.dropLast()), values: values, separator: " / "))
+        }
+        return rows + displayProperties
+    }
+
+    /// Frontmatter entries for the preview. Leaves out tags (shown as buttons), the dates and a
+    /// folder property that only repeats the folder of the note; `previewProperties` shows those.
     var displayProperties: [DisplayProperty] {
         frontmatter
             .filter { entry in
@@ -91,7 +126,7 @@ struct MarkdownFile: Identifiable, Hashable {
             }
             .map { entry in
                 let values = (entry.value as? [String]) ?? [String(describing: entry.value)]
-                return DisplayProperty(key: entry.key, values: values.filter { !$0.isEmpty })
+                return DisplayProperty.frontmatter(key: entry.key, values: values.filter { !$0.isEmpty })
             }
             .filter { !$0.values.isEmpty }
             .sorted { $0.key.localizedStandardCompare($1.key) == .orderedAscending }
@@ -181,6 +216,12 @@ enum FrontmatterDate {
         formatter.dateFormat = format
         formatter.isLenient = false
         return formatter
+    }
+
+    /// `2026-09-14` in the local time zone, as shown in the preview and understood by the search.
+    static func day(_ date: Date, calendar: Calendar = .current) -> String {
+        let parts = calendar.dateComponents([.year, .month, .day], from: date)
+        return String(format: "%04d-%02d-%02d", parts.year ?? 0, parts.month ?? 0, parts.day ?? 0)
     }
 
     /// Only these shapes are read; DateFormatter alone would also accept e.g. `14/09/2026`.

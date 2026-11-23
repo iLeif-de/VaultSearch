@@ -66,6 +66,7 @@ All text comparisons ignore case and accents, so `cafe` finds “Café”.
 | `"budget meeting"` | containing the exact phrase |
 | `intitle:budget` | with “budget” in the title only (German: `imtitel:`) |
 | `intext:budget` | with “budget” in the text only, not the title (German: `imtext:`) |
+| `path:Projects/2026` | in this folder or one of its subfolders (German: `pfad:`) |
 
 Plain text does **not** search tags. Use `tag:` for that, or combine both with `OR`.
 
@@ -168,7 +169,14 @@ The **Note** menu, the context menu of the result list and the toolbar of the pr
 | Export Note As ▸ … | |
 | Share | |
 
-Clicking a tag in the preview searches for that tag. Clicking a property value searches for notes with the same value, e.g. `autor:"Leif Jensen-Pistorius"`; in a list each item can be clicked. The property box leaves out what the header already shows: the creation and modification date and a folder property that only repeats the folder of the note.
+Below the title, the preview shows the tags and a box with the creation date, the modification date, the folder path and the frontmatter properties. Every value is a link that filters the search:
+
+- a tag searches `tag:…`,
+- a date searches `created:` / `modified:` for that day,
+- each folder of the path searches `path:` for that folder and its subfolders,
+- a property value searches for notes with the same value, e.g. `autor:"Leif Jensen-Pistorius"`; in a list each item is a link of its own.
+
+The frontmatter keys of the dates (`erstellt`, `geändert`, …) and a folder property that only repeats the path are not listed twice.
 
 ## Export
 

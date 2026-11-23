@@ -66,6 +66,7 @@ Groß-/Kleinschreibung und Akzente spielen beim Textvergleich keine Rolle, `cafe
 | `"budget besprechung"` | die genau diese Wortfolge enthalten |
 | `imtitel:budget` | die „budget“ nur im Titel enthalten (auch `intitle:`) |
 | `imtext:budget` | die „budget“ nur im Text enthalten, nicht im Titel (auch `intext:`) |
+| `pfad:Projekte/2026` | die in diesem Ordner oder einem Unterordner liegen (auch `path:`) |
 
 Normaler Text durchsucht **keine** Tags. Dafür gibt es `tag:`; beides lässt sich mit `ODER` verbinden.
 
@@ -167,7 +168,14 @@ Das Menü **Notiz**, das Kontextmenü der Trefferliste und die Symbolleiste der 
 | Notiz exportieren als ▸ … | |
 | Teilen | |
 
-Ein Klick auf einen Tag in der Vorschau sucht nach diesem Tag. Ein Klick auf den Wert einer Eigenschaft sucht nach Notizen mit demselben Wert, z. B. `autor:"Leif Jensen-Pistorius"`; bei Listen ist jeder Eintrag einzeln anklickbar. Die Eigenschaften-Box lässt weg, was schon im Kopf steht: Erstellungs- und Änderungsdatum sowie eine Ordner-Eigenschaft, die nur den Ordner der Notiz wiederholt.
+Unter dem Titel zeigt die Vorschau die Tags und eine Box mit Erstellungsdatum, Änderungsdatum, Ordnerpfad und den Eigenschaften aus dem Frontmatter. Jeder Wert ist ein Link, der die Suche filtert:
+
+- ein Tag sucht `tag:…`,
+- ein Datum sucht `erstellt:` bzw. `geändert:` mit diesem Tag,
+- jeder Ordner im Pfad sucht `pfad:` mit diesem Ordner und seinen Unterordnern,
+- der Wert einer Eigenschaft sucht Notizen mit demselben Wert, z. B. `autor:"Leif Jensen-Pistorius"`; bei Listen ist jeder Eintrag ein eigener Link.
+
+Die Frontmatter-Schlüssel der Daten (`erstellt`, `geändert`, …) und eine Ordner-Eigenschaft, die nur den Pfad wiederholt, erscheinen nicht doppelt.
 
 ## Export
 

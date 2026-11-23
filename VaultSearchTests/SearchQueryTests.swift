@@ -84,6 +84,17 @@ struct SearchQueryScopeTests {
         #expect(SearchQuery.test("intitle:plan intext:tight").textTerms == ["plan", "tight"])
     }
 
+    @Test func folderAndSubfolders() {
+        let notes = [
+            makeNote("A", folder: "Projects/2026"),
+            makeNote("B", folder: "Projects"),
+            makeNote("C", folder: "Projects 2"),
+            makeNote("D"),
+        ]
+        #expect(SearchQuery.test("path:projects").titles(in: notes).sorted() == ["A", "B"])
+        #expect(SearchQuery.test("pfad:\"Projects/2026/\"").titles(in: notes) == ["A"])
+    }
+
     @Test func bareKeyIsIgnoredWhileTyping() {
         #expect(SearchQuery.test("intitle:").isEmpty)
     }

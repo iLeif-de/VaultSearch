@@ -8,6 +8,7 @@ import Foundation
 ///
 /// - `word`, `"exact phrase"`: title or content contains the text
 /// - `intitle:word` / `intext:word` (German: `imtitel:` / `imtext:`): only the title, only the content
+/// - `path:folder` (German: `pfad:`): notes in the folder or its subfolders
 /// - `tag:name`: frontmatter tag at any level of the hierarchy: `name`, `name/…`
 ///   and `…/name`; closer matches are ranked first (see `tagScore`)
 /// - `contenttag:name`: `#name`, `#…/name` or `[[name]]` in the note body
@@ -24,6 +25,7 @@ struct SearchQuery {
         case text(String)
         case titleText(String)
         case bodyText(String)
+        case folder(String)
         case tag(String)
         case contentTag(String)
         case property(key: String, value: String)
@@ -38,7 +40,7 @@ struct SearchQuery {
     static let orOperators: Set<String> = ["OR", "ODER", "|"]
     /// Keys with a meaning of their own; `key:value` with them is not a property search.
     static let operatorKeys: Set<String> = [
-        "tag", "contenttag", "intitle", "intext", "imtitel", "imtext",
+        "tag", "contenttag", "intitle", "intext", "imtitel", "imtext", "path", "pfad",
         "created", "erstellt", "modified", "geändert", "geaendert",
     ]
     static let andOperators: Set<String> = ["AND", "UND", "&"]
@@ -125,6 +127,10 @@ struct SearchQuery {
                 return file.title.localizedStandardContains(text)
             case .bodyText(let text):
                 return file.content.localizedStandardContains(text)
+            case .folder(let folder):
+                let folder = folder.trimmingCharacters(in: CharacterSet(charactersIn: "/")).lowercased()
+                let own = file.folder.lowercased()
+                return own == folder || own.hasPrefix(folder + "/")
             case .tag(let tag):
                 return file.tags.contains { Self.tagScore(tag: $0, query: tag) > 0 }
             case .contentTag(let tag):
@@ -232,7 +238,8 @@ struct SearchQuery {
             return .tag(String(token.dropFirst(4)).trimmingPrefix("#").description)
         }
         for (prefix, make) in [("intitle:", Term.titleText), ("imtitel:", Term.titleText),
-                               ("intext:", Term.bodyText), ("imtext:", Term.bodyText)]
+                               ("intext:", Term.bodyText), ("imtext:", Term.bodyText),
+                               ("path:", Term.folder), ("pfad:", Term.folder)]
         where lowered.hasPrefix(prefix) && token.count > prefix.count {
             return make(String(token.dropFirst(prefix.count)))
         }

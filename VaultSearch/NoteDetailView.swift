@@ -222,13 +222,6 @@ struct NoteDetailView: View {
                 .textSelection(.enabled)
                 .accessibilityAddTraits(.isHeader)
 
-            ViewThatFits(in: .horizontal) {
-                HStack(spacing: 18) { metadata }
-                VStack(alignment: .leading, spacing: 4) { metadata }
-            }
-            .font(.callout)
-            .foregroundStyle(.secondary)
-
             if !file.tags.isEmpty {
                 FlowLayout(spacing: 6) {
                     ForEach(file.tags, id: \.self) { tag in
@@ -239,10 +232,10 @@ struct NoteDetailView: View {
                 }
             }
 
-            let properties = file.displayProperties
+            let properties = file.previewProperties
             if !properties.isEmpty {
                 Grid(alignment: .leadingFirstTextBaseline, horizontalSpacing: 14, verticalSpacing: 4) {
-                    ForEach(properties) { property in
+                    ForEach(Array(properties.enumerated()), id: \.offset) { _, property in
                         GridRow {
                             Text(property.key)
                                 .foregroundStyle(.secondary)
@@ -256,18 +249,6 @@ struct NoteDetailView: View {
                 .background(.quaternary.opacity(0.5), in: RoundedRectangle(cornerRadius: 10))
             }
         }
-    }
-
-    @ViewBuilder private var metadata: some View {
-        Label("Created \(file.createdDate.formatted(date: .abbreviated, time: .omitted))", systemImage: "calendar")
-        Label {
-            Text("Modified \(file.modifiedDate.formatted(.relative(presentation: .named)))")
-        } icon: {
-            Image(systemName: "clock")
-        }
-        Label(file.relativePath, systemImage: "doc.text")
-            .lineLimit(1)
-            .truncationMode(.middle)
     }
 }
 
@@ -353,7 +334,7 @@ enum MarkdownPreview {
     }
 }
 
-/// The values of one frontmatter property; each value searches for notes with the same value.
+/// The values of one row of the property box; values with a search are links.
 private struct PropertyValuesView: View {
     let property: MarkdownFile.DisplayProperty
     let onSearch: (String) -> Void
@@ -362,21 +343,21 @@ private struct PropertyValuesView: View {
         FlowLayout(spacing: 0) {
             ForEach(Array(property.values.enumerated()), id: \.offset) { index, value in
                 HStack(spacing: 0) {
-                    if let query = property.query(for: value) {
-                        Button(value) { onSearch(query) }
+                    if let query = value.query {
+                        Button(value.text) { onSearch(query) }
                             .buttonStyle(.link)
-                            .help("Search for notes with \(property.key): \(value)")
+                            .help("Search: \(query)")
                             .contextMenu {
                                 Button("Copy") {
                                     NSPasteboard.general.clearContents()
-                                    NSPasteboard.general.setString(value, forType: .string)
+                                    NSPasteboard.general.setString(value.text, forType: .string)
                                 }
                             }
                     } else {
-                        Text(value).textSelection(.enabled)
+                        Text(value.text).textSelection(.enabled)
                     }
                     if index < property.values.count - 1 {
-                        Text(verbatim: ", ").foregroundStyle(.secondary)
+                        Text(verbatim: property.separator).foregroundStyle(.secondary)
                     }
                 }
             }

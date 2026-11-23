@@ -27,6 +27,9 @@ struct SearchSuggestion: Identifiable {
         Bundle.main.preferredLocalizations.first?.hasPrefix("de") == true
     }
 
+    /// `pfad:` or `path:`, depending on the UI language.
+    static var pathKey: String { usesGerman ? "pfad:" : "path:" }
+
     static func dateKey(_ field: SearchQuery.DateField) -> String {
         switch field {
         case .created: usesGerman ? "erstellt:" : "created:"
@@ -97,6 +100,7 @@ struct SearchSuggestion: Identifiable {
             ("contenttag:", String(localized: "#tag or [[link]] in the text"), "link"),
             (usesGerman ? "imtitel:" : "intitle:", String(localized: "Only in the title"), "textformat"),
             (usesGerman ? "imtext:" : "intext:", String(localized: "Only in the text"), "text.alignleft"),
+            (pathKey, String(localized: "Folder and its subfolders"), "folder"),
         ] + properties.map { ("\($0.lowercased()):", String(localized: "Property"), "list.bullet.rectangle") }
 
         var seen = Set<String>()

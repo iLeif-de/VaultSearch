@@ -135,10 +135,10 @@ struct FrontmatterDisplayTests {
         // Dates and folder first, then the frontmatter.
         #expect(rows.count == 4)
         #expect(rows[0].key == "erstellt")
-        #expect(rows[0].values.map(\.text) == ["2024-04-27"])
+        #expect(rows[0].values.map(\.text) == ["27.04.2024"])
         let createdQuery = try #require(rows[0].values.first?.query)
         #expect(createdQuery.hasSuffix(":2024-04-27"))
-        #expect(rows[1].values.map(\.text) == [FrontmatterDate.day(note.modifiedDate)])
+        #expect(rows[1].values.map(\.text) == [FrontmatterDate.displayDay(note.modifiedDate)])
         #expect(rows[2].values.map(\.text) == ["Projects", "2026"])
         #expect(rows[2].separator == " / ")
         let pathQueries = rows[2].values.compactMap(\.query)

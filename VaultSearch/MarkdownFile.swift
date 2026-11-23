@@ -92,9 +92,9 @@ struct MarkdownFile: Identifiable, Hashable {
     var previewProperties: [DisplayProperty] {
         func dateRow(_ field: SearchQuery.DateField, _ date: Date, frontmatterKey: String?) -> DisplayProperty {
             let searchKey = SearchSuggestion.dateKey(field)
-            let day = FrontmatterDate.day(date)
+            // Shown as 14.09.2026; the search uses 2026-09-14, which needs no locale.
             return DisplayProperty(key: frontmatterKey ?? String(searchKey.dropLast()),
-                                   values: [.init(text: day, query: searchKey + day)])
+                                   values: [.init(text: FrontmatterDate.displayDay(date), query: searchKey + FrontmatterDate.day(date))])
         }
         var rows = [
             dateRow(.created, createdDate, frontmatterKey: createdDateKey),
@@ -222,6 +222,12 @@ enum FrontmatterDate {
     static func day(_ date: Date, calendar: Calendar = .current) -> String {
         let parts = calendar.dateComponents([.year, .month, .day], from: date)
         return String(format: "%04d-%02d-%02d", parts.year ?? 0, parts.month ?? 0, parts.day ?? 0)
+    }
+
+    /// `14.09.2026` in the local time zone, for the preview.
+    static func displayDay(_ date: Date, calendar: Calendar = .current) -> String {
+        let parts = calendar.dateComponents([.year, .month, .day], from: date)
+        return String(format: "%02d.%02d.%04d", parts.day ?? 0, parts.month ?? 0, parts.year ?? 0)
     }
 
     /// Only these shapes are read; DateFormatter alone would also accept e.g. `14/09/2026`.

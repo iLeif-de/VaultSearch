@@ -172,7 +172,7 @@ The **Note** menu, the context menu of the result list and the toolbar of the pr
 Below the title, the preview shows the tags and a box with the creation date, the modification date, the folder path and the frontmatter properties. Every value is a link that filters the search:
 
 - a tag searches `tag:…`,
-- a date searches `created:` / `modified:` for that day,
+- a date (shown as `14.09.2026`) searches `created:` / `modified:` for that day,
 - each folder of the path searches `path:` for that folder and its subfolders,
 - a property value searches for notes with the same value, e.g. `autor:"Leif Jensen-Pistorius"`; in a list each item is a link of its own.
 

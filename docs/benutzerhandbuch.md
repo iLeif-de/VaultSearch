@@ -171,7 +171,7 @@ Das Menü **Notiz**, das Kontextmenü der Trefferliste und die Symbolleiste der 
 Unter dem Titel zeigt die Vorschau die Tags und eine Box mit Erstellungsdatum, Änderungsdatum, Ordnerpfad und den Eigenschaften aus dem Frontmatter. Jeder Wert ist ein Link, der die Suche filtert:
 
 - ein Tag sucht `tag:…`,
-- ein Datum sucht `erstellt:` bzw. `geändert:` mit diesem Tag,
+- ein Datum (angezeigt als `14.09.2026`) sucht `erstellt:` bzw. `geändert:` mit diesem Tag,
 - jeder Ordner im Pfad sucht `pfad:` mit diesem Ordner und seinen Unterordnern,
 - der Wert einer Eigenschaft sucht Notizen mit demselben Wert, z. B. `autor:"Leif Jensen-Pistorius"`; bei Listen ist jeder Eintrag ein eigener Link.
 

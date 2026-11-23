@@ -162,6 +162,14 @@ Ein Kurzbefehl kann beim Start nachfragen, statt feste Werte zu haben. So deckt 
 
 „Hey Siri, Archiv durchsuchen“ fragt, was du suchst, und zeigt die Treffer in VaultSearch. Den Suchbegriff kannst du sprechen oder tippen; auch die Suchsyntax wie `tag:idee geändert:letzte 7 Tage` funktioniert.
 
+**Tag per Diktat**
+
+1. **Text diktieren**.
+2. **Text ersetzen** – Leerzeichen in *Diktierter Text* durch `-` ersetzen, aus „PV Anlage“ wird `PV-Anlage`.
+3. **Tag in VaultSearch anzeigen** – *Tag* = *Aktualisierter Text*.
+
+Du sagst einen Tag, VaultSearch zeigt alle Notizen damit. Ein Tag, der auf mehreren Ebenen vorkommt (`pv-anlage`, `energy/pv-anlage` …), braucht keine Rückfrage: Gezeigt werden alle Ebenen. Nur den vollen Pfad (`energy/pv-anlage`) sucht VaultSearch genau. Ordner gehen ebenso mit **Ordner in VaultSearch anzeigen**; gibt es einen Ordnernamen mehrfach, fragt der Kurzbefehl, welcher gemeint ist.
+
 **Notiz exportieren mit Rückfrage**
 
 1. **Notiz exportieren** – *Notiz* = *Jedes Mal fragen*, *Format* = *Jedes Mal fragen*.

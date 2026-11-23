@@ -284,7 +284,7 @@ struct NoteFolderEntity {
     }
 }
 
-struct NoteFolderQuery: EntityQuery {
+struct NoteFolderQuery: EntityStringQuery {
     @Dependency private var model: AppModel
 
     func entities(for identifiers: [NoteFolderEntity.ID]) async throws -> [NoteFolderEntity] {
@@ -294,21 +294,45 @@ struct NoteFolderQuery: EntityQuery {
         }
     }
 
+    /// Text handed over by a shortcut: the folder with this path, else folders with this name
+    /// (a choice only when the name exists in several places), else folders containing the text.
+    func entities(matching string: String) async throws -> [NoteFolderEntity] {
+        await model.search.waitUntilIndexed()
+        let (vault, folders) = await MainActor.run { (model.search.files.first?.vaultName, Self.folders(of: model.search.files)) }
+        guard let vault else { return [] }
+        return Self.match(string, in: folders).map { NoteFolderEntity(vault: vault, path: $0) }
+    }
+
+    static func match(_ string: String, in folders: [String]) -> [String] {
+        let query = string.trimmingCharacters(in: CharacterSet(charactersIn: "/").union(.whitespacesAndNewlines))
+        guard !query.isEmpty else { return [] }
+        if let folder = folders.first(where: { $0.caseInsensitiveCompare(query) == .orderedSame }) {
+            return [folder]
+        }
+        let named = folders.filter { ($0 as NSString).lastPathComponent.caseInsensitiveCompare(query) == .orderedSame }
+        if !named.isEmpty { return named }
+        return Array(folders.filter { $0.localizedStandardContains(query) }.prefix(50))
+    }
+
+    /// Every folder that holds notes, with its parents, so “Projects” exists when only “Projects/2026” holds notes.
+    static func folders(of files: [MarkdownFile]) -> [String] {
+        var folders = Set<String>()
+        for file in files {
+            var path = file.folder
+            while !path.isEmpty {
+                folders.insert(path)
+                path = (path as NSString).deletingLastPathComponent
+            }
+        }
+        return folders.sorted()
+    }
+
     func suggestedEntities() async throws -> [NoteFolderEntity] {
         await model.search.waitUntilIndexed()
         return await MainActor.run {
             let files = model.search.files
             guard let vault = files.first?.vaultName else { return [] }
-            // Parent folders too, so “Projects” is offered when only “Projects/2026” holds notes.
-            var folders = Set<String>()
-            for file in files {
-                var path = file.folder
-                while !path.isEmpty {
-                    folders.insert(path)
-                    path = (path as NSString).deletingLastPathComponent
-                }
-            }
-            return folders.sorted().prefix(300).map { NoteFolderEntity(vault: vault, path: $0) }
+            return Self.folders(of: files).prefix(300).map { NoteFolderEntity(vault: vault, path: $0) }
         }
     }
 }
@@ -338,9 +362,24 @@ struct TagQuery: EntityStringQuery {
 
     func entities(matching string: String) async throws -> [TagEntity] {
         await model.search.waitUntilIndexed()
-        return await MainActor.run {
-            model.search.knownTags.filter { $0.localizedStandardContains(string) }.prefix(50).map(TagEntity.init)
+        let tags = await MainActor.run { model.search.knownTags }
+        return Self.match(string, in: tags).map(TagEntity.init)
+    }
+
+    /// Text handed over by a shortcut (e.g. dictated) as tags. A whole tag or one level of a
+    /// nested tag gives a single tag: `tag:` finds every level anyway, so asking which
+    /// `pv-anlage` was meant would only get in the way. Only partial words offer a choice.
+    static func match(_ string: String, in tags: [String]) -> [String] {
+        let query = string.trimmingCharacters(in: .whitespacesAndNewlines)
+            .trimmingCharacters(in: CharacterSet(charactersIn: "#/"))
+        guard !query.isEmpty else { return [] }
+        if let tag = tags.first(where: { $0.caseInsensitiveCompare(query) == .orderedSame }) {
+            return [tag]
         }
+        if tags.contains(where: { $0.split(separator: "/").contains { $0.caseInsensitiveCompare(query) == .orderedSame } }) {
+            return [query]
+        }
+        return Array(tags.filter { $0.localizedStandardContains(query) }.prefix(50))
     }
 
     /// The most used tags; Siri learns these as values for “Show notes tagged …”.

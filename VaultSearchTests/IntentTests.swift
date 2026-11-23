@@ -178,3 +178,36 @@ struct SiriValueTests {
         #expect(AppIntentTypes.all.count == 9)
     }
 }
+
+@Suite("Shortcuts: text as tag or folder")
+struct TextToTagAndFolderTests {
+    let tags = ["pv-anlage", "development/pv-anlage", "energy/pv-anlage", "energy", "project/haushaltsbuch"]
+
+    @Test func oneLevelOfANestedTagNeedsNoChoice() {
+        #expect(TagQuery.match("pv-anlage", in: tags) == ["pv-anlage"])
+        #expect(TagQuery.match("PV-Anlage ", in: tags) == ["pv-anlage"])
+        #expect(TagQuery.match("#haushaltsbuch", in: tags) == ["haushaltsbuch"])
+        // The query `tag:haushaltsbuch` then finds project/haushaltsbuch.
+        #expect(SearchQuery.tagScore(tag: "project/haushaltsbuch", query: "haushaltsbuch") > 0)
+    }
+
+    @Test func fullPathStaysExact() {
+        #expect(TagQuery.match("energy/pv-anlage", in: tags) == ["energy/pv-anlage"])
+    }
+
+    @Test func partialWordsOfferAChoice() {
+        #expect(TagQuery.match("pv", in: tags) == ["pv-anlage", "development/pv-anlage", "energy/pv-anlage"])
+        #expect(TagQuery.match("  ", in: tags).isEmpty)
+    }
+
+    @Test func folders() {
+        let folders = NoteFolderQuery.folders(of: [
+            makeNote("A", folder: "Projects/2026"), makeNote("B", folder: "Archive/2026"), makeNote("C", folder: "Projects"),
+        ])
+        #expect(folders == ["Archive", "Archive/2026", "Projects", "Projects/2026"])
+        #expect(NoteFolderQuery.match("projects", in: folders) == ["Projects"])
+        #expect(NoteFolderQuery.match("2026", in: folders) == ["Archive/2026", "Projects/2026"])
+        #expect(NoteFolderQuery.match("Projects/2026/", in: folders) == ["Projects/2026"])
+        #expect(NoteFolderQuery.match("arch", in: folders) == ["Archive", "Archive/2026"])
+    }
+}

@@ -162,6 +162,14 @@ A shortcut can ask when it starts instead of using fixed values. Then one shortc
 
 “Hey Siri, search my archive” asks what you are looking for and shows the results in VaultSearch. You can speak or type the search; the search syntax such as `tag:idea modified:last 7 days` works too.
 
+**A tag by dictation**
+
+1. **Dictate Text**.
+2. **Replace Text** – spaces in *Dictated Text* with `-`, so “PV Anlage” becomes `PV-Anlage`.
+3. **Show Tag in VaultSearch** – *Tag* = *Updated Text*.
+
+You say a tag, and VaultSearch shows all notes with it. A tag that exists on several levels (`pv-anlage`, `energy/pv-anlage` …) needs no question: all levels are shown. Only a full path (`energy/pv-anlage`) is searched exactly. Folders work the same with **Show Folder in VaultSearch**; if a folder name exists more than once, the shortcut asks which one is meant.
+
 **Export a note with questions**
 
 1. **Export Note** – *Note* = *Ask Each Time*, *Format* = *Ask Each Time*.

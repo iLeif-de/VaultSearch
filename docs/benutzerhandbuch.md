@@ -276,7 +276,7 @@ Ohne Pandoc entstehen Word-Dateien aus HTML; Schrift, Größen und Farben für W
 
 VaultSearch stellt seine Notizen und Aktionen macOS zur Verfügung. So kannst du sie nutzen, ohne das Fenster zu öffnen:
 
-- **Siri** versteht Anfragen in deinen eigenen Worten, z. B. „Zeig mir meine Notizen zum Budget-Meeting in VaultSearch“. Solange eine Notiz in der Vorschau zu sehen ist, weiß Siri, welche mit „diese“ gemeint ist.
+- **Siri** startet eigene Kurzbefehle über ihren Namen, z. B. „Hey Siri, Haushaltsbuch zeigen“. Das ist der zuverlässigste Weg; die eingebauten Siri-Sätze erkennt Siri auf dem Mac nicht immer.
 - **Spotlight** zeigt die Notizen deines Vaults; wählst du eine aus, öffnet sie sich in Obsidian.
 - **Kurzbefehle** bietet *Notizen finden* (Filterzeilen, Alle/Beliebige), *Notizen filtern* (ein Kriterium aus Menüs, die aus deinem Vault gefüllt werden), *In VaultSearch anzeigen*, *Notiz in Obsidian öffnen* sowie Aktionen zum Exportieren und zum Sichern einer Notizliste im Vault.
 - **AppleScript** kann suchen, Notizen und ihr Frontmatter lesen, exportieren und Listen sichern.

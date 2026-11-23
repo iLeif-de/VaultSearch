@@ -277,7 +277,7 @@ Without Pandoc, Word files are made from HTML, so fonts, sizes and colours for W
 
 VaultSearch hands its notes and actions to macOS, so you can use them without opening the window:
 
-- **Siri** understands requests in your own words, e.g. “Show my notes about the budget meeting in VaultSearch”. While a note is shown in the preview, Siri knows which note “this” means.
+- **Siri** runs your own shortcuts by their name, e.g. “Hey Siri, show household book”. This is the most reliable way; Siri on the Mac does not always recognise the built-in phrases.
 - **Spotlight** lists the notes of your vault; choosing one opens it in Obsidian.
 - **Shortcuts** offers *Find Notes* (filter rows, All/Any), *Filter Notes* (one criterion from menus filled from your vault), *Show in VaultSearch*, *Open Note in Obsidian* and actions to export notes or save a note list to the vault.
 - **AppleScript** can search, read notes and their frontmatter, export and save lists.

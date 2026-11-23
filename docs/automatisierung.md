@@ -6,11 +6,15 @@ VaultSearch lässt sich auch ohne Fenster nutzen: mit **Siri**, **Spotlight**, d
 
 - [Vorab](#vorab)
 - [Siri und Spotlight](#siri-und-spotlight)
+  - [Siri mit eigenen Kurzbefehlen (empfohlen)](#siri-mit-eigenen-kurzbefehlen-empfohlen)
+  - [Spotlight](#spotlight)
+  - [Eingebaute Siri-Sätze](#eingebaute-siri-sätze)
 - [Kurzbefehle](#kurzbefehle)
   - [Aktionen](#aktionen)
   - [Notizen finden](#notizen-finden)
   - [Notizen filtern](#notizen-filtern)
   - [Beispiele für Kurzbefehle](#beispiele-für-kurzbefehle)
+  - [Interaktive Kurzbefehle](#interaktive-kurzbefehle)
 - [AppleScript](#applescript)
   - [Verzeichnis](#verzeichnis)
   - [Beispiele für AppleScript](#beispiele-für-applescript)
@@ -24,7 +28,28 @@ VaultSearch lässt sich auch ohne Fenster nutzen: mit **Siri**, **Spotlight**, d
 
 ## Siri und Spotlight
 
-**Siri** kennt diese Sätze:
+**Kurz gesagt:** Am zuverlässigsten erreichst du VaultSearch mit **eigenen Kurzbefehlen**, die du per Siri über ihren Namen startest, und mit **Spotlight**. Die fest eingebauten Siri-Sätze erkennt Siri auf dem Mac nicht immer.
+
+### Siri mit eigenen Kurzbefehlen (empfohlen)
+
+Siri startet jeden Kurzbefehl über seinen Namen. Heißt ein Kurzbefehl „Haushaltsbuch zeigen“, genügt „Hey Siri, Haushaltsbuch zeigen“. Das funktioniert unabhängig davon, ob Siri die Sätze von VaultSearch kennt.
+
+- Wähle Namen, die Siri gut versteht, und **vermeide das Wort „Notiz“**: Siri gibt jeden Satz mit „Notiz“ oder „Notizen“ an Apples Notizen-App weiter.
+- Ein Kurzbefehl kann auch **nachfragen**, siehe [Interaktive Kurzbefehle](#interaktive-kurzbefehle). Dann reicht ein einziger Kurzbefehl für viele Suchen.
+
+### Spotlight
+
+Spotlight zeigt nach dem ersten Einlesen die Notizen deines Vaults:
+
+1. ⌘ Leertaste, „va“ tippen, VaultSearch auswählen und **Tab** drücken. Links erscheint ein graues Feld „VaultSearch“: Spotlight sucht jetzt nur noch in VaultSearch.
+2. Das Gesuchte tippen, z. B. „Haushaltsbuch“. Die Liste zeigt die passenden Notizen mit ihrem Ordner.
+3. **Return** öffnet die gewählte Notiz in Obsidian.
+
+Titel, Text, Tags und Daten landen dafür im Spotlight-Index deines Macs.
+
+### Eingebaute Siri-Sätze
+
+VaultSearch bringt diese Sätze mit. Ob Siri sie erkennt, entscheidet macOS; auf dem Mac landen sie oft bei anderen Siri-Befehlen (z. B. der Websuche). Wenn ein Satz bei dir nicht klappt, nimm einen eigenen Kurzbefehl.
 
 | Du sagst | VaultSearch |
 |---|---|
@@ -32,19 +57,9 @@ VaultSearch lässt sich auch ohne Fenster nutzen: mit **Siri**, **Spotlight**, d
 | „Zeig den Tag *Idee* in VaultSearch“ | zeigt alle Notizen mit dem Tag (auch verschachtelt) |
 | „Zeig den Ordner *Projekte* in VaultSearch“ | zeigt die Notizen des Ordners samt Unterordnern |
 | „Öffne *Budget 2026* mit VaultSearch“ | öffnet die Notiz in Obsidian |
-| „Exportiere *Budget 2026* mit VaultSearch“ | exportiert die Notiz (als PDF, solange du das Format nicht änderst) |
+| „Exportiere *Budget 2026* mit VaultSearch“ | exportiert die Notiz (als PDF) |
 
-**Vermeide das Wort „Notiz“.** Siri gibt jeden Satz mit „Notiz“ oder „Notizen“ an Apples Notizen-App weiter, noch bevor VaultSearch gefragt wird. Deshalb kommen die Sätze oben ohne dieses Wort aus.
-
-Tags und Ordner aus deinem Vault lernt Siri nach jedem Einlesen. Verschachtelte Tags nennst du mit ihrem letzten Teil: für `project/haushaltsbuch` sagst du „Haushaltsbuch“. Ordner ebenso: „2026“ für `Projekte/2026`. Ordnernamen mit Nummern („02 Projekte“) versteht Siri schlecht.
-
-Freie Suchwörter in einem Satz („Zeig mir alles zu Obsidian“) erlaubt Apple in diesen Sätzen nicht. Dafür gibt es die Rückfrage. Ob Siri solche freien Sätze mit Apple Intelligence direkt an VaultSearch weitergibt, entscheidet macOS.
-
-Solange eine Notiz in der Vorschau zu sehen ist, weiß Siri, welche mit „diese“ gemeint ist.
-
-**Ganz ohne App-Namen** geht es mit eigenen Kurzbefehlen: Siri startet jeden Kurzbefehl über seinen Namen. Heißt ein Kurzbefehl „Wochenrückblick“, genügt „Hey Siri, Wochenrückblick“.
-
-**Spotlight** zeigt nach dem ersten Einlesen die Notizen deines Vaults. Wählst du eine aus, öffnet sie sich in Obsidian. Titel, Text, Tags und Daten landen dafür im Spotlight-Index deines Macs.
+Verschachtelte Tags nennst du mit ihrem letzten Teil („Haushaltsbuch“ für `project/haushaltsbuch`), Ordner ebenso. Notizen erkennt Siri nur mit ihrem genauen Titel. Solange eine Notiz in der Vorschau zu sehen ist, weiß Siri, welche mit „diese“ gemeint ist.
 
 ## Kurzbefehle
 
@@ -121,6 +136,45 @@ Die Listen-Notiz erscheint im Exportordner des Vaults und öffnet sich in Obsidi
 1. **In VaultSearch anzeigen** – `geändert:heute`.
 
 In den Details des Kurzbefehls kannst du ihn in die Menüleiste legen oder ihm einen Tastaturkurzbefehl geben.
+
+**Ein Tag per Siri**
+
+1. **Tag in VaultSearch anzeigen** – *Tag* `project/haushaltsbuch`.
+2. Kurzbefehl „Haushaltsbuch zeigen“ nennen.
+
+„Hey Siri, Haushaltsbuch zeigen“ öffnet VaultSearch mit allen Notizen des Tags.
+
+### Interaktive Kurzbefehle
+
+Ein Kurzbefehl kann beim Start nachfragen, statt feste Werte zu haben. So deckt ein einziger Kurzbefehl viele Suchen ab, und Siri muss sich nur seinen Namen merken.
+
+**„Jedes Mal fragen“:** Tippe in einer Aktion auf ein Feld, z. B. *Tag* bei **Tag in VaultSearch anzeigen**, und wähle **Jedes Mal fragen**. Beim Start zeigt der Kurzbefehl dann die Tags deines Vaults zur Auswahl. Das geht ebenso bei *Ordner*, bei *Notiz* und *Format* von **Notiz exportieren** und bei den Menüs von **Notizen filtern**.
+
+**Suchassistent mit Menü**
+
+1. **Aus Menü auswählen** – Frage „Was suchst du?“, Optionen *Text*, *Tag*, *Ordner*.
+2. Unter *Text*:
+   - **Nach Eingabe fragen** – „Wonach soll ich suchen?“
+   - **In VaultSearch anzeigen** – *Suchbegriff* = *Angegebene Eingabe*.
+3. Unter *Tag*: **Tag in VaultSearch anzeigen** – *Tag* = *Jedes Mal fragen*.
+4. Unter *Ordner*: **Ordner in VaultSearch anzeigen** – *Ordner* = *Jedes Mal fragen*.
+5. Kurzbefehl z. B. „Archiv durchsuchen“ nennen.
+
+„Hey Siri, Archiv durchsuchen“ fragt, was du suchst, und zeigt die Treffer in VaultSearch. Den Suchbegriff kannst du sprechen oder tippen; auch die Suchsyntax wie `tag:idee geändert:letzte 7 Tage` funktioniert.
+
+**Notiz exportieren mit Rückfrage**
+
+1. **Notiz exportieren** – *Notiz* = *Jedes Mal fragen*, *Format* = *Jedes Mal fragen*.
+2. **Datei sichern** – *Jedes Mal fragen*, wohin.
+
+Der Kurzbefehl fragt nach Notiz, Format und Ziel.
+
+**Rückblick mit Wahl des Zeitraums**
+
+1. **Aus Menü auswählen** – *Diese Woche*, *Dieser Monat*.
+2. Je Option **Notizen filtern** – nach *Änderungsdatum* *Diese Woche* bzw. *Dieser Monat*.
+3. Nach dem Menü: **Notizliste exportieren** – *Notizen* = *Ergebnis von Aus Menü auswählen*, *PDF*, Titel „Rückblick“.
+4. **Datei sichern** oder **Teilen**.
 
 ## AppleScript
 

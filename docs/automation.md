@@ -6,11 +6,15 @@ VaultSearch can be used without its window: from **Siri**, **Spotlight**, the **
 
 - [Before you start](#before-you-start)
 - [Siri and Spotlight](#siri-and-spotlight)
+  - [Siri with your own shortcuts (recommended)](#siri-with-your-own-shortcuts-recommended)
+  - [Spotlight](#spotlight)
+  - [Built-in Siri phrases](#built-in-siri-phrases)
 - [Shortcuts](#shortcuts)
   - [Actions](#actions)
   - [Find Notes](#find-notes)
   - [Filter Notes](#filter-notes)
   - [Shortcut examples](#shortcut-examples)
+  - [Interactive shortcuts](#interactive-shortcuts)
 - [AppleScript](#applescript)
   - [Dictionary](#dictionary)
   - [AppleScript examples](#applescript-examples)
@@ -24,7 +28,28 @@ VaultSearch can be used without its window: from **Siri**, **Spotlight**, the **
 
 ## Siri and Spotlight
 
-**Siri** knows these phrases:
+**In short:** VaultSearch is most reliably reached with **your own shortcuts**, started by Siri by their name, and with **Spotlight**. Siri on the Mac does not always recognise the built-in phrases.
+
+### Siri with your own shortcuts (recommended)
+
+Siri runs every shortcut by its name. A shortcut called “Show household book” starts with “Hey Siri, show household book”. This works whether or not Siri knows VaultSearch's own phrases.
+
+- Choose names Siri understands well. In German, **avoid the word “Notiz”**: Siri hands every sentence with it to Apple Notes.
+- A shortcut can also **ask**, see [Interactive shortcuts](#interactive-shortcuts). Then one shortcut covers many searches.
+
+### Spotlight
+
+Spotlight lists the notes of your vault after the first index run:
+
+1. Press ⌘ Space, type “va”, select VaultSearch and press **Tab**. A grey “VaultSearch” token appears on the left: Spotlight now searches only VaultSearch.
+2. Type what you look for, e.g. “budget”. The list shows the matching notes with their folders.
+3. **Return** opens the selected note in Obsidian.
+
+Titles, text, tags and dates are added to the Spotlight index of your Mac for this.
+
+### Built-in Siri phrases
+
+VaultSearch comes with these phrases. Whether Siri recognises them is up to macOS; on the Mac they often end up with other Siri commands (web search, for example). If a phrase does not work for you, use your own shortcut.
 
 | You say | VaultSearch |
 |---|---|
@@ -32,19 +57,9 @@ VaultSearch can be used without its window: from **Siri**, **Spotlight**, the **
 | “Show notes tagged *idea* in VaultSearch” | shows the notes with the tag (nested tags too) |
 | “Show folder *Projects* in VaultSearch” | shows the notes of the folder and its subfolders |
 | “Open *Budget 2026* with VaultSearch” | opens the note in Obsidian |
-| “Export *Budget 2026* with VaultSearch” | exports the note (PDF unless you change the format) |
+| “Export *Budget 2026* with VaultSearch” | exports the note (as PDF) |
 
-In German, avoid the word “Notiz”: Siri hands every sentence with “Notiz” or “Notizen” to Apple Notes before VaultSearch is asked. The German phrases (see [Automatisierung](automatisierung.md#siri-und-spotlight)) do without it.
-
-Siri learns the tags and folders of your vault after every index run. Say nested tags by their last part: “haushaltsbuch” for `project/haushaltsbuch`, and “2026” for the folder `Projects/2026`. Folder names with numbers (“02 Projects”) are hard for Siri.
-
-Apple does not allow free search words inside these phrases (“Show my notes about Obsidian”); that is what the follow-up question is for. Whether Siri with Apple Intelligence hands such free sentences to VaultSearch directly is up to macOS.
-
-While a note is shown in the preview, Siri knows which note “this” means.
-
-**Without any app name**, use your own shortcuts: Siri runs every shortcut by its name. A shortcut called “Weekly review” starts with “Hey Siri, weekly review”.
-
-**Spotlight** lists the notes of your vault after the first index run. Choosing one opens it in Obsidian. Titles, text, tags and dates are added to the Spotlight index of your Mac.
+Say nested tags by their last part (“haushaltsbuch” for `project/haushaltsbuch`), folders likewise. Siri recognises notes only by their exact title. While a note is shown in the preview, Siri knows which note “this” means. The German phrases are listed in [Automatisierung](automatisierung.md#eingebaute-siri-sätze).
 
 ## Shortcuts
 
@@ -121,6 +136,45 @@ The list note appears in the export folder of the vault and opens in Obsidian li
 1. **Show in VaultSearch** – `modified:today` (German: `geändert:heute`).
 
 Add it to the menu bar or give it a keyboard shortcut in the details of the shortcut.
+
+**A tag by Siri**
+
+1. **Show Tag in VaultSearch** – *Tag* `project/haushaltsbuch`.
+2. Name the shortcut “Show household book”.
+
+“Hey Siri, show household book” opens VaultSearch with all notes of the tag.
+
+### Interactive shortcuts
+
+A shortcut can ask when it starts instead of using fixed values. Then one shortcut covers many searches, and Siri only has to know its name.
+
+**“Ask Each Time”:** Click a field in an action, e.g. *Tag* in **Show Tag in VaultSearch**, and choose **Ask Each Time**. When the shortcut runs, it offers the tags of your vault. The same works for *Folder*, for *Note* and *Format* of **Export Note**, and for the menus of **Filter Notes**.
+
+**Search assistant with a menu**
+
+1. **Choose from Menu** – prompt “What are you looking for?”, options *Text*, *Tag*, *Folder*.
+2. Under *Text*:
+   - **Ask for Input** – “What should I search for?”
+   - **Show in VaultSearch** – *Search Text* = *Provided Input*.
+3. Under *Tag*: **Show Tag in VaultSearch** – *Tag* = *Ask Each Time*.
+4. Under *Folder*: **Show Folder in VaultSearch** – *Folder* = *Ask Each Time*.
+5. Name the shortcut, e.g. “Search my archive”.
+
+“Hey Siri, search my archive” asks what you are looking for and shows the results in VaultSearch. You can speak or type the search; the search syntax such as `tag:idea modified:last 7 days` works too.
+
+**Export a note with questions**
+
+1. **Export Note** – *Note* = *Ask Each Time*, *Format* = *Ask Each Time*.
+2. **Save File** – *Ask Where to Save*.
+
+The shortcut asks for the note, the format and the destination.
+
+**Review with a choice of period**
+
+1. **Choose from Menu** – *This Week*, *This Month*.
+2. In each option **Filter Notes** – by *Modification Date* *This Week* or *This Month*.
+3. After the menu: **Export Note List** – *Notes* = *Result of Choose from Menu*, *PDF*, title “Review”.
+4. **Save File** or **Share**.
 
 ## AppleScript
 

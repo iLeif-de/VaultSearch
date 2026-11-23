@@ -14,7 +14,7 @@ struct VaultSearchAboutView: View {
         about.description = String(localized: "VaultSearch indexes the Markdown notes of your Obsidian vault on your Mac and searches them as you type: by text, tag, frontmatter property or date. Your notes never leave your computer.")
         about.footer = String(localized: "Made with curiosity.")
 
-        about.websiteURL = nil
+        about.websiteURL = URL(string: "https://studio.ileif.de/projekte/vaultsearch")
         about.websiteLabel = String(localized: "Website")
         about.websitePlaceholder = String(localized: "Website coming soon")
 
